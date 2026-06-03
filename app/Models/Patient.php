@@ -123,6 +123,11 @@ class Patient extends Model
         return $this->hasMany(LaboratoryResult::class);
     }
 
+    public function laboratoryBills(): HasMany
+    {
+        return $this->hasMany(LaboratoryBill::class);
+    }
+
     public function prescriptionMedicines(): HasMany
     {
         return $this->hasMany(PrescriptionMedicine::class);

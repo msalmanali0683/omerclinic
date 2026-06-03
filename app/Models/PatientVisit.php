@@ -115,6 +115,11 @@ class PatientVisit extends Model
         return $this->hasMany(LaboratoryResult::class, 'patient_visit_id');
     }
 
+    public function laboratoryBills(): HasMany
+    {
+        return $this->hasMany(LaboratoryBill::class, 'patient_visit_id');
+    }
+
     public function prescriptionMedicines(): HasMany
     {
         return $this->hasMany(PrescriptionMedicine::class, 'patient_visit_id');

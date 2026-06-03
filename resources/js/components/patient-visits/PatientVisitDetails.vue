@@ -97,10 +97,7 @@
                 <p class="font-medium">{{ result.test_name || 'Laboratory Result' }}</p>
                 <p class="text-gray-500">{{ result.result_date }} · {{ formatStatus(result.status) }}</p>
               </div>
-              <div class="flex gap-2">
-                <BaseButton size="sm" variant="secondary" @click="viewLaboratoryResult(result.id)">View</BaseButton>
-                <BaseButton v-if="canPrintLaboratoryResult" size="sm" variant="ghost" :loading="laboratoryPrintLoading === result.id" @click="printLaboratoryResult(result.id)">Print Report</BaseButton>
-              </div>
+              <BaseButton size="sm" variant="secondary" @click="viewLaboratoryResult(result.id)">View</BaseButton>
             </div>
           </div>
         </div>
@@ -155,10 +152,6 @@
       :show-empty-clinical-scans-as-na="false"
       :redirect-after-close="false"
     />
-    <LaboratoryResultPrintModal
-      v-model="showLaboratoryPrintModal"
-      :print-data="laboratoryPrintData"
-    />
   </div>
 </template>
 
@@ -169,8 +162,6 @@ import { useAuthStore } from '@/stores/auth';
 import { useToastStore } from '@/stores/toast';
 import { prescriptionService } from '@/services/prescriptionService';
 import { clinicalScanService } from '@/services/clinicalScanService';
-import { laboratoryResultService } from '@/services/laboratoryResultService';
-import LaboratoryResultPrintModal from '@/components/laboratory/LaboratoryResultPrintModal.vue';
 import PrescriptionPrintSettingsModal from '@/components/prescription/PrescriptionPrintSettingsModal.vue';
 import BaseButton from '@/components/ui/BaseButton.vue';
 import { displayPatientAge, formatGender } from '@/utils/formatters';
@@ -190,9 +181,6 @@ const reprintLoading = ref(false);
 const showScanPrintModal = ref(false);
 const scanPrintData = ref(null);
 const scanPrintLoading = ref(null);
-const showLaboratoryPrintModal = ref(false);
-const laboratoryPrintData = ref(null);
-const laboratoryPrintLoading = ref(null);
 
 const canShowVitals = computed(() => authStore.can('view patient vitals'));
 const canShowComplaints = computed(() => authStore.can('view visit complaints'));
@@ -205,8 +193,6 @@ const canPrintScan = computed(() => authStore.can('print clinical scans'));
 const canShowLaboratoryResults = computed(() =>
   authStore.can('view laboratory results') || authStore.can('view patient laboratory history')
 );
-const canPrintLaboratoryResult = computed(() => authStore.can('print laboratory results'));
-
 const canReprescribe = computed(() => props.details?.visit?.can_represcribe ?? false);
 const canReprint = computed(() => props.details?.visit?.can_reprint ?? false);
 
@@ -283,19 +269,4 @@ async function printScan(scanId) {
   }
 }
 
-async function printLaboratoryResult(resultId) {
-  laboratoryPrintLoading.value = resultId;
-  try {
-    const visitId = props.details?.visit?.id ?? props.details?.id;
-    const { data } = visitId
-      ? await laboratoryResultService.getVisitPrintData(visitId)
-      : await laboratoryResultService.getPrintData(resultId);
-    laboratoryPrintData.value = data.print_data ?? data.data?.print_data ?? null;
-    showLaboratoryPrintModal.value = true;
-  } catch (e) {
-    toastStore.error(e.response?.data?.message ?? 'Unable to load result for printing.');
-  } finally {
-    laboratoryPrintLoading.value = null;
-  }
-}
 </script>

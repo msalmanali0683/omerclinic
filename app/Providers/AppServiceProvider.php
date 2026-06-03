@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Models\ClinicalScan;
 use App\Models\ClinicalScanTemplate;
+use App\Models\LaboratoryBill;
 use App\Models\LaboratoryResult;
 use App\Models\LaboratoryTestTemplate;
 use App\Models\ComplaintMaster;
@@ -22,6 +23,7 @@ use App\Models\Prescription;
 use App\Models\User;
 use App\Policies\ClinicalScanPolicy;
 use App\Policies\ClinicalScanTemplatePolicy;
+use App\Policies\LaboratoryBillPolicy;
 use App\Policies\LaboratoryResultPolicy;
 use App\Policies\LaboratoryTestTemplatePolicy;
 use App\Policies\ComplaintMasterPolicy;
@@ -74,6 +76,7 @@ class AppServiceProvider extends ServiceProvider
         Gate::policy(ClinicalScanTemplate::class, ClinicalScanTemplatePolicy::class);
         Gate::policy(ClinicalScan::class, ClinicalScanPolicy::class);
         Gate::policy(LaboratoryTestTemplate::class, LaboratoryTestTemplatePolicy::class);
+        Gate::policy(LaboratoryBill::class, LaboratoryBillPolicy::class);
         Gate::policy(LaboratoryResult::class, LaboratoryResultPolicy::class);
         Gate::policy(PatientVisitToken::class, PatientVisitTokenPolicy::class);
     }

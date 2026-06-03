@@ -9,13 +9,17 @@ use App\Http\Resources\LaboratoryResultResource;
 use App\Models\LaboratoryResult;
 use App\Models\Patient;
 use App\Models\PatientVisit;
+use App\Services\LaboratoryResultOverviewService;
 use App\Services\LaboratoryResultService;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
 
 class LaboratoryResultController extends Controller
 {
-    public function __construct(protected LaboratoryResultService $resultService) {}
+    public function __construct(
+        protected LaboratoryResultService $resultService,
+        protected LaboratoryResultOverviewService $overviewService
+    ) {}
 
     public function index(Request $request)
     {
@@ -134,13 +138,53 @@ class LaboratoryResultController extends Controller
     {
         $this->authorize('viewAny', LaboratoryResult::class);
 
-        $results = LaboratoryResult::with(['values', 'visit.doctor', 'labOperator'])
+        $results = LaboratoryResult::with(['values', 'visit.doctor', 'labOperator', 'bill'])
             ->where('patient_id', $patient->id)
             ->latest('result_date')
             ->latest('id')
             ->paginate($request->get('per_page', 20));
 
         return LaboratoryResultResource::collection($results);
+    }
+
+    public function patientsOverview(Request $request)
+    {
+        $this->authorize('viewAny', LaboratoryResult::class);
+
+        return response()->json([
+            'data' => $this->overviewService->patientsIndex([
+                'search' => $request->get('search'),
+            ]),
+        ]);
+    }
+
+    public function patientVisitsOverview(Patient $patient)
+    {
+        $this->authorize('viewAny', LaboratoryResult::class);
+
+        return response()->json(
+            $this->overviewService->patientVisitsSummary($patient)
+        );
+    }
+
+    public function noVisitTests(Patient $patient)
+    {
+        $this->authorize('viewAny', LaboratoryResult::class);
+
+        return response()->json(
+            $this->overviewService->testsForVisit($patient, null)
+        );
+    }
+
+    public function visitTests(Patient $patient, PatientVisit $visit)
+    {
+        $this->authorize('viewAny', LaboratoryResult::class);
+
+        abort_unless((int) $visit->patient_id === (int) $patient->id, 404);
+
+        return response()->json(
+            $this->overviewService->testsForVisit($patient, $visit)
+        );
     }
 
     public function printData(LaboratoryResult $laboratoryResult)

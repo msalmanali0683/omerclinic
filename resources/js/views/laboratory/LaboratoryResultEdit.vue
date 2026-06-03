@@ -15,7 +15,11 @@
           {{ displayPatientAge(result.patient) }}
         </p>
         <p class="text-sm text-gray-500 mt-2">
-          Visit: {{ result.visit?.visit_date || '—' }} · Doctor: {{ result.visit?.doctor?.name || 'Unassigned' }}
+          Visit: {{ result.visit?.visit_date || 'Not Linked / No Visit' }}
+          <span v-if="result.visit"> · Doctor: {{ result.visit?.doctor?.name || 'Unassigned' }}</span>
+        </p>
+        <p v-if="remainingDraftCount > 0" class="text-sm text-teal-700 dark:text-teal-300 mt-2">
+          {{ remainingDraftCount }} more draft test(s) after this one.
         </p>
         <p class="text-sm text-gray-500 mt-1">
           Template: {{ result.test_name || result.template?.test_name || '—' }}
@@ -63,13 +67,13 @@
 </template>
 
 <script setup>
-import { onMounted, reactive, ref } from 'vue';
+import { computed, onMounted, reactive, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useToastStore } from '@/stores/toast';
 import { laboratoryResultService } from '@/services/laboratoryResultService';
-import { laboratoryTestTemplateService } from '@/services/laboratoryTestTemplateService';
 import { useFormErrors } from '@/composables/useFormErrors';
-import { buildResultValuesFromTemplate, serializeResultValues } from '@/utils/laboratory';
+import { fetchDraftTests, loadDraftResultForm } from '@/utils/laboratoryDraftQueue';
+import { serializeResultValues } from '@/utils/laboratory';
 import { displayPatientAge, formatGender } from '@/utils/formatters';
 import BaseButton from '@/components/ui/BaseButton.vue';
 import LaboratoryDynamicFields from '@/components/laboratory/LaboratoryDynamicFields.vue';
@@ -81,9 +85,15 @@ const { errors, setErrors, clearErrors } = useFormErrors();
 
 const result = ref(null);
 const resultValues = ref([]);
+const draftQueue = ref([]);
 const pageLoading = ref(true);
 const saving = ref(false);
 const savingStatus = ref('');
+
+const remainingDraftCount = computed(() => {
+  if (!result.value || !draftQueue.value.length) return 0;
+  return draftQueue.value.filter((d) => d.id !== result.value.id).length;
+});
 
 const form = reactive({
   test_price: '',
@@ -105,6 +115,19 @@ async function submit(status) {
 
     await laboratoryResultService.updateResult(route.params.id, payload);
     toastStore.success(status === 'draft' ? 'Result saved as draft.' : 'Laboratory result updated.');
+
+    if (status === 'completed') {
+      const patientId = result.value.patient_id;
+      const visitId = result.value.patient_visit_id ?? null;
+      const drafts = await fetchDraftTests(patientId, visitId);
+      const next = drafts.find((d) => d.id !== result.value.id) ?? drafts[0];
+
+      if (next) {
+        router.push(`/laboratory-results/${next.id}/edit`);
+        return;
+      }
+    }
+
     router.push(`/laboratory-results/${route.params.id}`);
   } catch (e) {
     setErrors(e);
@@ -121,21 +144,16 @@ async function submit(status) {
 
 onMounted(async () => {
   try {
-    const { data } = await laboratoryResultService.getResult(route.params.id);
-    const row = data.data ?? data;
-    result.value = row;
-    form.remarks = row.remarks || '';
-    form.test_price = row.test_price !== null && row.test_price !== undefined ? String(row.test_price) : '';
+    const loaded = await loadDraftResultForm(route.params.id);
+    result.value = loaded.result;
+    form.remarks = loaded.form.remarks;
+    form.test_price = loaded.form.test_price;
+    resultValues.value = loaded.resultValues;
 
-    let templateFields = row.template?.fields ?? [];
-
-    if (!templateFields.length && row.laboratory_test_template_id) {
-      const templateRes = await laboratoryTestTemplateService.getTemplate(row.laboratory_test_template_id);
-      const template = templateRes.data.data ?? templateRes.data;
-      templateFields = template.fields ?? [];
-    }
-
-    resultValues.value = buildResultValuesFromTemplate(templateFields, row.values ?? []);
+    draftQueue.value = await fetchDraftTests(
+      loaded.result.patient_id,
+      loaded.result.patient_visit_id ?? null
+    );
   } catch {
     toastStore.error('Failed to load laboratory result.');
     router.push('/laboratory-results');

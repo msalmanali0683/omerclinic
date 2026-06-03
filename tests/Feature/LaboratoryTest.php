@@ -211,7 +211,7 @@ class LaboratoryTest extends TestCase
             ->assertJsonPath('print_data.laboratory_results.0.values.0.unit', 'g/dL');
     }
 
-    public function test_lab_print_data_includes_all_results_for_same_visit(): void
+    public function test_lab_print_data_for_single_result_returns_only_that_test(): void
     {
         $technician = $this->makeUser('lab-technician');
         $admin = $this->makeUser('hospital-admin');
@@ -241,10 +241,9 @@ class LaboratoryTest extends TestCase
         $response = $this->actingAs($technician)->getJson("/api/laboratory-results/{$selectedResultId}/print-data")
             ->assertOk();
 
-        $this->assertCount(3, $response->json('print_data.laboratory_results'));
-        $this->assertSame('CBC', $response->json('print_data.laboratory_results.0.test_name'));
-        $this->assertSame('CBC', $response->json('print_data.laboratory_results.1.test_name'));
-        $this->assertSame('Blood Sugar', $response->json('print_data.laboratory_results.2.test_name'));
+        $this->assertCount(1, $response->json('print_data.laboratory_results'));
+        $this->assertSame('Blood Sugar', $response->json('print_data.laboratory_results.0.test_name'));
+        $response->assertJsonPath('print_data.visit.id', $visit->id);
     }
 
     public function test_visit_lab_print_data_returns_all_results_for_visit(): void
@@ -292,6 +291,34 @@ class LaboratoryTest extends TestCase
     public function test_field_key_is_generated_from_label(): void
     {
         $this->assertSame('total_leukocyte_count', LaboratoryFieldKeyGenerator::fromLabel('Total Leukocyte Count'));
+    }
+
+    public function test_lab_technician_can_update_result_on_cancelled_visit(): void
+    {
+        $technician = $this->makeUser('lab-technician');
+        $visit = $this->createVisit();
+        $template = $this->createTemplate();
+        $visit->update(['status' => PatientVisit::STATUS_CANCELLED]);
+
+        $create = $this->actingAs($technician)->postJson('/api/laboratory-results', [
+            'patient_id'                  => $visit->patient_id,
+            'patient_visit_id'            => $visit->id,
+            'laboratory_test_template_id' => $template->id,
+            'status'                      => LaboratoryResult::STATUS_DRAFT,
+            'values'                      => [],
+        ])->assertCreated();
+
+        $resultId = $create->json('data.id');
+        $field = $template->fields->first();
+
+        $this->actingAs($technician)->putJson("/api/laboratory-results/{$resultId}", [
+            'status' => LaboratoryResult::STATUS_COMPLETED,
+            'values' => [[
+                'laboratory_test_template_field_id' => $field->id,
+                'field_value'                     => '14.2',
+            ]],
+        ])->assertOk()
+            ->assertJsonPath('data.status', LaboratoryResult::STATUS_COMPLETED);
     }
 
     protected function makeUser(string $role): User

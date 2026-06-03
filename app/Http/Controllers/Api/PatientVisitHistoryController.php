@@ -154,7 +154,7 @@ class PatientVisitHistoryController extends Controller
         if ($user->can('view laboratory results') || $user->can('view patient laboratory history')) {
             $response['laboratory_results'] = \App\Http\Resources\LaboratoryResultResource::collection(
                 $visit->laboratoryResults()
-                    ->with(['values', 'labOperator'])
+                    ->with(['values', 'labOperator', 'bill'])
                     ->latest('result_date')
                     ->latest('id')
                     ->get()

@@ -13,4 +13,8 @@ export const laboratoryResultService = {
     getLaboratoryHistory: (patientId, params) => api.get(`/patients/${patientId}/laboratory-history`, { params }),
     getPrintData: (resultId) => api.get(`/laboratory-results/${resultId}/print-data`),
     getVisitPrintData: (visitId) => api.get(`/patient-visits/${visitId}/laboratory-results/print-data`),
+    getPatientsOverview: (params) => api.get('/laboratory-results/patients-overview', { params }),
+    getPatientVisitsOverview: (patientId) => api.get(`/laboratory-results/patients/${patientId}/visits-overview`),
+    getNoVisitTests: (patientId) => api.get(`/laboratory-results/patients/${patientId}/no-visit-tests`),
+    getVisitTests: (patientId, visitId) => api.get(`/laboratory-results/patients/${patientId}/visits/${visitId}/tests`),
 };

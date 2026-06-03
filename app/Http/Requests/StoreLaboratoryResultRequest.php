@@ -19,15 +19,15 @@ class StoreLaboratoryResultRequest extends FormRequest
     {
         return [
             'patient_id'                               => 'required|integer|exists:patients,id',
-            'patient_visit_id'                         => 'required|integer|exists:patient_visits,id',
+            'patient_visit_id'                         => 'nullable|integer|exists:patient_visits,id',
+            'values'                                   => 'nullable|array',
             'laboratory_test_template_id'              => 'required|integer|exists:laboratory_test_templates,id',
             'result_date'                              => 'nullable|date',
             'result_time'                              => 'nullable',
             'status'                                   => 'nullable|string|in:draft,completed,verified,cancelled',
             'remarks'                                  => 'nullable|string|max:3000',
             'test_price'                               => 'nullable|numeric|min:0|max:99999999.99',
-            'values'                                   => 'required|array',
-            'values.*.laboratory_test_template_field_id' => 'required|integer|exists:laboratory_test_template_fields,id',
+            'values.*.laboratory_test_template_field_id' => 'required_with:values|integer|exists:laboratory_test_template_fields,id',
             'values.*.field_value'                     => 'nullable|string|max:10000',
         ];
     }
@@ -39,16 +39,16 @@ class StoreLaboratoryResultRequest extends FormRequest
                 return;
             }
 
-            $visit = PatientVisit::find($this->patient_visit_id);
+            $visit = $this->filled('patient_visit_id')
+                ? PatientVisit::find($this->patient_visit_id)
+                : null;
+
+            if ($this->filled('patient_visit_id') && ! $visit) {
+                $validator->errors()->add('patient_visit_id', 'The selected visit is invalid.');
+            }
 
             if ($visit && (int) $visit->patient_id !== (int) $this->patient_id) {
                 $validator->errors()->add('patient_visit_id', 'The visit does not belong to this patient.');
-            }
-
-            if ($visit && $visit->status === PatientVisit::STATUS_CANCELLED) {
-                if (! $this->user()->hasAnyRole(['super-admin', 'hospital-admin'])) {
-                    $validator->errors()->add('patient_visit_id', 'Cannot create laboratory result for a cancelled visit.');
-                }
             }
 
             $template = LaboratoryTestTemplate::with('fields')->find($this->laboratory_test_template_id);
@@ -61,7 +61,20 @@ class StoreLaboratoryResultRequest extends FormRequest
                 $validator->errors()->add('laboratory_test_template_id', 'The selected test template is not active.');
             }
 
-            $valuesByFieldId = collect($this->input('values', []))->keyBy('laboratory_test_template_field_id');
+            $status = $this->input('status', 'completed');
+            $values = $this->input('values', []);
+
+            if ($status !== 'draft' && empty($values)) {
+                $validator->errors()->add('values', 'Result values are required unless status is draft.');
+
+                return;
+            }
+
+            if ($status === 'draft' && empty($values)) {
+                return;
+            }
+
+            $valuesByFieldId = collect($values)->keyBy('laboratory_test_template_field_id');
 
             foreach ($template->fields as $field) {
                 if (! $valuesByFieldId->has($field->id)) {

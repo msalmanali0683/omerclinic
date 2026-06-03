@@ -1,83 +1,120 @@
 <template>
   <div
     :id="printAreaId"
-    class="laboratory-report-print-area bg-white text-black"
+    class="laboratory-report-print-area lab-a4-document bg-white text-black"
     :class="{ 'lab-report-compact': laboratoryResults.length > 2 }"
   >
-    <div class="lab-report-patient-header">
-      <div class="lab-report-header-row">
-        <span><strong>Name:</strong> {{ patient.patient_name }}</span>
-        <span><strong>Father Name:</strong> {{ patient.patient_father_name }}</span>
-      </div>
-      <div class="lab-report-header-row">
-        <span><strong>Age:</strong> {{ patient.patient_age_display }}</span>
-        <span><strong>Gender:</strong> {{ patient.patient_gender_label }}</span>
-        <span><strong>MR#:</strong> {{ patient.mr_number }}</span>
-      </div>
-      <div class="lab-report-header-row">
-        <span><strong>Cell:</strong> {{ patient.patient_cell }}</span>
-        <span v-if="patient.patient_cnic"><strong>CNIC:</strong> {{ patient.patient_cnic }}</span>
-        <span><strong>Address:</strong> {{ patient.patient_address }}</span>
-      </div>
-      <div class="lab-report-header-row">
-        <span v-if="visit?.visit_date"><strong>Visit Date:</strong> {{ formatDate(visit.visit_date) }}</span>
-        <span v-if="visit?.visit_time"><strong>Visit Time:</strong> {{ formatVisitTime(visit.visit_time) }}</span>
-        <span><strong>Report Date:</strong> {{ reportDateTimeLabel }}</span>
-      </div>
-    </div>
+    <header class="lab-letterhead">
+      <p class="lab-hospital-name">{{ hospitalName }}</p>
+      <h1 class="lab-report-heading">Laboratory Test Report</h1>
+      <p class="lab-report-subheading">Printed: {{ printedAtLabel }}</p>
+    </header>
 
-    <div class="lab-report-title">LABORATORY TEST REPORT</div>
-
-    <div
-      v-for="result in laboratoryResults"
-      :key="result.id"
-      class="lab-result-block"
-      :class="{ 'large-block': isLargeBlock(result) }"
-    >
-      <div class="lab-test-name">{{ testBlockTitle(result) }}</div>
-      <div class="lab-test-meta">
-        Date/Time: {{ resultDateTimeLabel(result) }}
-        <span v-if="result.test_price !== null && result.test_price !== undefined">
-          · Price: {{ formatCurrency(result.test_price) }}
-        </span>
-      </div>
-
-      <table class="lab-result-values-table">
-        <thead>
-          <tr>
-            <th>Parameter</th>
-            <th>Result</th>
-            <th>Unit</th>
-            <th>Normal Range</th>
-          </tr>
-        </thead>
+    <section class="lab-patient-panel">
+      <div class="lab-patient-panel-title">Patient Information</div>
+      <table class="lab-patient-table">
         <tbody>
-          <tr v-for="value in sortedValues(result)" :key="value.id || value.field_key">
-            <td>{{ value.field_label }}</td>
-            <td class="bidi-text">{{ value.field_value || '—' }}</td>
-            <td>{{ value.unit || '—' }}</td>
-            <td>{{ value.reference_range || '—' }}</td>
+          <tr>
+            <td class="lab-label">Patient Name</td>
+            <td class="lab-value bidi-text">{{ patient.patient_name }}</td>
+            <td class="lab-label">Father Name</td>
+            <td class="lab-value bidi-text">{{ patient.patient_father_name }}</td>
+          </tr>
+          <tr>
+            <td class="lab-label">MR Number</td>
+            <td class="lab-value">{{ patient.mr_number }}</td>
+            <td class="lab-label">Age / Gender</td>
+            <td class="lab-value">{{ patient.patient_age_display }} · {{ patient.patient_gender_label }}</td>
+          </tr>
+          <tr>
+            <td class="lab-label">Cell Phone</td>
+            <td class="lab-value">{{ patient.patient_cell }}</td>
+            <td class="lab-label">CNIC</td>
+            <td class="lab-value">{{ patient.patient_cnic || '—' }}</td>
+          </tr>
+          <tr>
+            <td class="lab-label">Address</td>
+            <td class="lab-value bidi-text" colspan="3">{{ patient.patient_address }}</td>
+          </tr>
+          <tr>
+            <td class="lab-label">Visit Date</td>
+            <td class="lab-value">{{ visit?.visit_date ? formatDate(visit.visit_date) : '—' }}</td>
+            <td class="lab-label">Report Date</td>
+            <td class="lab-value">{{ reportDateTimeLabel }}</td>
           </tr>
         </tbody>
       </table>
+    </section>
 
-      <div v-if="result.remarks" class="lab-remarks bidi-text">
-        <strong>Remarks:</strong> {{ result.remarks }}
+    <main class="lab-tests-body">
+      <article
+        v-for="result in laboratoryResults"
+        :key="result.id"
+        class="lab-test-section"
+        :class="{ 'lab-test-section--large': isLargeBlock(result) }"
+      >
+        <header class="lab-test-header">
+          <h2 class="lab-test-title">{{ testBlockTitle(result) }}</h2>
+          <span class="lab-test-meta">{{ resultDateTimeLabel(result) }}</span>
+        </header>
+
+        <table class="lab-results-table">
+          <thead>
+            <tr>
+              <th class="col-parameter">Parameter</th>
+              <th class="col-result">Result</th>
+              <th class="col-unit">Unit</th>
+              <th class="col-range">Normal Range</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="value in sortedValues(result)" :key="value.id || value.field_key">
+              <td class="col-parameter">{{ value.field_label }}</td>
+              <td class="col-result bidi-text">{{ value.field_value || '—' }}</td>
+              <td class="col-unit">{{ value.unit || '—' }}</td>
+              <td class="col-range">{{ value.reference_range || '—' }}</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <p v-if="result.remarks" class="lab-remarks bidi-text">
+          <strong>Remarks:</strong> {{ result.remarks }}
+        </p>
+      </article>
+    </main>
+
+    <footer class="lab-report-footer">
+      <div class="lab-signature-grid">
+        <div class="lab-signature-block">
+          Lab Technician
+          <span class="lab-signature-line" />
+        </div>
+        <div class="lab-signature-block">
+          Authorized By
+          <span class="lab-signature-line" />
+        </div>
       </div>
-    </div>
+      <p class="lab-print-note">This is a computer-generated laboratory report.</p>
+    </footer>
   </div>
 </template>
 
 <script setup>
-import { computed } from 'vue';
-import { formatDate, formatCurrency } from '@/utils/formatters';
+import { computed, onMounted } from 'vue';
+import { formatDate } from '@/utils/formatters';
 import { normalizePrintPatient, PRINT_NA } from '@/utils/printDataNormalizers';
+import { ensureClinicalReportPreviewStyles } from '@/utils/laboratoryClinicalReportPrintStyles';
 
 const props = defineProps({
   printData: { type: Object, required: true },
   printAreaId: { type: String, default: 'laboratory-report-print-area' },
 });
 
+onMounted(() => {
+  ensureClinicalReportPreviewStyles();
+});
+
+const hospitalName = computed(() => props.printData?.hospital_name || 'Hospital');
 const patient = computed(() => normalizePrintPatient(props.printData?.patient));
 const visit = computed(() => props.printData?.visit ?? null);
 
@@ -105,6 +142,21 @@ const duplicateTestNameCounts = computed(() => {
   return counts;
 });
 
+const printedAtLabel = computed(() => {
+  const raw = props.printData?.generated_at;
+  if (raw) {
+    return raw;
+  }
+
+  return new Date().toLocaleString('en-PK', {
+    year: 'numeric',
+    month: 'short',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+  });
+});
+
 const reportDateTimeLabel = computed(() => {
   if (visit.value?.visit_date) {
     return formatDate(visit.value.visit_date);
@@ -116,10 +168,6 @@ const reportDateTimeLabel = computed(() => {
 
 function sortedValues(result) {
   return [...(result?.values ?? [])].sort((a, b) => (a.sort_order || 0) - (b.sort_order || 0));
-}
-
-function formatVisitTime(time) {
-  return time ? String(time).slice(0, 5) : '';
 }
 
 function formatResultTime(time) {
@@ -141,7 +189,7 @@ function resultDateTimeLabel(result) {
   const date = result?.result_date ? formatDate(result.result_date) : PRINT_NA;
   const time = formatResultTime(result?.result_time);
 
-  return time ? `${date} ${time}` : date;
+  return time ? `${date} · ${time}` : date;
 }
 
 function testBlockTitle(result) {
@@ -150,135 +198,13 @@ function testBlockTitle(result) {
   const time = formatResultTime(result.result_time);
 
   if (duplicates && time) {
-    return `${name} - ${time}`;
+    return `${name} (${time})`;
   }
 
   return name;
 }
 
 function isLargeBlock(result) {
-  return sortedValues(result).length > 10;
+  return sortedValues(result).length > 12;
 }
 </script>
-
-<style scoped>
-.laboratory-report-print-area {
-  width: 100%;
-  color: #000;
-  background: #fff;
-  padding: 0;
-  margin: 0;
-  box-sizing: border-box;
-  font-weight: normal;
-  font-size: 11px;
-  line-height: 1.15;
-}
-
-.laboratory-report-print-area * {
-  font-weight: normal;
-}
-
-.lab-report-patient-header {
-  border-bottom: 1px solid #000;
-  padding-bottom: 3px;
-  margin-bottom: 4px;
-}
-
-.lab-report-header-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0 18px;
-  margin-bottom: 2px;
-}
-
-.lab-report-title {
-  text-align: center;
-  font-size: 15px;
-  font-weight: normal;
-  text-decoration: underline;
-  margin: 4px 0 6px;
-}
-
-.lab-result-block {
-  margin-bottom: 6px;
-  break-inside: avoid;
-  page-break-inside: avoid;
-}
-
-.lab-result-block.large-block {
-  break-inside: auto;
-  page-break-inside: auto;
-}
-
-.lab-test-name {
-  font-size: 12px;
-  font-weight: normal;
-  text-decoration: underline;
-  margin-bottom: 2px;
-}
-
-.lab-test-meta {
-  font-size: 10px;
-  margin-bottom: 2px;
-}
-
-.lab-result-values-table {
-  width: 100%;
-  border-collapse: collapse;
-  table-layout: fixed;
-}
-
-.lab-result-values-table th,
-.lab-result-values-table td {
-  border: 1px solid #000;
-  padding: 2px 3px;
-  vertical-align: top;
-  word-wrap: break-word;
-  overflow-wrap: anywhere;
-}
-
-.lab-result-values-table th {
-  font-weight: normal;
-  text-align: left;
-}
-
-.lab-result-values-table th:nth-child(1),
-.lab-result-values-table td:nth-child(1) {
-  width: 32%;
-}
-
-.lab-result-values-table th:nth-child(2),
-.lab-result-values-table td:nth-child(2) {
-  width: 18%;
-}
-
-.lab-result-values-table th:nth-child(3),
-.lab-result-values-table td:nth-child(3) {
-  width: 15%;
-}
-
-.lab-result-values-table th:nth-child(4),
-.lab-result-values-table td:nth-child(4) {
-  width: 35%;
-}
-
-.lab-remarks {
-  margin-top: 3px;
-  font-size: 10px;
-}
-
-.lab-report-compact {
-  font-size: 10.5px;
-  line-height: 1.1;
-}
-
-.lab-report-compact .lab-result-values-table th,
-.lab-report-compact .lab-result-values-table td {
-  padding: 1.5px 2px;
-}
-
-.bidi-text {
-  direction: auto;
-  unicode-bidi: plaintext;
-}
-</style>

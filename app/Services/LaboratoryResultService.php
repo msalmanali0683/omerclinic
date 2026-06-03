@@ -21,9 +21,11 @@ class LaboratoryResultService
                 ? $data['test_price']
                 : $template->test_price;
 
+            $visitId = ! empty($data['patient_visit_id']) ? (int) $data['patient_visit_id'] : null;
+
             $result = LaboratoryResult::create([
                 'patient_id'                  => $data['patient_id'],
-                'patient_visit_id'            => $data['patient_visit_id'],
+                'patient_visit_id'            => $visitId,
                 'laboratory_test_template_id' => $template->id,
                 'test_name'                   => $template->test_name,
                 'test_code'                   => $template->test_code,
@@ -37,9 +39,11 @@ class LaboratoryResultService
                 'updated_by'                  => $user->id,
             ]);
 
-            $this->syncValues($result, $template, $data['values'], $user);
+            if (! empty($data['values'])) {
+                $this->syncValues($result, $template, $data['values'], $user);
+            }
 
-            return $result->load(['values', 'patient', 'visit.doctor', 'template', 'labOperator']);
+            return $result->load(['values', 'patient', 'visit.doctor', 'template', 'labOperator', 'bill']);
         });
     }
 

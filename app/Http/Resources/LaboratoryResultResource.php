@@ -13,6 +13,8 @@ class LaboratoryResultResource extends JsonResource
             'id'                          => $this->id,
             'patient_id'                  => $this->patient_id,
             'patient_visit_id'            => $this->patient_visit_id,
+            'laboratory_bill_id'          => $this->laboratory_bill_id,
+            'bill_no'                     => $this->whenLoaded('bill', fn () => $this->bill?->bill_no),
             'laboratory_test_template_id' => $this->laboratory_test_template_id,
             'test_name'                   => $this->test_name,
             'test_code'                   => $this->test_code,

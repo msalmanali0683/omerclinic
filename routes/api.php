@@ -18,7 +18,9 @@ use App\Http\Controllers\Api\ClinicalScanHistoryController;
 use App\Http\Controllers\Api\ClinicalScanController;
 use App\Http\Controllers\Api\ClinicalScanQueueSearchController;
 use App\Http\Controllers\Api\ClinicalScanTemplateController;
+use App\Http\Controllers\Api\LaboratoryBillController;
 use App\Http\Controllers\Api\LaboratoryHistoryController;
+use App\Http\Controllers\Api\LaboratoryPatientController;
 use App\Http\Controllers\Api\LaboratoryPatientSearchController;
 use App\Http\Controllers\Api\LaboratoryResultController;
 use App\Http\Controllers\Api\LaboratoryTestTemplateController;
@@ -154,8 +156,22 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('clinical-scans', ClinicalScanController::class);
 
     // Laboratory
+    Route::get('laboratory/patients', [LaboratoryPatientController::class, 'index'])
+        ->middleware('role_or_permission:view lab patients|search patients for laboratory|create lab bills|create laboratory results');
     Route::get('laboratory/patient-visits/search', [LaboratoryPatientSearchController::class, 'search'])
-        ->middleware('role_or_permission:search patients for laboratory|create laboratory results');
+        ->middleware('role_or_permission:view lab patients|search patients for laboratory|create lab bills|create laboratory results');
+    Route::post('laboratory/bills', [LaboratoryBillController::class, 'store'])
+        ->middleware('permission:create lab bills');
+    Route::get('laboratory/bills/{laboratoryBill}/print-data', [LaboratoryBillController::class, 'printData'])
+        ->middleware('permission:print lab bills');
+    Route::get('laboratory-results/patients-overview', [LaboratoryResultController::class, 'patientsOverview'])
+        ->middleware('permission:view laboratory results');
+    Route::get('laboratory-results/patients/{patient}/visits-overview', [LaboratoryResultController::class, 'patientVisitsOverview'])
+        ->middleware('permission:view laboratory results');
+    Route::get('laboratory-results/patients/{patient}/no-visit-tests', [LaboratoryResultController::class, 'noVisitTests'])
+        ->middleware('permission:view laboratory results');
+    Route::get('laboratory-results/patients/{patient}/visits/{visit}/tests', [LaboratoryResultController::class, 'visitTests'])
+        ->middleware('permission:view laboratory results');
     Route::get('laboratory-test-templates/options', [LaboratoryTestTemplateController::class, 'options'])
         ->middleware('permission:view laboratory test templates');
     Route::apiResource('laboratory-test-templates', LaboratoryTestTemplateController::class);

@@ -197,16 +197,17 @@ export const sidebarMenu = [
         permissionMode: 'any',
         children: [
             {
-                label: 'Result Entry',
-                to: '/laboratory-results/create',
-                routeName: 'laboratory-results.create',
-                permissions: ['create laboratory results'],
+                label: 'Test Billing',
+                to: '/laboratory/billing',
+                routeName: 'laboratory.billing',
+                permissions: ['create lab bills'],
             },
             {
                 label: 'Laboratory Results',
                 to: '/laboratory-results',
                 routeName: 'laboratory-results.index',
-                permissions: ['view laboratory results'],
+                permissions: ['view laboratory results', 'create laboratory results'],
+                permissionMode: 'any',
             },
             {
                 label: 'Test Templates',

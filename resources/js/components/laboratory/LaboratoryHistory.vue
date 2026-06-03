@@ -19,7 +19,7 @@
           >
             <LaboratoryResultCard
               :result="result"
-              :can-print="canPrint"
+              :can-print="canPrint && isPrintableResult(result)"
               :printing="props.printingResultId === result.id"
               @print="emitPrint(result.id)"
             />
@@ -37,7 +37,7 @@
           >
             <LaboratoryResultCard
               :result="result"
-              :can-print="canPrint"
+              :can-print="canPrint && isPrintableResult(result)"
               :printing="props.printingResultId === result.id"
               @print="emitPrint(result.id)"
             />
@@ -54,7 +54,6 @@ import { useAuthStore } from '@/stores/auth';
 import { useToastStore } from '@/stores/toast';
 import { laboratoryResultService } from '@/services/laboratoryResultService';
 import LaboratoryResultCard from '@/components/laboratory/LaboratoryResultCard.vue';
-
 const props = defineProps({
   patientId: { type: [Number, String], required: true },
   currentVisitId: { type: [Number, String], default: null },
@@ -111,6 +110,10 @@ async function loadHistory() {
 
 function emitPrint(resultId) {
   emit('print-result', resultId);
+}
+
+function isPrintableResult(result) {
+  return ['completed', 'verified'].includes(result?.status);
 }
 
 watch(

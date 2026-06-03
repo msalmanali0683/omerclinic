@@ -462,10 +462,7 @@ async function openScanPrintPreview(scanId) {
 async function openLaboratoryPrintPreview(resultId) {
   laboratoryPrintLoading.value = resultId;
   try {
-    const visitId = visit.value?.id;
-    const { data } = visitId
-      ? await laboratoryResultService.getVisitPrintData(visitId)
-      : await laboratoryResultService.getPrintData(resultId);
+    const { data } = await laboratoryResultService.getPrintData(resultId);
     laboratoryPrintData.value = data.print_data ?? null;
     showLaboratoryPrintModal.value = true;
   } catch (e) {

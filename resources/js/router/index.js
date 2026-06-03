@@ -217,6 +217,12 @@ const routes = [
         meta: { requiresAuth: true, layout: 'dashboard', permission: 'view clinical scans', title: 'Clinical Scan Detail' },
     },
     {
+        path: '/laboratory/billing',
+        name: 'laboratory.billing',
+        component: () => import('@/views/laboratory/LaboratoryBillCreate.vue'),
+        meta: { requiresAuth: true, layout: 'dashboard', permission: 'create lab bills', title: 'Laboratory Test Billing' },
+    },
+    {
         path: '/laboratory-results/create',
         name: 'laboratory-results.create',
         component: () => import('@/views/laboratory/LaboratoryResultCreate.vue'),

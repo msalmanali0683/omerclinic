@@ -6,7 +6,6 @@ use App\Models\LaboratoryResult;
 use App\Models\LaboratoryResultValue;
 use App\Models\LaboratoryTestTemplate;
 use App\Models\LaboratoryTestTemplateField;
-use App\Models\PatientVisit;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Validator;
 
@@ -42,13 +41,6 @@ class UpdateLaboratoryResultRequest extends FormRequest
 
             /** @var LaboratoryResult $result */
             $result = $this->route('laboratory_result');
-            $visit = $result->visit ?? PatientVisit::find($result->patient_visit_id);
-
-            if ($visit && $visit->status === PatientVisit::STATUS_CANCELLED) {
-                if (! $this->user()->hasAnyRole(['super-admin', 'hospital-admin'])) {
-                    $validator->errors()->add('values', 'Cannot update laboratory result for a cancelled visit.');
-                }
-            }
 
             $template = $result->laboratory_test_template_id
                 ? LaboratoryTestTemplate::with('fields')->find($result->laboratory_test_template_id)

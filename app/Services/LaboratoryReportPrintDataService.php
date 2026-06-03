@@ -13,21 +13,22 @@ class LaboratoryReportPrintDataService
 {
     public function getForResult(LaboratoryResult $result, ?User $user = null): array
     {
-        $result->loadMissing(['patient', 'visit']);
-
-        if ($result->visit) {
-            return $this->getForVisit($result->visit, $user);
-        }
-
         $result->loadMissing([
+            'patient',
+            'visit',
             'values' => fn ($query) => $query->orderBy('sort_order'),
         ]);
 
         return [
+            'hospital_name'      => config('app.name'),
+            'title'              => 'Laboratory Test Report',
+            'generated_at'       => now()->format('Y-m-d H:i'),
             'patient'            => $result->patient
                 ? (new PatientResource($result->patient))->resolve()
                 : null,
-            'visit'              => null,
+            'visit'              => $result->visit
+                ? (new PatientVisitResource($result->visit))->resolve()
+                : null,
             'laboratory_results' => [$this->mapLaboratoryResult($result)],
         ];
     }
@@ -41,6 +42,9 @@ class LaboratoryReportPrintDataService
         $results = $this->fetchPrintableResults($visit);
 
         return [
+            'hospital_name'      => config('app.name'),
+            'title'              => 'Laboratory Test Report',
+            'generated_at'       => now()->format('Y-m-d H:i'),
             'patient'            => $visit->patient
                 ? (new PatientResource($visit->patient))->resolve()
                 : null,

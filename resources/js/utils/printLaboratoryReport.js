@@ -1,45 +1,6 @@
-const LABORATORY_REPORT_PRINT_SETTINGS = {
-    pageSize: 'A4',
-    orientation: 'portrait',
-    margin: '10mm',
-};
+import { buildLaboratoryClinicalReportPrintStyles } from '@/utils/laboratoryClinicalReportPrintStyles';
 
-function buildLaboratoryReportPrintStyles() {
-    return `
-        @page {
-            size: ${LABORATORY_REPORT_PRINT_SETTINGS.pageSize} ${LABORATORY_REPORT_PRINT_SETTINGS.orientation};
-            margin: ${LABORATORY_REPORT_PRINT_SETTINGS.margin};
-        }
-
-        * { box-sizing: border-box; }
-
-        body {
-            margin: 0;
-            padding: 0;
-            background: #fff;
-            color: #000;
-            font-family: Arial, sans-serif;
-            font-size: 11px;
-            line-height: 1.25;
-        }
-
-        .no-print { display: none !important; }
-
-        .laboratory-billing-report-print-wrapper {
-            width: 100%;
-            background: #fff;
-            color: #000;
-        }
-
-        .laboratory-billing-report-print-area {
-            width: 100%;
-            background: #fff;
-            color: #000;
-            font-family: Arial, sans-serif;
-            font-size: 11px;
-            line-height: 1.25;
-        }
-
+const LABORATORY_BILLING_REPORT_EXTRA_STYLES = `
         .report-header {
             text-align: center;
             border-bottom: 1px solid #000;
@@ -128,7 +89,19 @@ function buildLaboratoryReportPrintStyles() {
             padding-top: 4px;
             margin-top: 6px;
         }
-    `;
+
+        .laboratory-billing-report-print-area {
+            width: 100%;
+            background: #fff;
+            color: #000;
+            font-family: Arial, sans-serif;
+            font-size: 11px;
+            line-height: 1.25;
+        }
+`;
+
+function buildLaboratoryReportPrintStyles() {
+    return `${buildLaboratoryClinicalReportPrintStyles()}${LABORATORY_BILLING_REPORT_EXTRA_STYLES}`;
 }
 
 function waitForIframe(iframe) {
@@ -144,7 +117,7 @@ function cleanupIframe(iframe) {
     }
 }
 
-export async function printLaboratoryReportElement(elementId = 'laboratory-billing-report-print-area', callbacks = {}) {
+export async function printLaboratoryReportElement(elementId = 'laboratory-report-print-area', callbacks = {}) {
     const printElement = document.getElementById(elementId);
 
     if (!printElement) {
@@ -181,7 +154,7 @@ export async function printLaboratoryReportElement(elementId = 'laboratory-billi
     <style>${styles}</style>
   </head>
   <body>
-    <div class="laboratory-billing-report-print-wrapper">${html}</div>
+    <div class="laboratory-report-print-wrapper">${html}</div>
   </body>
 </html>`);
     doc.close();

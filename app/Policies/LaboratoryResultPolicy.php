@@ -3,6 +3,7 @@
 namespace App\Policies;
 
 use App\Models\LaboratoryResult;
+use App\Models\PatientVisit;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
@@ -92,6 +93,16 @@ class LaboratoryResultPolicy
 
     protected function canAccessResult(User $user, LaboratoryResult $result): bool
     {
+        if (! $result->patient_visit_id) {
+            return $result->visit()
+                ->where('doctor_id', $user->id)
+                ->exists()
+                || PatientVisit::query()
+                    ->where('patient_id', $result->patient_id)
+                    ->where('doctor_id', $user->id)
+                    ->exists();
+        }
+
         if ($result->relationLoaded('visit') && $result->visit) {
             return (int) $result->visit->doctor_id === (int) $user->id;
         }

@@ -11,7 +11,7 @@
 
           <div class="flex-1 overflow-y-auto px-4 pb-4 pt-0.5 sm:px-6 sm:pb-6 sm:pt-0.5 print-preview-panel">
             <div class="preview-shell overflow-auto rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-gray-950 p-3 sm:p-4">
-              <div class="mx-auto bg-white shadow-sm" style="width: 148mm;">
+              <div class="mx-auto bg-white shadow-md" style="width: 210mm; min-height: 297mm; padding: 12mm 10mm;">
                 <LaboratoryResultPrintPreview
                   v-if="printData"
                   :print-data="printData"

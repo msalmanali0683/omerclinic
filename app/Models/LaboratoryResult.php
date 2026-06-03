@@ -26,6 +26,7 @@ class LaboratoryResult extends Model
         'laboratory_test_template_id',
         'test_name',
         'test_code',
+        'test_price',
         'lab_operator_id',
         'result_date',
         'result_time',
@@ -37,6 +38,7 @@ class LaboratoryResult extends Model
 
     protected $casts = [
         'result_date' => 'date',
+        'test_price'  => 'decimal:2',
     ];
 
     public function patient(): BelongsTo

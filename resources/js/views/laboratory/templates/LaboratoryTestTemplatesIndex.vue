@@ -23,6 +23,7 @@
         <span class="font-medium text-gray-900 dark:text-white">{{ row.test_name }}</span>
       </template>
       <template #cell-test_code="{ row }">{{ row.test_code || '—' }}</template>
+      <template #cell-test_price="{ row }">{{ formatCurrency(row.test_price) }}</template>
       <template #cell-is_active="{ row }">
         <span
           :class="row.is_active
@@ -75,6 +76,7 @@ import { onMounted, ref } from 'vue';
 import { useAuthStore } from '@/stores/auth';
 import { useToastStore } from '@/stores/toast';
 import { laboratoryTestTemplateService } from '@/services/laboratoryTestTemplateService';
+import { formatCurrency } from '@/utils/formatters';
 import BaseButton from '@/components/ui/BaseButton.vue';
 import BaseInput from '@/components/ui/BaseInput.vue';
 import BaseTable from '@/components/ui/BaseTable.vue';
@@ -89,6 +91,7 @@ const pagination = ref({ current_page: 1, last_page: 1 });
 const columns = [
   { key: 'test_name', label: 'Test Name' },
   { key: 'test_code', label: 'Code' },
+  { key: 'test_price', label: 'Price' },
   { key: 'is_active', label: 'Active' },
   { key: 'fields_count', label: 'Fields' },
   { key: 'actions', label: 'Actions' },

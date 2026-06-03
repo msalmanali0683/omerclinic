@@ -15,6 +15,7 @@ class LaboratoryTestTemplate extends Model
     protected $fillable = [
         'test_name',
         'test_code',
+        'test_price',
         'description',
         'is_active',
         'created_by',
@@ -22,7 +23,8 @@ class LaboratoryTestTemplate extends Model
     ];
 
     protected $casts = [
-        'is_active' => 'boolean',
+        'is_active'  => 'boolean',
+        'test_price' => 'decimal:2',
     ];
 
     public function fields(): HasMany

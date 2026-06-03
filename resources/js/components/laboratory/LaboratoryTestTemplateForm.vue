@@ -14,6 +14,15 @@
         placeholder="Example: CBC"
         :error="errors.test_code"
       />
+      <BaseInput
+        v-model="form.test_price"
+        type="number"
+        min="0"
+        step="0.01"
+        label="Test Price"
+        placeholder="0.00"
+        :error="errors.test_price"
+      />
       <div class="flex items-end pb-1">
         <label class="inline-flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300">
           <input
@@ -175,6 +184,7 @@ const emit = defineEmits(['submit']);
 const form = reactive({
   test_name: '',
   test_code: '',
+  test_price: '',
   description: '',
   is_active: true,
 });
@@ -188,6 +198,7 @@ watch(
 
     form.test_name = value.test_name ?? '';
     form.test_code = value.test_code ?? '';
+    form.test_price = value.test_price ?? '';
     form.description = value.description ?? '';
     form.is_active = value.is_active ?? true;
     fieldRows.value = (value.fields ?? []).map(mapTemplateFieldToRow);
@@ -235,6 +246,7 @@ function handleSubmit() {
   emit('submit', {
     test_name: form.test_name.trim(),
     test_code: form.test_code?.trim() || null,
+    test_price: form.test_price === '' || form.test_price === null ? 0 : Number(form.test_price),
     description: form.description?.trim() || null,
     is_active: !!form.is_active,
     fields: serializeTemplateFields(fieldRows.value),

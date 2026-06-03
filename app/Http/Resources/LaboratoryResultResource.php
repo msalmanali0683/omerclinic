@@ -16,6 +16,7 @@ class LaboratoryResultResource extends JsonResource
             'laboratory_test_template_id' => $this->laboratory_test_template_id,
             'test_name'                   => $this->test_name,
             'test_code'                   => $this->test_code,
+            'test_price'                  => $this->test_price,
             'lab_operator_id'             => $this->lab_operator_id,
             'result_date'                 => $this->result_date?->format('Y-m-d'),
             'result_time'                 => $this->result_time,

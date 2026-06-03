@@ -51,6 +51,7 @@
           <dl class="text-sm space-y-1 text-gray-600 dark:text-gray-400">
             <div><dt class="inline font-medium">Test:</dt> {{ result.test_name || result.template?.test_name || '—' }}</div>
             <div><dt class="inline font-medium">Code:</dt> {{ result.test_code || result.template?.test_code || '—' }}</div>
+            <div><dt class="inline font-medium">Price:</dt> {{ formatCurrency(result.test_price) }}</div>
             <div><dt class="inline font-medium">Result Date:</dt> {{ formatDate(result.result_date) }}</div>
             <div><dt class="inline font-medium">Result Time:</dt> {{ result.result_time || '—' }}</div>
             <div><dt class="inline font-medium">Operator:</dt> {{ result.lab_operator?.name || '—' }}</div>
@@ -110,7 +111,7 @@ import { useRoute, useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
 import { useToastStore } from '@/stores/toast';
 import { laboratoryResultService } from '@/services/laboratoryResultService';
-import { displayPatientAge, formatDate, formatGender } from '@/utils/formatters';
+import { displayPatientAge, formatDate, formatGender, formatCurrency } from '@/utils/formatters';
 import BaseButton from '@/components/ui/BaseButton.vue';
 import LaboratoryResultPrintModal from '@/components/laboratory/LaboratoryResultPrintModal.vue';
 

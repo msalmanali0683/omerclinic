@@ -255,7 +255,15 @@ export const sidebarMenu = [
     {
         label: 'Reports',
         icon: 'chart',
-        permissions: ['view reports', 'view patient reports', 'export patient reports pdf', 'print patient reports'],
+        permissions: [
+            'view reports',
+            'view patient reports',
+            'export patient reports pdf',
+            'print patient reports',
+            'view laboratory reports',
+            'export laboratory reports pdf',
+            'print laboratory reports',
+        ],
         permissionMode: 'any',
         children: [
             {
@@ -263,6 +271,12 @@ export const sidebarMenu = [
                 to: '/reports/patients',
                 routeName: 'reports.patients',
                 permissions: ['view patient reports'],
+            },
+            {
+                label: 'Laboratory Report',
+                to: '/reports/laboratory',
+                routeName: 'reports.laboratory',
+                permissions: ['view laboratory reports'],
             },
         ],
     },

@@ -29,6 +29,7 @@ use App\Http\Controllers\Api\PatientVisitHistoryController;
 use App\Http\Controllers\Api\PatientVisitComplaintController;
 use App\Http\Controllers\Api\PatientVisitDiagnosisController;
 use App\Http\Controllers\Api\PatientVisitTokenController;
+use App\Http\Controllers\Api\Reports\LaboratoryReportController;
 use App\Http\Controllers\Api\Reports\PatientReportController;
 
 /*
@@ -177,6 +178,12 @@ Route::middleware('auth:sanctum')->group(function () {
             ->middleware('permission:print patient reports');
         Route::get('patients/pdf', [PatientReportController::class, 'pdf'])
             ->middleware('permission:export patient reports pdf');
+        Route::get('laboratory', [LaboratoryReportController::class, 'index'])
+            ->middleware('permission:view laboratory reports');
+        Route::get('laboratory/print-data', [LaboratoryReportController::class, 'printData'])
+            ->middleware('permission:print laboratory reports');
+        Route::get('laboratory/pdf', [LaboratoryReportController::class, 'pdf'])
+            ->middleware('permission:export laboratory reports pdf');
     });
 
     // Medicine master

@@ -168,3 +168,22 @@ export function formatPrescriptionDateTime(prescription, visit) {
 
     return `${day}-${month}-${year}${timePart}`;
 }
+
+export function formatCurrency(amount, currency = 'PKR') {
+    if (amount === null || amount === undefined || amount === '') {
+        return '—';
+    }
+
+    const value = Number(amount);
+
+    if (Number.isNaN(value)) {
+        return '—';
+    }
+
+    return new Intl.NumberFormat(APP_LOCALE, {
+        style: 'currency',
+        currency,
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 2,
+    }).format(value);
+}

@@ -32,6 +32,7 @@ class LaboratoryTest extends TestCase
         $response = $this->actingAs($admin)->postJson('/api/laboratory-test-templates', [
             'test_name'   => 'CBC',
             'test_code'   => 'CBC',
+            'test_price'  => 1500,
             'description' => 'Complete blood count',
             'is_active'   => true,
             'fields'      => [
@@ -46,12 +47,18 @@ class LaboratoryTest extends TestCase
         ]);
 
         $response->assertCreated()
-            ->assertJsonPath('data.test_name', 'CBC');
+            ->assertJsonPath('data.test_name', 'CBC')
+            ->assertJsonPath('data.test_price', '1500.00');
 
         $this->assertDatabaseHas('laboratory_test_template_fields', [
             'field_label'     => 'Hemoglobin',
             'field_key'       => 'hemoglobin',
             'reference_range' => '13.0–17.0',
+        ]);
+
+        $this->assertDatabaseHas('laboratory_test_templates', [
+            'test_name'  => 'CBC',
+            'test_price' => 1500,
         ]);
     }
 
@@ -190,13 +197,16 @@ class LaboratoryTest extends TestCase
         $visit = $this->createVisit();
         $template = $this->createTemplate();
 
-        $create = $this->actingAs($technician)->postJson('/api/laboratory-results', $this->resultPayload($visit, $template));
+        $create = $this->actingAs($technician)->postJson('/api/laboratory-results', array_merge($this->resultPayload($visit, $template), [
+            'test_price' => 1750,
+        ]));
         $resultId = $create->json('data.id');
 
         $this->actingAs($technician)->getJson("/api/laboratory-results/{$resultId}/print-data")
             ->assertOk()
             ->assertJsonPath('print_data.patient.id', $visit->patient_id)
             ->assertJsonPath('print_data.laboratory_results.0.test_name', 'CBC')
+            ->assertJsonPath('print_data.laboratory_results.0.test_price', '1750.00')
             ->assertJsonPath('print_data.laboratory_results.0.values.0.reference_range', '13.0–17.0')
             ->assertJsonPath('print_data.laboratory_results.0.values.0.unit', 'g/dL');
     }

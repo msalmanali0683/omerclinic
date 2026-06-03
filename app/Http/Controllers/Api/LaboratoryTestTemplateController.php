@@ -91,6 +91,7 @@ class LaboratoryTestTemplateController extends Controller
                 'label'     => $template->test_name,
                 'value'     => $template->id,
                 'test_code' => $template->test_code,
+                'test_price' => $template->test_price,
             ]);
 
         return response()->json(['data' => $items]);

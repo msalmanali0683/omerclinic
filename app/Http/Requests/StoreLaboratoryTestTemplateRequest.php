@@ -16,6 +16,7 @@ class StoreLaboratoryTestTemplateRequest extends FormRequest
         return [
             'test_name'                => 'required|string|max:255|unique:laboratory_test_templates,test_name',
             'test_code'                => 'nullable|string|max:100|unique:laboratory_test_templates,test_code',
+            'test_price'               => 'nullable|numeric|min:0|max:99999999.99',
             'description'              => 'nullable|string|max:2000',
             'is_active'                => 'boolean',
             'fields'                   => 'required|array|min:1',

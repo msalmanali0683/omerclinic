@@ -25,6 +25,7 @@ class StoreLaboratoryResultRequest extends FormRequest
             'result_time'                              => 'nullable',
             'status'                                   => 'nullable|string|in:draft,completed,verified,cancelled',
             'remarks'                                  => 'nullable|string|max:3000',
+            'test_price'                               => 'nullable|numeric|min:0|max:99999999.99',
             'values'                                   => 'required|array',
             'values.*.laboratory_test_template_field_id' => 'required|integer|exists:laboratory_test_template_fields,id',
             'values.*.field_value'                     => 'nullable|string|max:10000',

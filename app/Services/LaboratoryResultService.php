@@ -17,12 +17,17 @@ class LaboratoryResultService
         return DB::transaction(function () use ($data, $user) {
             $template = LaboratoryTestTemplate::with('fields')->findOrFail($data['laboratory_test_template_id']);
 
+            $testPrice = array_key_exists('test_price', $data)
+                ? $data['test_price']
+                : $template->test_price;
+
             $result = LaboratoryResult::create([
                 'patient_id'                  => $data['patient_id'],
                 'patient_visit_id'            => $data['patient_visit_id'],
                 'laboratory_test_template_id' => $template->id,
                 'test_name'                   => $template->test_name,
                 'test_code'                   => $template->test_code,
+                'test_price'                  => $testPrice,
                 'lab_operator_id'             => $user->id,
                 'result_date'                 => $data['result_date'] ?? now()->toDateString(),
                 'result_time'                 => $data['result_time'] ?? now()->format('H:i:s'),
@@ -48,6 +53,7 @@ class LaboratoryResultService
             $result->update([
                 'status'     => $data['status'] ?? $result->status,
                 'remarks'    => $data['remarks'] ?? null,
+                'test_price' => array_key_exists('test_price', $data) ? $data['test_price'] : $result->test_price,
                 'updated_by' => $user->id,
             ]);
 

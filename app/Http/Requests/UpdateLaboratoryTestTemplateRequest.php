@@ -29,6 +29,7 @@ class UpdateLaboratoryTestTemplateRequest extends FormRequest
                 'nullable', 'string', 'max:100',
                 Rule::unique('laboratory_test_templates', 'test_code')->ignore($template->id),
             ],
+            'test_price'               => 'nullable|numeric|min:0|max:99999999.99',
             'description'              => 'nullable|string|max:2000',
             'is_active'                => 'boolean',
             'fields'                   => 'required|array|min:1',

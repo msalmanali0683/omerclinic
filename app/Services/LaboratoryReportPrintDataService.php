@@ -90,6 +90,7 @@ class LaboratoryReportPrintDataService
             'id'          => $result->id,
             'test_name'   => $result->test_name,
             'test_code'   => $result->test_code,
+            'test_price'  => $result->test_price,
             'status'      => $result->status,
             'result_date' => $result->result_date?->format('Y-m-d'),
             'result_time' => $result->result_time,

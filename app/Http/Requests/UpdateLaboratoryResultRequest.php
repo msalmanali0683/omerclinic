@@ -25,6 +25,7 @@ class UpdateLaboratoryResultRequest extends FormRequest
         return [
             'status'                                   => 'nullable|string|in:draft,completed,verified,cancelled',
             'remarks'                                  => 'nullable|string|max:3000',
+            'test_price'                               => 'nullable|numeric|min:0|max:99999999.99',
             'values'                                   => 'required|array',
             'values.*.id'                              => 'nullable|integer|exists:laboratory_result_values,id',
             'values.*.laboratory_test_template_field_id' => 'nullable|integer|exists:laboratory_test_template_fields,id',

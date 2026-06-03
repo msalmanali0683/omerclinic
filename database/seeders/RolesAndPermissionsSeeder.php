@@ -188,6 +188,9 @@ class RolesAndPermissionsSeeder extends Seeder
             'view patient reports',
             'export patient reports pdf',
             'print patient reports',
+            'view laboratory reports',
+            'export laboratory reports pdf',
+            'print laboratory reports',
 
             // System
             'view dashboard',
@@ -278,6 +281,7 @@ class RolesAndPermissionsSeeder extends Seeder
                 'print patient tokens',
                 'reprint patient tokens',
                 'view patient reports',
+                'view laboratory reports',
             ],
 
             'scan-operator' => [
@@ -352,6 +356,8 @@ class RolesAndPermissionsSeeder extends Seeder
                 'reprint patient tokens',
                 'view patient reports',
                 'print patient reports',
+                'view laboratory reports',
+                'print laboratory reports',
             ],
 
             'data-entry-operator' => [
@@ -374,6 +380,7 @@ class RolesAndPermissionsSeeder extends Seeder
                 'print patient tokens',
                 'reprint patient tokens',
                 'view patient reports',
+                'view laboratory reports',
             ],
 
             'lab-technician' => [
@@ -394,6 +401,8 @@ class RolesAndPermissionsSeeder extends Seeder
                 'print laboratory results',
                 'search patients for laboratory',
                 'select patient for laboratory',
+                'view laboratory reports',
+                'print laboratory reports',
             ],
 
             'lab-operator' => [
@@ -407,6 +416,8 @@ class RolesAndPermissionsSeeder extends Seeder
                 'print laboratory results',
                 'search patients for laboratory',
                 'select patient for laboratory',
+                'view laboratory reports',
+                'print laboratory reports',
             ],
 
             'lab-manager' => [
@@ -417,6 +428,9 @@ class RolesAndPermissionsSeeder extends Seeder
                 'approve lab report',
                 'print lab report',
                 'view reports',
+                'view laboratory reports',
+                'print laboratory reports',
+                'export laboratory reports pdf',
             ],
 
             'pharmacist' => [

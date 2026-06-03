@@ -18,6 +18,7 @@ class LaboratorySeeder extends Seeder
                 ['test_name' => $templateData['test_name']],
                 [
                     'test_code' => $templateData['test_code'] ?? null,
+                    'test_price' => $templateData['test_price'] ?? 0,
                     'description' => $templateData['description'] ?? null,
                     'is_active' => true,
                 ]

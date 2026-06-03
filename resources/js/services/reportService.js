@@ -7,4 +7,10 @@ export const reportService = {
         params,
         responseType: 'blob',
     }),
+    getLaboratoryReport: (params) => api.get('/reports/laboratory', { params }),
+    getLaboratoryReportPrintData: (params) => api.get('/reports/laboratory/print-data', { params }),
+    exportLaboratoryReportPdf: (params) => api.get('/reports/laboratory/pdf', {
+        params,
+        responseType: 'blob',
+    }),
 };

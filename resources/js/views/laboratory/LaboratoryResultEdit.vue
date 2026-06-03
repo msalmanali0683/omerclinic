@@ -23,6 +23,16 @@
       </div>
 
       <form class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5 shadow-sm space-y-5" @submit.prevent="submit('completed')">
+        <BaseInput
+          v-model="form.test_price"
+          type="number"
+          min="0"
+          step="0.01"
+          label="Test Price"
+          placeholder="Enter test price"
+          :error="errors.test_price"
+        />
+
         <LaboratoryDynamicFields v-model="resultValues" :error="errors.values" />
 
         <div>
@@ -76,6 +86,7 @@ const saving = ref(false);
 const savingStatus = ref('');
 
 const form = reactive({
+  test_price: '',
   remarks: '',
 });
 
@@ -87,6 +98,7 @@ async function submit(status) {
   try {
     const payload = {
       status,
+      test_price: form.test_price === '' ? null : Number(form.test_price),
       remarks: form.remarks?.trim() || null,
       values: serializeResultValues(resultValues.value),
     };
@@ -113,6 +125,7 @@ onMounted(async () => {
     const row = data.data ?? data;
     result.value = row;
     form.remarks = row.remarks || '';
+    form.test_price = row.test_price !== null && row.test_price !== undefined ? String(row.test_price) : '';
 
     let templateFields = row.template?.fields ?? [];
 

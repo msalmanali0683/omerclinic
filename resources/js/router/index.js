@@ -265,6 +265,12 @@ const routes = [
         meta: { requiresAuth: true, layout: 'dashboard', permission: 'view patient reports', title: 'Patient Report' },
     },
     {
+        path: '/reports/laboratory',
+        name: 'reports.laboratory',
+        component: () => import('@/views/reports/LaboratoryReport.vue'),
+        meta: { requiresAuth: true, layout: 'dashboard', permission: 'view laboratory reports', title: 'Laboratory Report' },
+    },
+    {
         path: '/profile',
         name: 'profile',
         component: () => import('@/views/profile/Profile.vue'),

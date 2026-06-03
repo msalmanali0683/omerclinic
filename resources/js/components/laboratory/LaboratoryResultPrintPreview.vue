@@ -35,7 +35,12 @@
       :class="{ 'large-block': isLargeBlock(result) }"
     >
       <div class="lab-test-name">{{ testBlockTitle(result) }}</div>
-      <div class="lab-test-meta">Date/Time: {{ resultDateTimeLabel(result) }}</div>
+      <div class="lab-test-meta">
+        Date/Time: {{ resultDateTimeLabel(result) }}
+        <span v-if="result.test_price !== null && result.test_price !== undefined">
+          · Price: {{ formatCurrency(result.test_price) }}
+        </span>
+      </div>
 
       <table class="lab-result-values-table">
         <thead>
@@ -65,7 +70,7 @@
 
 <script setup>
 import { computed } from 'vue';
-import { formatDate } from '@/utils/formatters';
+import { formatDate, formatCurrency } from '@/utils/formatters';
 import { normalizePrintPatient, PRINT_NA } from '@/utils/printDataNormalizers';
 
 const props = defineProps({

@@ -103,6 +103,17 @@
           @update:model-value="onTemplateChange"
         />
 
+        <BaseInput
+          v-if="form.laboratory_test_template_id"
+          v-model="form.test_price"
+          type="number"
+          min="0"
+          step="0.01"
+          label="Test Price"
+          placeholder="Enter test price"
+          :error="errors.test_price"
+        />
+
         <div v-if="templateLoading" class="h-32 bg-gray-100 dark:bg-gray-700 rounded-lg animate-pulse" />
 
         <template v-else-if="resultValues.length">
@@ -164,6 +175,7 @@ const resultValues = ref([]);
 
 const form = reactive({
   laboratory_test_template_id: '',
+  test_price: '',
   remarks: '',
 });
 
@@ -189,6 +201,7 @@ function selectVisit(item) {
   selectedPatient.value = item.patient;
   selectedVisit.value = item.visit;
   form.laboratory_test_template_id = '';
+  form.test_price = '';
   resultValues.value = [];
 }
 
@@ -204,13 +217,22 @@ async function loadTemplateOptions() {
 async function onTemplateChange(templateId) {
   if (!templateId) {
     resultValues.value = [];
+    form.test_price = '';
     return;
+  }
+
+  const selectedOption = templateOptions.value.find((option) => String(option.value) === String(templateId));
+  if (selectedOption?.test_price !== undefined && selectedOption?.test_price !== null) {
+    form.test_price = String(selectedOption.test_price);
   }
 
   templateLoading.value = true;
   try {
     const { data } = await laboratoryTestTemplateService.getTemplate(templateId);
     const template = data.data ?? data;
+    if (template.test_price !== undefined && template.test_price !== null) {
+      form.test_price = String(template.test_price);
+    }
     resultValues.value = buildResultValuesFromTemplate(template.fields ?? []);
   } catch (e) {
     toastStore.error(e.response?.data?.message ?? 'Failed to load template fields.');
@@ -240,6 +262,7 @@ async function submit(status) {
       patient_id: selectedPatient.value.id,
       patient_visit_id: selectedVisit.value.id,
       laboratory_test_template_id: Number(form.laboratory_test_template_id),
+      test_price: form.test_price === '' ? 0 : Number(form.test_price),
       status,
       remarks: form.remarks?.trim() || null,
       values: serializeResultValues(resultValues.value),

@@ -55,20 +55,23 @@
     </div>
 
     <footer class="lab-bill-footer">
-      Laboratory test bill — results pending until entered and verified.
+      <p v-for="(line, index) in footerLines" :key="index">{{ line }}</p>
     </footer>
   </div>
 </template>
 
 <script setup>
-import { onMounted } from 'vue';
+import { computed, onMounted } from 'vue';
 import { formatCurrency } from '@/utils/formatters';
 import { ensureBillPreviewStyles } from '@/utils/laboratoryBillPrintStyles';
+import { resolveLabReportFooterLines } from '@/constants/hospitalBrand';
 
-defineProps({
+const props = defineProps({
   printData: { type: Object, required: true },
   printAreaId: { type: String, default: 'laboratory-test-bill-print-area' },
 });
+
+const footerLines = computed(() => resolveLabReportFooterLines(props.printData));
 
 onMounted(() => {
   ensureBillPreviewStyles();

@@ -19,6 +19,8 @@
         .lab-report-table th { background: #f2f2f2; font-weight: bold; }
         .patient-total { text-align: right; font-weight: bold; margin-bottom: 4px; }
         .grand-total { text-align: right; font-size: 12px; font-weight: bold; border-top: 2px solid #000; padding-top: 4px; margin-top: 8px; }
+        .report-footer { margin-top: 14px; padding-top: 8px; border-top: 1px solid #ccc; text-align: center; font-size: 9px; color: #444; }
+        .report-footer p { margin: 2px 0; }
     </style>
 </head>
 <body>
@@ -84,6 +86,12 @@
 
     <div class="grand-total">
         Grand Total: {{ number_format((float) ($printData['grand_total'] ?? 0), 2) }}
+    </div>
+
+    <div class="report-footer">
+        @foreach(config('hospital.lab_report_footer', []) as $line)
+            <p>{{ $line }}</p>
+        @endforeach
     </div>
 </body>
 </html>

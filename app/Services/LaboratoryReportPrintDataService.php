@@ -20,9 +20,10 @@ class LaboratoryReportPrintDataService
         ]);
 
         return [
-            'hospital_name'      => config('app.name'),
-            'title'              => 'Laboratory Test Report',
-            'generated_at'       => now()->format('Y-m-d H:i'),
+            'hospital_name'        => config('hospital.name'),
+            'report_footer_lines'  => config('hospital.lab_report_footer'),
+            'title'                => 'Laboratory Test Report',
+            'generated_at'         => now()->format('Y-m-d H:i'),
             'patient'            => $result->patient
                 ? (new PatientResource($result->patient))->resolve()
                 : null,
@@ -42,9 +43,10 @@ class LaboratoryReportPrintDataService
         $results = $this->fetchPrintableResults($visit);
 
         return [
-            'hospital_name'      => config('app.name'),
-            'title'              => 'Laboratory Test Report',
-            'generated_at'       => now()->format('Y-m-d H:i'),
+            'hospital_name'        => config('hospital.name'),
+            'report_footer_lines'  => config('hospital.lab_report_footer'),
+            'title'                => 'Laboratory Test Report',
+            'generated_at'         => now()->format('Y-m-d H:i'),
             'patient'            => $visit->patient
                 ? (new PatientResource($visit->patient))->resolve()
                 : null,

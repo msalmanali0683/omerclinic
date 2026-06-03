@@ -68,12 +68,17 @@
     <div class="grand-total-row">
       <strong>Grand Total:</strong> {{ formatCurrency(printData.grand_total ?? summary.grand_total_price) }}
     </div>
+
+    <footer class="lab-billing-report-footer">
+      <p v-for="(line, index) in footerLines" :key="index">{{ line }}</p>
+    </footer>
   </div>
 </template>
 
 <script setup>
 import { computed } from 'vue';
 import { formatCurrency } from '@/utils/formatters';
+import { resolveLabReportFooterLines } from '@/constants/hospitalBrand';
 
 const props = defineProps({
   printData: { type: Object, required: true },
@@ -86,6 +91,8 @@ const patientGroups = computed(() => props.printData?.patient_groups ?? []);
 const filterEntries = computed(() =>
   Object.entries(props.printData?.filters ?? {}).map(([label, value]) => ({ label, value }))
 );
+
+const footerLines = computed(() => resolveLabReportFooterLines(props.printData));
 </script>
 
 <style scoped>
@@ -195,5 +202,18 @@ const filterEntries = computed(() =>
   border-top: 2px solid #000;
   padding-top: 4px;
   margin-top: 6px;
+}
+
+.lab-billing-report-footer {
+  margin-top: 14px;
+  padding-top: 8px;
+  border-top: 1px solid #cbd5e0;
+  text-align: center;
+  font-size: 9px;
+  color: #4a5568;
+}
+
+.lab-billing-report-footer p {
+  margin: 2px 0;
 }
 </style>

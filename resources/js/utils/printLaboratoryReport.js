@@ -90,6 +90,19 @@ const LABORATORY_BILLING_REPORT_EXTRA_STYLES = `
             margin-top: 6px;
         }
 
+        .lab-billing-report-footer {
+            margin-top: 14px;
+            padding-top: 8px;
+            border-top: 1px solid #cbd5e0;
+            text-align: center;
+            font-size: 9pt;
+            color: #4a5568;
+        }
+
+        .lab-billing-report-footer p {
+            margin: 2px 0;
+        }
+
         .laboratory-billing-report-print-area {
             width: 100%;
             background: #fff;

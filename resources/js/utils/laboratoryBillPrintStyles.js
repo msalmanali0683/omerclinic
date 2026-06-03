@@ -160,6 +160,10 @@ export function buildLaboratoryBillPrintStyles() {
             font-size: 8.5pt;
             color: #718096;
         }
+
+        .lab-bill-footer p {
+            margin: 2px 0;
+        }
     `;
 }
 

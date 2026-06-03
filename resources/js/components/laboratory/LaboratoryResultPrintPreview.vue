@@ -94,7 +94,7 @@
           <span class="lab-signature-line" />
         </div>
       </div>
-      <p class="lab-print-note">This is a computer-generated laboratory report.</p>
+      <p v-for="(line, index) in footerLines" :key="index" class="lab-print-note">{{ line }}</p>
     </footer>
   </div>
 </template>
@@ -103,6 +103,7 @@
 import { computed, onMounted } from 'vue';
 import { formatDate } from '@/utils/formatters';
 import { normalizePrintPatient, PRINT_NA } from '@/utils/printDataNormalizers';
+import { resolveHospitalName, resolveLabReportFooterLines } from '@/constants/hospitalBrand';
 import { ensureClinicalReportPreviewStyles } from '@/utils/laboratoryClinicalReportPrintStyles';
 
 const props = defineProps({
@@ -114,7 +115,8 @@ onMounted(() => {
   ensureClinicalReportPreviewStyles();
 });
 
-const hospitalName = computed(() => props.printData?.hospital_name || 'Hospital');
+const hospitalName = computed(() => resolveHospitalName(props.printData));
+const footerLines = computed(() => resolveLabReportFooterLines(props.printData));
 const patient = computed(() => normalizePrintPatient(props.printData?.patient));
 const visit = computed(() => props.printData?.visit ?? null);
 

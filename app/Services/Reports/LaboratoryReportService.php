@@ -46,7 +46,8 @@ class LaboratoryReportService
 
         return [
             'title'          => 'Laboratory Report',
-            'hospital_name'  => config('app.name'),
+            'hospital_name'       => config('hospital.name'),
+            'report_footer_lines' => config('hospital.lab_report_footer'),
             'generated_at'   => now()->format('Y-m-d H:i:s'),
             'generated_by'   => $user->name,
             'filters'        => $this->describeFilters($filters),

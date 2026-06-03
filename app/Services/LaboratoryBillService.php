@@ -100,7 +100,8 @@ class LaboratoryBillService
 
         return [
             'title'         => 'Laboratory Test Bill',
-            'hospital_name' => config('app.name'),
+            'hospital_name'       => config('hospital.name'),
+            'report_footer_lines' => config('hospital.lab_report_footer'),
             'bill'          => [
                 'bill_no'    => $bill->bill_no,
                 'status'     => $bill->status,

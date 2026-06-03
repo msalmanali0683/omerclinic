@@ -1,0 +1,20 @@
+@font-face {
+    font-family: "Jameel Noori Nastaleeq Kasheeda";
+    src: local("Jameel Noori Nastaleeq Kasheeda"),
+         local("Jameel Noori Nastaliq Kasheeda"),
+         local("JameelNooriNastaleeqKasheeda"),
+         url("/fonts/JameelNooriNastaleeqKasheeda.woff2") format("woff2"),
+         url("/fonts/JameelNooriNastaleeqKasheeda.ttf") format("truetype"),
+         url("https://cdn.jsdelivr.net/npm/jameel-noori-nastaliq-kasheeda@1.1.0/fonts/JameelNooriNastaliqKasheeda3.woff2") format("woff2");
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+    unicode-range: U+0600-06FF, U+0750-077F, U+FB50-FDFF, U+FE70-FEFF;
+}
+
+.visit-print-preview,
+.prescription-slip,
+.prescription-container {
+    font-variant-ligatures: normal;
+    font-feature-settings: normal;
+}

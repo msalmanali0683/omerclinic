@@ -98,7 +98,7 @@ export const sidebarMenu = [
                 label: 'Doctor Queue',
                 to: '/doctor-queue',
                 routeName: 'queue.doctor',
-                permissions: ['view patient queue', 'start consultation', 'create prescription'],
+                permissions: ['start consultation', 'create prescription'],
                 permissionMode: 'any',
             },
         ],

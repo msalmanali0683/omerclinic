@@ -100,7 +100,7 @@ const routes = [
         path: '/doctor-queue',
         name: 'queue.doctor',
         component: () => import('@/views/queue/DoctorQueue.vue'),
-        meta: { requiresAuth: true, layout: 'dashboard', permissions: ['view patient queue', 'start consultation', 'create prescription'], permissionMode: 'any', title: 'Doctor Queue' },
+        meta: { requiresAuth: true, layout: 'dashboard', permissions: ['start consultation', 'create prescription'], permissionMode: 'any', title: 'Doctor Queue' },
     },
     {
         path: '/queue/:id',

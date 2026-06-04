@@ -238,6 +238,35 @@ class PrescriptionReprescribeTest extends TestCase
             ->assertJsonStructure(['print_data']);
     }
 
+    public function test_updating_prescription_after_return_to_pending_marks_visit_prescribed(): void
+    {
+        $receptionist = $this->makeUser('receptionist');
+        $doctor = $this->makeUser('doctor');
+        $prescription = $this->createPrescriptionForVisit($doctor);
+        $visit = $prescription->visit;
+        $item = $prescription->medicineItems()->first();
+
+        $this->actingAs($receptionist)->patchJson(
+            "/api/patient-queue/{$visit->id}/return-to-pending-prescription"
+        )->assertOk();
+
+        $visit->refresh();
+        $this->assertSame(PatientVisit::STATUS_PENDING, $visit->status);
+
+        $this->actingAs($doctor)->patchJson("/api/prescriptions/{$prescription->id}", [
+            'medicines' => [[
+                'id'        => $item->id,
+                'mdcn_name' => 'Revised After Return',
+            ]],
+        ])->assertOk()
+            ->assertJsonPath('data.visit.status', PatientVisit::STATUS_PRESCRIBED);
+
+        $this->assertDatabaseHas('patient_visits', [
+            'id'     => $visit->id,
+            'status' => PatientVisit::STATUS_PRESCRIBED,
+        ]);
+    }
+
     public function test_print_data_after_update_shows_updated_medicines(): void
     {
         $doctor = $this->makeUser('doctor');

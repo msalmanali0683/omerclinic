@@ -94,6 +94,16 @@ class PrescriptionService
 
             $this->syncMedicines($prescription, $data['medicines'], $user, replaceAll: true);
 
+            $visit = $prescription->visit;
+
+            if ($visit && in_array($visit->status, PatientVisit::ACTIVE_STATUSES, true)) {
+                $visit->update([
+                    'status'     => PatientVisit::STATUS_PRESCRIBED,
+                    'doctor_id'  => $visit->doctor_id ?? $user->id,
+                    'updated_by' => $user->id,
+                ]);
+            }
+
             return $prescription->fresh(['medicineItems.doseTime', 'medicineItems.doseFromMeal', 'medicineItems.medicine', 'patient', 'doctor', 'visit']);
         });
     }

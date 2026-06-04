@@ -32,13 +32,30 @@ api.interceptors.response.use(
 
         if (status === 401) {
             const url = config?.url ?? '';
-            if (!url.includes('/me') && !url.includes('/login')) {
-                const { useAuthStore } = await import('@/stores/auth');
-                const authStore = useAuthStore();
-                authStore.clearUser();
-                if (!window.location.pathname.startsWith('/login')) {
-                    window.location.href = '/login';
+
+            if (url.includes('/me') || url.includes('/login') || url.includes('/logout')) {
+                return Promise.reject(error);
+            }
+
+            if (config && !config._authRetried) {
+                config._authRetried = true;
+                try {
+                    await refreshCsrfCookie();
+                    applyCsrfHeaders(config);
+                    return api(config);
+                } catch (retryError) {
+                    if (retryError.response?.status !== 401) {
+                        return Promise.reject(retryError);
+                    }
                 }
+            }
+
+            const { useAuthStore } = await import('@/stores/auth');
+            const authStore = useAuthStore();
+            const alive = await authStore.confirmSessionAlive();
+
+            if (!alive && !window.location.pathname.startsWith('/login')) {
+                window.location.href = '/login';
             }
         }
 

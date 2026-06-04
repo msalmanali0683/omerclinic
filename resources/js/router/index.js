@@ -313,8 +313,6 @@ router.beforeEach(async (to) => {
 
     if (!authStore.initialized) {
         await authStore.fetchUser();
-    } else if (authStore.isAuthenticated && to.meta.requiresAuth) {
-        await authStore.refreshUser();
     }
 
     if (to.name === 'home') {

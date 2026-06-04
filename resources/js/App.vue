@@ -20,8 +20,10 @@ const authStore = useAuthStore();
 const themeStore = useThemeStore();
 
 function resolveLayout(route) {
-  if (route.meta.layout === 'dashboard' && authStore.isAuthenticated) {
-    return DashboardLayout;
+  if (route.meta.layout === 'dashboard') {
+    if (!authStore.initialized || authStore.isAuthenticated) {
+      return DashboardLayout;
+    }
   }
   return AuthLayout;
 }

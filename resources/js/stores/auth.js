@@ -11,6 +11,8 @@ function applyAuthPayload(state, data) {
     state.permissions = state.user?.permissions ?? [];
 }
 
+let fetchUserPromise = null;
+
 export const useAuthStore = defineStore('auth', {
     state: () => ({
         user: null,
@@ -28,14 +30,34 @@ export const useAuthStore = defineStore('auth', {
 
     actions: {
         async fetchUser() {
+            if (fetchUserPromise) {
+                return fetchUserPromise;
+            }
+
+            fetchUserPromise = this._loadUserFromSession();
+            try {
+                return await fetchUserPromise;
+            } finally {
+                fetchUserPromise = null;
+            }
+        },
+
+        async _loadUserFromSession() {
             this.loading = true;
+
             try {
                 const { data } = await authService.me();
                 applyAuthPayload(this, data);
             } catch {
-                this.user = null;
-                this.roles = [];
-                this.permissions = [];
+                try {
+                    await authService.csrf();
+                    const { data } = await authService.me();
+                    applyAuthPayload(this, data);
+                } catch {
+                    this.user = null;
+                    this.roles = [];
+                    this.permissions = [];
+                }
             } finally {
                 this.loading = false;
                 this.initialized = true;
@@ -51,9 +73,21 @@ export const useAuthStore = defineStore('auth', {
                 const { data } = await authService.me();
                 applyAuthPayload(this, data);
             } catch {
-                this.user = null;
-                this.roles = [];
-                this.permissions = [];
+                // Keep the current session on transient failures (do not force logout).
+            }
+        },
+
+        /** Returns true when /api/me succeeds (session still valid). */
+        async confirmSessionAlive() {
+            try {
+                const { data } = await authService.me();
+                applyAuthPayload(this, data);
+
+                return true;
+            } catch {
+                this.clearUser();
+
+                return false;
             }
         },
 

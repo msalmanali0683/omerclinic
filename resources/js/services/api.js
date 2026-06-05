@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { applyCsrfHeaders, refreshCsrfCookie } from '@/utils/csrf';
+import { capitalizePayload } from '@/utils/textCase';
 
 const api = axios.create({
     baseURL: '/api',
@@ -11,7 +12,21 @@ const api = axios.create({
     },
 });
 
-api.interceptors.request.use((config) => applyCsrfHeaders(config));
+api.interceptors.request.use((config) => {
+    applyCsrfHeaders(config);
+
+    const method = config.method?.toLowerCase();
+
+    if (['post', 'put', 'patch'].includes(method) && config.data && typeof config.data === 'object' && !(config.data instanceof FormData)) {
+        const url = config.url ?? '';
+
+        if (!url.includes('/roles') && !url.includes('/permissions')) {
+            config.data = capitalizePayload(config.data);
+        }
+    }
+
+    return config;
+});
 
 api.interceptors.response.use(
     (response) => response,

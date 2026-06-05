@@ -60,8 +60,13 @@ export function partitionScanValues(values = []) {
 }
 
 export function withScanValueLayout(scans = []) {
-    return scans.map((scan) => ({
-        ...scan,
-        ...partitionScanValues(scan.values ?? []),
-    }));
+    return scans.map((scan) => {
+        const printableValues = (scan.values ?? []).filter((value) => !isEmptyScanFieldValue(value));
+
+        return {
+            ...scan,
+            values: printableValues,
+            ...partitionScanValues(printableValues),
+        };
+    });
 }

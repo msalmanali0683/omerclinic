@@ -34,7 +34,10 @@
         </div>
       </template>
       <template #cell-permissions_count="{ row }">
-        {{ row.permissions?.length ?? 0 }}
+        <span :title="`${row.direct_permissions?.length ?? 0} direct, ${row.inherited_permissions?.length ?? 0} from roles`">
+          {{ row.permissions?.length ?? 0 }}
+          <span class="text-xs text-gray-400">({{ row.direct_permissions?.length ?? 0 }} direct)</span>
+        </span>
       </template>
       <template #cell-created_at="{ row }">
         {{ formatDate(row.created_at) }}
@@ -78,11 +81,35 @@
     </BaseModal>
 
     <!-- Assign Permissions Modal -->
-    <BaseModal v-model="permsModal.open" title="Assign Permissions" size="xl">
-      <PermissionPicker v-model="permsModal.selected" :permissions="allPermissions" />
+    <BaseModal v-model="permsModal.open" title="Direct Permissions" size="xl">
+      <div v-if="permsModal.loading" class="h-40 bg-gray-100 dark:bg-gray-700 rounded-lg animate-pulse" />
+      <template v-else>
+        <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">
+          Assign extra permissions for <strong>{{ permsModal.user?.name }}</strong>.
+          Permissions inherited from roles cannot be removed here.
+        </p>
+
+        <div
+          v-if="inheritedPermissions.length"
+          class="mb-4 rounded-lg border border-amber-200 dark:border-amber-900/40 bg-amber-50 dark:bg-amber-900/10 p-3"
+        >
+          <p class="text-xs font-semibold text-amber-800 dark:text-amber-300 mb-2">Inherited from roles</p>
+          <div class="flex flex-wrap gap-1">
+            <span
+              v-for="perm in inheritedPermissions"
+              :key="perm"
+              class="px-2 py-0.5 rounded-full text-xs bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-300"
+            >
+              {{ perm }}
+            </span>
+          </div>
+        </div>
+
+        <PermissionPicker v-model="permsModal.selected" :permissions="allPermissions" />
+      </template>
       <template #footer>
         <BaseButton variant="secondary" @click="permsModal.open = false">Cancel</BaseButton>
-        <BaseButton :loading="permsModal.saving" @click="savePermissions">Save Permissions</BaseButton>
+        <BaseButton :loading="permsModal.saving" :disabled="permsModal.loading" @click="savePermissions">Save Permissions</BaseButton>
       </template>
     </BaseModal>
 
@@ -100,7 +127,7 @@
 </template>
 
 <script setup>
-import { onMounted, reactive, ref } from 'vue';
+import { computed, onMounted, reactive, ref } from 'vue';
 import { useAuthStore } from '@/stores/auth';
 import { useToastStore } from '@/stores/toast';
 import { userService } from '@/services/userService';
@@ -136,7 +163,9 @@ const filters = reactive({ search: '', role: '' });
 const pagination = reactive({ current_page: 1, last_page: 1 });
 
 const rolesModal = reactive({ open: false, user: null, selected: [], saving: false });
-const permsModal = reactive({ open: false, user: null, selected: [], saving: false });
+const permsModal = reactive({ open: false, user: null, selected: [], saving: false, loading: false });
+
+const inheritedPermissions = computed(() => permsModal.user?.inherited_permissions ?? []);
 const deleteModal = reactive({ open: false, user: null, deleting: false });
 
 async function fetchUsers(page = 1) {
@@ -189,21 +218,45 @@ async function saveRoles() {
   }
 }
 
-function openPermissionsModal(user) {
-  permsModal.user = user;
-  permsModal.selected = [...(user.permissions ?? [])];
+async function openPermissionsModal(user) {
   permsModal.open = true;
+  permsModal.loading = true;
+  permsModal.user = user;
+  permsModal.selected = [];
+
+  try {
+    const { data } = await userService.get(user.id);
+    const fresh = data.data ?? data;
+    permsModal.user = fresh;
+    permsModal.selected = [...(fresh.direct_permissions ?? [])];
+  } catch (e) {
+    toastStore.error(e.response?.data?.message ?? 'Failed to load user permissions.');
+    permsModal.open = false;
+  } finally {
+    permsModal.loading = false;
+  }
 }
 
 async function savePermissions() {
+  if (!permsModal.user?.id) {
+    return;
+  }
+
   permsModal.saving = true;
   try {
-    await userService.syncPermissions(permsModal.user.id, permsModal.selected);
-    toastStore.success('Permissions updated successfully.');
+    const { data } = await userService.syncPermissions(permsModal.user.id, permsModal.selected);
+    const updated = data.user ?? data.data ?? null;
+
+    if (updated && String(updated.id) === String(authStore.user?.id)) {
+      await authStore.refreshUser();
+    }
+
+    toastStore.success(data.message ?? 'Direct permissions updated successfully.');
     permsModal.open = false;
-    fetchUsers(pagination.current_page);
+    await fetchUsers(pagination.current_page);
   } catch (e) {
-    toastStore.error(e.response?.data?.message ?? 'Failed to update permissions.');
+    const validation = e.response?.data?.errors?.permissions?.[0];
+    toastStore.error(validation ?? e.response?.data?.message ?? 'Failed to update permissions.');
   } finally {
     permsModal.saving = false;
   }

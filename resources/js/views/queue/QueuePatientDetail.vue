@@ -216,6 +216,7 @@ import { createPrescriptionMedicineRow, mapPrescriptionMedicineToRow, serializeP
 import { diagnosisMedicineTemplateService } from '@/services/diagnosisMedicineTemplateService';
 import { medicineDoseTimeService } from '@/services/medicineDoseTimeService';
 import { medicineDoseFromMealService } from '@/services/medicineDoseFromMealService';
+import { useAutoRefresh } from '@/composables/useAutoRefresh';
 import ComplaintSelector from '@/components/complaints/ComplaintSelector.vue';
 import VisitComplaintsTable from '@/components/complaints/VisitComplaintsTable.vue';
 import DiagnosisSelector from '@/components/diagnosis/DiagnosisSelector.vue';
@@ -494,6 +495,21 @@ async function loadPrescriptionOptions() {
   }
 }
 
+async function refreshClinicalScanHistory() {
+  if (!visit.value?.patient_id || !canViewClinicalScans.value) {
+    return;
+  }
+
+  try {
+    const { data } = await clinicalScanService.getClinicalScanHistory(visit.value.patient_id, {
+      current_visit_id: visit.value.id,
+    });
+    clinicalScanHistory.value = data;
+  } catch {
+    // Ignore background refresh errors.
+  }
+}
+
 async function load() {
   loading.value = true;
   try {
@@ -742,4 +758,6 @@ onMounted(async () => {
     } catch { /* optional */ }
   }
 });
+
+useAutoRefresh(() => refreshClinicalScanHistory(), 10000);
 </script>

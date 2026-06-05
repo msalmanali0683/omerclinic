@@ -23,7 +23,10 @@
       </div>
 
       <form class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5 shadow-sm space-y-5" @submit.prevent="submit('completed')">
-        <ClinicalScanDynamicFields v-model="scanValues" :error="errors.values" />
+        <div class="rounded-xl border border-teal-100 dark:border-teal-900/30 bg-teal-50/40 dark:bg-teal-900/10 p-4">
+          <h4 class="text-sm font-semibold text-teal-800 dark:text-teal-300 mb-3">Scan Findings</h4>
+          <ClinicalScanDynamicFields v-model="scanValues" :error="errors.values" />
+        </div>
 
         <div>
           <label class="block text-sm font-medium mb-1">Notes</label>

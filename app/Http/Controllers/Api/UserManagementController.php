@@ -178,20 +178,25 @@ class UserManagementController extends Controller
      */
     public function syncPermissions(Request $request, User $user)
     {
-        if (! $request->user()->can('assign permissions')) {
-            return response()->json(['message' => 'Unauthorized.'], 403);
+        $this->authorize('assignPermissions', $user);
+
+        if ($user->hasRole('super-admin') && ! $request->user()->hasRole('super-admin')) {
+            return response()->json(['message' => 'You cannot edit super-admin permissions.'], 403);
         }
 
-        $request->validate([
-            'permissions'   => 'required|array',
+        $validated = $request->validate([
+            'permissions'   => 'present|array',
             'permissions.*' => 'string|exists:permissions,name',
         ]);
 
-        $user->syncPermissions($request->permissions);
+        $user->syncPermissions($validated['permissions']);
         $this->clearPermissionCache();
 
+        $user->unsetRelation('roles');
+        $user->unsetRelation('permissions');
+
         return response()->json([
-            'message' => 'Permissions updated successfully.',
+            'message' => 'Direct permissions updated successfully.',
             'user'    => new UserResource($user->fresh(['roles', 'permissions'])),
         ]);
     }

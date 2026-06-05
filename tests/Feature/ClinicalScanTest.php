@@ -198,7 +198,65 @@ class ClinicalScanTest extends TestCase
         ]);
 
         $response->assertOk()
-            ->assertJsonStructure(['data' => [['patient', 'visit', 'has_prescription']]]);
+            ->assertJsonStructure(['data' => [['patient', 'visit', 'has_prescription', 'has_completed_scan_on_visit', 'completed_scans_count']]]);
+    }
+
+    public function test_queue_search_marks_visit_with_completed_scan(): void
+    {
+        $operator = $this->makeUser('scan-operator');
+        $visit = $this->createVisit();
+        $template = $this->createTemplate();
+
+        $this->actingAs($operator)->postJson('/api/clinical-scans', $this->scanPayload($visit, $template))
+            ->assertCreated();
+
+        $response = $this->actingAs($operator)->getJson('/api/clinical-scans/queue-patients/search', [
+            'search' => $visit->patient->mr_number,
+        ]);
+
+        $response->assertOk()
+            ->assertJsonPath('data.0.visit.id', $visit->id)
+            ->assertJsonPath('data.0.has_completed_scan_on_visit', true)
+            ->assertJsonPath('data.0.completed_scans_count', 1);
+    }
+
+    public function test_scan_worklist_can_filter_by_pending_prescription_status(): void
+    {
+        $operator = $this->makeUser('scan-operator');
+        $doctor = User::factory()->create();
+        $doctor->assignRole('doctor');
+
+        $pendingVisit = $this->createVisit($doctor, PatientVisit::STATUS_PENDING);
+        $consultationVisit = $this->createVisit($doctor, PatientVisit::STATUS_IN_CONSULTATION);
+
+        $response = $this->actingAs($operator)->getJson('/api/clinical-scans/queue-patients/search', [
+            'status' => 'pending_prescription',
+            'today_only' => false,
+        ]);
+
+        $response->assertOk();
+
+        $visitIds = collect($response->json('data'))->pluck('visit.id')->all();
+
+        $this->assertContains($pendingVisit->id, $visitIds);
+        $this->assertNotContains($consultationVisit->id, $visitIds);
+    }
+
+    public function test_scan_worklist_includes_yesterday_visits_by_default(): void
+    {
+        $operator = $this->makeUser('scan-operator');
+        $doctor = User::factory()->create();
+        $doctor->assignRole('doctor');
+
+        $yesterdayVisit = $this->createVisit($doctor, PatientVisit::STATUS_PENDING);
+        $yesterdayVisit->update(['visit_date' => now()->subDay()->toDateString()]);
+
+        $response = $this->actingAs($operator)->getJson('/api/clinical-scans/queue-patients/search', [
+            'search' => $yesterdayVisit->patient->mr_number,
+        ]);
+
+        $response->assertOk()
+            ->assertJsonPath('data.0.visit.id', $yesterdayVisit->id);
     }
 
     public function test_scan_worklist_excludes_prescribed_completed_and_cancelled_visits(): void

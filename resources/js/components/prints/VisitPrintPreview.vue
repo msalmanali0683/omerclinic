@@ -52,42 +52,53 @@
         </div>
 
         <div v-if="printableClinicalScans.length" class="clinical-scan-print-section">
-          <div class="section-title">Clinical Scan Findings</div>
+          <div class="clinical-scan-grid">
+            <div class="section-title clinical-scan-grid__title">Clinical Scan Findings</div>
+            <strong v-if="printableClinicalScans[0]" class="scan-template-name clinical-scan-grid__name">
+              ({{ printableClinicalScans[0].scan_template_name }})
+            </strong>
 
-          <div
-            v-for="scan in printableClinicalScans"
-            :key="scan.id"
-            class="scan-block"
-          >
-              <div class="scan-template-name">
-                {{ scan.scan_template_name }}
-              </div>
+            <template v-for="(scan, scanIndex) in printableClinicalScans" :key="scan.id">
+              <template v-if="scanIndex > 0">
+                <div class="clinical-scan-grid__spacer" aria-hidden="true" />
+                <strong class="scan-template-name clinical-scan-grid__name">
+                  ({{ scan.scan_template_name }})
+                </strong>
+              </template>
 
-              <div class="scan-values-grid">
+              <div
+                class="scan-block clinical-scan-grid__values"
+                :class="{ 'scan-block--follow-up': scanIndex > 0 }"
+              >
+                <div v-if="scan.normalValues?.length" class="scan-values-grid">
+                  <div
+                    v-for="value in scan.normalValues"
+                    v-show="!isEmptyScanFieldValue(value)"
+                    :key="value.id || value.field_key"
+                    class="scan-value-item bidi-text"
+                    :class="{ 'scan-value-item--long': isLongScanValue(value) }"
+                  >
+                    <span class="scan-field-label">{{ value.field_label }}:</span>
+                    <span class="scan-field-value">{{ value.field_value }}</span>
+                  </div>
+                </div>
+
                 <div
-                  v-for="value in scan.normalValues"
-                  :key="value.id || value.field_key"
-                  class="scan-value-item bidi-text"
-                  :class="{ 'scan-value-item--long': isLongScanValue(value) }"
+                  v-for="value in scan.impressionValues"
+                  v-show="!isEmptyScanFieldValue(value)"
+                  :key="`impression-${value.id || value.field_key}`"
+                  class="scan-impression scan-value-impression bidi-text"
                 >
                   <span class="scan-field-label">{{ value.field_label }}:</span>
                   <span class="scan-field-value">{{ value.field_value }}</span>
                 </div>
-              </div>
 
-              <div
-                v-for="value in scan.impressionValues"
-                :key="`impression-${value.id || value.field_key}`"
-                class="scan-impression scan-value-impression bidi-text"
-              >
-                <span class="scan-field-label">{{ value.field_label }}:</span>
-                <span class="scan-field-value">{{ value.field_value }}</span>
+                <div v-if="scan.impression" class="scan-impression bidi-text">
+                  <strong>Impression:</strong> {{ scan.impression }}
+                </div>
               </div>
-
-              <div v-if="scan.impression" class="scan-impression bidi-text">
-                <strong>Impression:</strong> {{ scan.impression }}
-              </div>
-            </div>
+            </template>
+          </div>
         </div>
 
         <div
@@ -152,6 +163,7 @@ import { computed } from 'vue';
 import { normalizeVisitPrintData, PRINT_NA } from '@/utils/printDataNormalizers';
 import {
   filterPrintableClinicalScans,
+  isEmptyScanFieldValue,
   isLongScanValue,
   withScanValueLayout,
 } from '@/utils/clinicalScanPrintLayout';
@@ -350,10 +362,37 @@ const slipStyle = computed(() => ({
   line-height: 1.15;
 }
 
+.clinical-scan-grid {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  column-gap: 2ch;
+  row-gap: 3px;
+  align-items: start;
+}
+
+.clinical-scan-grid__title {
+  grid-column: 1;
+}
+
+.clinical-scan-grid__name {
+  grid-column: 2;
+  font-weight: 700 !important;
+}
+
+.clinical-scan-grid__spacer {
+  grid-column: 1;
+}
+
+.clinical-scan-grid__values {
+  grid-column: 1 / -1;
+  width: 100%;
+  min-width: 0;
+}
+
 .clinical-scan-print-section .section-title {
   font-weight: normal;
   text-decoration: underline;
-  margin-bottom: 4px;
+  margin-bottom: 0;
   font-size: 14px;
 }
 
@@ -363,9 +402,15 @@ const slipStyle = computed(() => ({
   page-break-inside: avoid;
 }
 
+.scan-block--follow-up {
+  margin-top: 0;
+}
+
 .scan-template-name {
-  font-weight: normal;
+  font-weight: 700 !important;
   margin-bottom: 2px;
+  line-height: 1.2;
+  text-decoration: none;
 }
 
 .scan-values-grid {

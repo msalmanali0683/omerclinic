@@ -100,6 +100,7 @@ export const useAuthStore = defineStore('auth', {
             try {
                 const { data } = await authService.login(credentials);
                 applyAuthPayload(this, data);
+                this.initialized = true;
                 return data;
             } finally {
                 this.loading = false;

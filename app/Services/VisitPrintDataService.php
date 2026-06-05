@@ -182,13 +182,17 @@ class VisitPrintDataService
             'scan_time'          => $scan->scan_time,
             'status'             => $scan->status,
             'impression'         => $scan->impression,
-            'values'             => $scan->values->map(fn ($value) => [
-                'id'          => $value->id,
-                'field_label' => $value->field_label,
-                'field_key'   => $value->field_key,
-                'field_value' => $value->field_value,
-                'sort_order'  => $value->sort_order,
-            ])->values()->all(),
+            'values'             => $scan->values
+                ->filter(fn ($value) => trim((string) ($value->field_value ?? '')) !== '')
+                ->map(fn ($value) => [
+                    'id'          => $value->id,
+                    'field_label' => $value->field_label,
+                    'field_key'   => $value->field_key,
+                    'field_value' => $value->field_value,
+                    'sort_order'  => $value->sort_order,
+                ])
+                ->values()
+                ->all(),
         ];
     }
 }

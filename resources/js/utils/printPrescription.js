@@ -196,10 +196,36 @@ function buildPrintStyles(options, baseUrl = '') {
             line-height: 1.15;
         }
 
+        .clinical-scan-grid {
+            display: grid;
+            grid-template-columns: max-content 1fr;
+            column-gap: 2ch;
+            row-gap: 3px;
+            align-items: start;
+        }
+
+        .clinical-scan-grid__title {
+            grid-column: 1;
+        }
+
+        .clinical-scan-grid__name {
+            grid-column: 2;
+        }
+
+        .clinical-scan-grid__spacer {
+            grid-column: 1;
+        }
+
+        .clinical-scan-grid__values {
+            grid-column: 1 / -1;
+            width: 100%;
+            min-width: 0;
+        }
+
         .clinical-scan-print-section .section-title {
             font-weight: normal;
             text-decoration: underline;
-            margin-bottom: 4px;
+            margin-bottom: 0;
             font-size: 14px;
         }
 
@@ -210,8 +236,10 @@ function buildPrintStyles(options, baseUrl = '') {
         }
 
         .scan-template-name {
-            font-weight: normal;
+            font-weight: bold !important;
             margin-bottom: 3px;
+            line-height: 1.2;
+            text-decoration: none !important;
         }
 
         .scan-values-grid {
@@ -435,6 +463,12 @@ function buildPrintStyles(options, baseUrl = '') {
         strong,
         b {
             font-weight: normal !important;
+        }
+
+        .scan-template-name,
+        .clinical-scan-grid__name,
+        strong.scan-template-name {
+            font-weight: 700 !important;
         }
 
         .next-visit-print-footer {

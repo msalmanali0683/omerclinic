@@ -5,7 +5,17 @@ export const LABORATORY_FIELD_TYPES = [
     { value: 'select', label: 'Select' },
     { value: 'checkbox', label: 'Checkbox' },
     { value: 'date', label: 'Date' },
+    { value: 'image', label: 'Image (X-Ray)' },
 ];
+
+export const LABORATORY_TEST_TYPES = [
+    { value: 'standard', label: 'Standard Lab Test' },
+    { value: 'imaging', label: 'Imaging (X-Ray)' },
+];
+
+export function isImagingTestType(testType) {
+    return testType === 'imaging';
+}
 
 export function createTemplateFieldRow(overrides = {}) {
     return {
@@ -77,6 +87,7 @@ export function buildResultValuesFromTemplate(fields, existingValues = []) {
             unit: field.unit || '',
             reference_range: field.reference_range || '',
             field_value: existing?.field_value ?? field.default_value ?? '',
+            preview_url: existing?.preview_url ?? null,
             is_required: !!field.is_required,
             placeholder: field.placeholder || '',
             options: field.options || [],

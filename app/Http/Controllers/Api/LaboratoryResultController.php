@@ -81,7 +81,7 @@ class LaboratoryResultController extends Controller
         $this->authorize('view', $laboratoryResult);
 
         return new LaboratoryResultResource(
-            $laboratoryResult->load(['values', 'patient', 'visit.doctor', 'template', 'labOperator'])
+            $laboratoryResult->load(['values', 'attachments', 'patient', 'visit.doctor', 'template.fields', 'labOperator'])
         );
     }
 
@@ -103,6 +103,9 @@ class LaboratoryResultController extends Controller
     {
         $this->authorize('delete', $laboratoryResult);
 
+        $attachmentService = app(\App\Services\LaboratoryResultAttachmentService::class);
+
+        $laboratoryResult->attachments()->each(fn ($attachment) => $attachmentService->delete($attachment));
         $laboratoryResult->values()->each(fn ($value) => $value->delete());
         $laboratoryResult->delete();
 

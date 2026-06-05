@@ -37,7 +37,18 @@
           :error="errors.test_price"
         />
 
-        <LaboratoryDynamicFields v-model="resultValues" :error="errors.values" />
+        <LaboratoryXrayForm
+          v-if="isImagingTest"
+          v-model="resultValues"
+          :result-id="result.id"
+          :test-type="currentTestType"
+          :error="errors.values"
+        />
+        <LaboratoryDynamicFields
+          v-else
+          v-model="resultValues"
+          :error="errors.values"
+        />
 
         <div>
           <label class="block text-sm font-medium mb-1">Remarks</label>
@@ -73,10 +84,11 @@ import { useToastStore } from '@/stores/toast';
 import { laboratoryResultService } from '@/services/laboratoryResultService';
 import { useFormErrors } from '@/composables/useFormErrors';
 import { fetchDraftTests, loadDraftResultForm } from '@/utils/laboratoryDraftQueue';
-import { serializeResultValues } from '@/utils/laboratory';
+import { isImagingTestType, serializeResultValues } from '@/utils/laboratory';
 import { displayPatientAge, formatGender } from '@/utils/formatters';
 import BaseButton from '@/components/ui/BaseButton.vue';
 import LaboratoryDynamicFields from '@/components/laboratory/LaboratoryDynamicFields.vue';
+import LaboratoryXrayForm from '@/components/laboratory/LaboratoryXrayForm.vue';
 
 const route = useRoute();
 const router = useRouter();
@@ -85,6 +97,7 @@ const { errors, setErrors, clearErrors } = useFormErrors();
 
 const result = ref(null);
 const resultValues = ref([]);
+const currentTestType = ref('standard');
 const draftQueue = ref([]);
 const pageLoading = ref(true);
 const saving = ref(false);
@@ -94,6 +107,8 @@ const remainingDraftCount = computed(() => {
   if (!result.value || !draftQueue.value.length) return 0;
   return draftQueue.value.filter((d) => d.id !== result.value.id).length;
 });
+
+const isImagingTest = computed(() => isImagingTestType(currentTestType.value));
 
 const form = reactive({
   test_price: '',
@@ -146,6 +161,7 @@ onMounted(async () => {
   try {
     const loaded = await loadDraftResultForm(route.params.id);
     result.value = loaded.result;
+    currentTestType.value = loaded.result.test_type || loaded.result.template?.test_type || 'standard';
     form.remarks = loaded.form.remarks;
     form.test_price = loaded.form.test_price;
     resultValues.value = loaded.resultValues;

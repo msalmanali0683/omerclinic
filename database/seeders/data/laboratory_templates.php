@@ -179,4 +179,14 @@ return [
             ['field_label' => 'Serum Lipase', 'field_type' => 'number', 'unit' => 'U/L', 'reference_range' => '0-160', 'options' => [], 'sort_order' => 2],
         ],
     ],
+    [
+        'test_name' => 'X-Ray',
+        'test_code' => 'XR',
+        'test_type' => 'imaging',
+        'description' => 'Radiographic imaging study with image upload.',
+        'fields' => [
+            ['field_label' => 'Description / Findings', 'field_type' => 'textarea', 'unit' => null, 'reference_range' => null, 'options' => [], 'placeholder' => 'Enter radiological findings or description...', 'sort_order' => 1],
+            ['field_label' => 'X-Ray Image', 'field_type' => 'image', 'unit' => null, 'reference_range' => null, 'options' => [], 'is_required' => true, 'sort_order' => 2],
+        ],
+    ],
 ];

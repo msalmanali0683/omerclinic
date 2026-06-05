@@ -22,6 +22,7 @@ use App\Http\Controllers\Api\LaboratoryBillController;
 use App\Http\Controllers\Api\LaboratoryHistoryController;
 use App\Http\Controllers\Api\LaboratoryPatientController;
 use App\Http\Controllers\Api\LaboratoryPatientSearchController;
+use App\Http\Controllers\Api\LaboratoryResultAttachmentController;
 use App\Http\Controllers\Api\LaboratoryResultController;
 use App\Http\Controllers\Api\LaboratoryTestTemplateController;
 use App\Http\Controllers\Api\ComplaintMasterController;
@@ -178,6 +179,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('laboratory-results/{laboratoryResult}/print-data', [LaboratoryResultController::class, 'printData']);
     Route::get('patient-visits/{visit}/laboratory-results/print-data', [LaboratoryResultController::class, 'visitPrintData']);
     Route::post('laboratory-results/{laboratoryResult}/verify', [LaboratoryResultController::class, 'verify']);
+    Route::post('laboratory-results/{laboratoryResult}/attachments', [LaboratoryResultAttachmentController::class, 'store']);
+    Route::delete('laboratory-results/{laboratoryResult}/attachments/{attachment}', [LaboratoryResultAttachmentController::class, 'destroy']);
+    Route::get('laboratory-results/{laboratoryResult}/attachments/{attachment}/preview', [LaboratoryResultAttachmentController::class, 'preview'])
+        ->name('laboratory-results.attachments.preview');
     Route::get('patient-visits/{visit}/laboratory-results', [LaboratoryResultController::class, 'byVisit'])
         ->middleware('role_or_permission:view laboratory results|view patient laboratory history');
     Route::get('patients/{patient}/laboratory-results', [LaboratoryResultController::class, 'byPatient'])

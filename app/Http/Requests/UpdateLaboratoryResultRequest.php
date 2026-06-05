@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Models\LaboratoryResult;
+use App\Models\LaboratoryResultAttachment;
 use App\Models\LaboratoryResultValue;
 use App\Models\LaboratoryTestTemplate;
 use App\Models\LaboratoryTestTemplateField;
@@ -82,8 +83,28 @@ class UpdateLaboratoryResultRequest extends FormRequest
                 }
 
                 $valueRow = $valuesByFieldId->get($field->id);
+                $fieldValue = $valueRow['field_value'] ?? null;
 
-                if (! $valueRow || blank($valueRow['field_value'] ?? null)) {
+                if ($field->field_type === 'image') {
+                    if (blank($fieldValue) || ! is_numeric($fieldValue)) {
+                        $validator->errors()->add('values', "The {$field->field_label} field is required.");
+
+                        continue;
+                    }
+
+                    $attachmentExists = LaboratoryResultAttachment::query()
+                        ->where('laboratory_result_id', $result->id)
+                        ->whereKey((int) $fieldValue)
+                        ->exists();
+
+                    if (! $attachmentExists) {
+                        $validator->errors()->add('values', "The {$field->field_label} image is invalid or missing.");
+                    }
+
+                    continue;
+                }
+
+                if (! $valueRow || blank($fieldValue)) {
                     $validator->errors()->add('values', "The {$field->field_label} field is required.");
                 }
             }

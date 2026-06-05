@@ -162,6 +162,22 @@ class MedicineMasterTest extends TestCase
         $this->assertSoftDeleted('medicines', ['id' => $medicine->id]);
     }
 
+    public function test_excel_medicines_replace_sample_data(): void
+    {
+        $this->assertGreaterThanOrEqual(1300, Medicine::count());
+        $this->assertGreaterThanOrEqual(500, Medicine::where('mdcn_type', 'Inj')->count());
+
+        $panadol = Medicine::query()
+            ->where('mdcn_type', 'Tablet')
+            ->where('mdcn_name', 'Panadol')
+            ->where('mdcn_size', '500')
+            ->first();
+
+        $this->assertNotNull($panadol);
+        $this->assertNull($panadol->mdcn_time_id);
+        $this->assertNull($panadol->mdcn_dose_from_meal_id);
+    }
+
     public function test_medicine_options_endpoint_returns_data(): void
     {
         $doctor = $this->makeUser('doctor');

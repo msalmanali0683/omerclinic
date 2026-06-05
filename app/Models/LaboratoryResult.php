@@ -67,6 +67,22 @@ class LaboratoryResult extends Model
         return $this->hasMany(LaboratoryResultValue::class)->orderBy('sort_order');
     }
 
+    public function attachments(): HasMany
+    {
+        return $this->hasMany(LaboratoryResultAttachment::class)->orderBy('sort_order');
+    }
+
+    public function isImagingTest(): bool
+    {
+        if ($this->relationLoaded('template') && $this->template) {
+            return $this->template->test_type === LaboratoryTestTemplate::TYPE_IMAGING;
+        }
+
+        return $this->template()
+            ->where('test_type', LaboratoryTestTemplate::TYPE_IMAGING)
+            ->exists();
+    }
+
     public function labOperator(): BelongsTo
     {
         return $this->belongsTo(User::class, 'lab_operator_id');

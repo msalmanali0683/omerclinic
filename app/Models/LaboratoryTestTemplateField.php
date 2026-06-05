@@ -11,7 +11,7 @@ class LaboratoryTestTemplateField extends Model
 {
     use HasFactory, SoftDeletes;
 
-    public const TYPES = ['text', 'textarea', 'number', 'select', 'checkbox', 'date'];
+    public const TYPES = ['text', 'textarea', 'number', 'select', 'checkbox', 'date', 'image'];
 
     protected $fillable = [
         'laboratory_test_template_id',

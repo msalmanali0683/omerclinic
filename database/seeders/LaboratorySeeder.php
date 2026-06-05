@@ -18,6 +18,7 @@ class LaboratorySeeder extends Seeder
                 ['test_name' => $templateData['test_name']],
                 [
                     'test_code' => $templateData['test_code'] ?? null,
+                    'test_type' => $templateData['test_type'] ?? 'standard',
                     'test_price' => $templateData['test_price'] ?? 0,
                     'description' => $templateData['description'] ?? null,
                     'is_active' => true,
@@ -39,6 +40,8 @@ class LaboratorySeeder extends Seeder
                         'unit' => $field['unit'] ?? null,
                         'reference_range' => $field['reference_range'] ?? null,
                         'options' => $field['options'] ?? [],
+                        'placeholder' => $field['placeholder'] ?? null,
+                        'is_required' => $field['is_required'] ?? false,
                         'sort_order' => $field['sort_order'] ?? ($index + 1),
                     ]
                 );

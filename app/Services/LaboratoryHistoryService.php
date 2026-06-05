@@ -15,7 +15,7 @@ class LaboratoryHistoryService
         int $limit = 50,
     ): array {
         $results = LaboratoryResult::query()
-            ->with(['values', 'visit.doctor', 'labOperator'])
+            ->with(['values', 'attachments', 'template', 'visit.doctor', 'labOperator'])
             ->where('patient_id', $patient->id)
             ->where('status', '!=', LaboratoryResult::STATUS_CANCELLED)
             ->orderByDesc('result_date')

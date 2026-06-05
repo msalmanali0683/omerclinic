@@ -18,6 +18,7 @@ class LaboratoryResultResource extends JsonResource
             'laboratory_test_template_id' => $this->laboratory_test_template_id,
             'test_name'                   => $this->test_name,
             'test_code'                   => $this->test_code,
+            'test_type'                   => $this->whenLoaded('template', fn () => $this->template?->test_type ?? 'standard'),
             'test_price'                  => $this->test_price,
             'lab_operator_id'             => $this->lab_operator_id,
             'result_date'                 => $this->result_date?->format('Y-m-d'),
@@ -32,6 +33,7 @@ class LaboratoryResultResource extends JsonResource
                 'name' => $this->labOperator->name,
             ]),
             'values'                      => LaboratoryResultValueResource::collection($this->whenLoaded('values')),
+            'attachments'                 => LaboratoryResultAttachmentResource::collection($this->whenLoaded('attachments')),
             'created_at'                  => $this->created_at?->toIso8601String(),
         ];
     }

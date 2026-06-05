@@ -201,6 +201,59 @@ export function buildLaboratoryClinicalReportPrintStyles() {
             color: #744210;
         }
 
+        .lab-xray-only-print {
+            padding: 0 !important;
+            margin: 0 !important;
+        }
+
+        .lab-xray-only-print .lab-xray-print-page {
+            min-height: 277mm;
+            padding: 0;
+            margin: 0;
+        }
+
+        .lab-xray-print-page {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            min-height: 200mm;
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+
+        .lab-xray-print-page--break {
+            break-before: page;
+            page-break-before: always;
+        }
+
+        .lab-xray-print-page-image {
+            display: block;
+            max-width: 100%;
+            max-height: 277mm;
+            width: auto;
+            height: auto;
+            object-fit: contain;
+            margin: 0 auto;
+        }
+
+        @media print {
+            .lab-xray-print-page--break {
+                break-before: page;
+                page-break-before: always;
+            }
+
+            .lab-xray-only-print .lab-xray-print-page {
+                min-height: 277mm;
+                height: 277mm;
+            }
+
+            .lab-xray-print-page-image {
+                max-height: 277mm;
+            }
+        }
+
         .lab-report-footer {
             margin-top: 16px;
             padding-top: 10px;

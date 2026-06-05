@@ -2,100 +2,117 @@
   <div
     :id="printAreaId"
     class="laboratory-report-print-area lab-a4-document bg-white text-black"
-    :class="{ 'lab-report-compact': laboratoryResults.length > 2 }"
+    :class="{ 'lab-report-compact': standardResults.length > 2, 'lab-xray-only-print': isXrayOnlyPrint }"
   >
-    <header class="lab-letterhead">
-      <p class="lab-hospital-name">{{ hospitalName }}</p>
-      <h1 class="lab-report-heading">Laboratory Test Report</h1>
-      <p class="lab-report-subheading">Printed: {{ printedAtLabel }}</p>
-    </header>
+    <template v-if="standardResults.length">
+      <header class="lab-letterhead">
+        <p class="lab-hospital-name">{{ hospitalName }}</p>
+        <h1 class="lab-report-heading">Laboratory Test Report</h1>
+        <p class="lab-report-subheading">Printed: {{ printedAtLabel }}</p>
+      </header>
 
-    <section class="lab-patient-panel">
-      <div class="lab-patient-panel-title">Patient Information</div>
-      <table class="lab-patient-table">
-        <tbody>
-          <tr>
-            <td class="lab-label">Patient Name</td>
-            <td class="lab-value bidi-text">{{ patient.patient_name }}</td>
-            <td class="lab-label">Father Name</td>
-            <td class="lab-value bidi-text">{{ patient.patient_father_name }}</td>
-          </tr>
-          <tr>
-            <td class="lab-label">MR Number</td>
-            <td class="lab-value">{{ patient.mr_number }}</td>
-            <td class="lab-label">Age / Gender</td>
-            <td class="lab-value">{{ patient.patient_age_display }} · {{ patient.patient_gender_label }}</td>
-          </tr>
-          <tr>
-            <td class="lab-label">Cell Phone</td>
-            <td class="lab-value">{{ patient.patient_cell }}</td>
-            <td class="lab-label">CNIC</td>
-            <td class="lab-value">{{ patient.patient_cnic || '—' }}</td>
-          </tr>
-          <tr>
-            <td class="lab-label">Address</td>
-            <td class="lab-value bidi-text" colspan="3">{{ patient.patient_address }}</td>
-          </tr>
-          <tr>
-            <td class="lab-label">Visit Date</td>
-            <td class="lab-value">{{ visit?.visit_date ? formatDate(visit.visit_date) : '—' }}</td>
-            <td class="lab-label">Report Date</td>
-            <td class="lab-value">{{ reportDateTimeLabel }}</td>
-          </tr>
-        </tbody>
-      </table>
-    </section>
-
-    <main class="lab-tests-body">
-      <article
-        v-for="result in laboratoryResults"
-        :key="result.id"
-        class="lab-test-section"
-        :class="{ 'lab-test-section--large': isLargeBlock(result) }"
-      >
-        <header class="lab-test-header">
-          <h2 class="lab-test-title">{{ testBlockTitle(result) }}</h2>
-          <span class="lab-test-meta">{{ resultDateTimeLabel(result) }}</span>
-        </header>
-
-        <table class="lab-results-table">
-          <thead>
-            <tr>
-              <th class="col-parameter">Parameter</th>
-              <th class="col-result">Result</th>
-              <th class="col-unit">Unit</th>
-              <th class="col-range">Normal Range</th>
-            </tr>
-          </thead>
+      <section class="lab-patient-panel">
+        <div class="lab-patient-panel-title">Patient Information</div>
+        <table class="lab-patient-table">
           <tbody>
-            <tr v-for="value in sortedValues(result)" :key="value.id || value.field_key">
-              <td class="col-parameter">{{ value.field_label }}</td>
-              <td class="col-result bidi-text">{{ value.field_value || '—' }}</td>
-              <td class="col-unit">{{ value.unit || '—' }}</td>
-              <td class="col-range">{{ value.reference_range || '—' }}</td>
+            <tr>
+              <td class="lab-label">Patient Name</td>
+              <td class="lab-value bidi-text">{{ patient.patient_name }}</td>
+              <td class="lab-label">Father Name</td>
+              <td class="lab-value bidi-text">{{ patient.patient_father_name }}</td>
+            </tr>
+            <tr>
+              <td class="lab-label">MR Number</td>
+              <td class="lab-value">{{ patient.mr_number }}</td>
+              <td class="lab-label">Age / Gender</td>
+              <td class="lab-value">{{ patient.patient_age_display }} · {{ patient.patient_gender_label }}</td>
+            </tr>
+            <tr>
+              <td class="lab-label">Cell Phone</td>
+              <td class="lab-value">{{ patient.patient_cell }}</td>
+              <td class="lab-label">CNIC</td>
+              <td class="lab-value">{{ patient.patient_cnic || '—' }}</td>
+            </tr>
+            <tr>
+              <td class="lab-label">Address</td>
+              <td class="lab-value bidi-text" colspan="3">{{ patient.patient_address }}</td>
+            </tr>
+            <tr>
+              <td class="lab-label">Visit Date</td>
+              <td class="lab-value">{{ visit?.visit_date ? formatDate(visit.visit_date) : '—' }}</td>
+              <td class="lab-label">Report Date</td>
+              <td class="lab-value">{{ reportDateTimeLabel }}</td>
             </tr>
           </tbody>
         </table>
+      </section>
 
-        <p v-if="result.remarks" class="lab-remarks bidi-text">
-          <strong>Remarks:</strong> {{ result.remarks }}
-        </p>
-      </article>
-    </main>
+      <main class="lab-tests-body">
+        <article
+          v-for="result in standardResults"
+          :key="result.id"
+          class="lab-test-section"
+          :class="{ 'lab-test-section--large': isLargeBlock(result) }"
+        >
+          <header class="lab-test-header">
+            <h2 class="lab-test-title">{{ testBlockTitle(result) }}</h2>
+            <span class="lab-test-meta">{{ resultDateTimeLabel(result) }}</span>
+          </header>
 
-    <footer class="lab-report-footer">
-      <div class="lab-signature-grid">
-        <div class="lab-signature-block">
-          Lab Technician
-          <span class="lab-signature-line" />
+          <table class="lab-results-table">
+            <thead>
+              <tr>
+                <th class="col-parameter">Parameter</th>
+                <th class="col-result">Result</th>
+                <th class="col-unit">Unit</th>
+                <th class="col-range">Normal Range</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="value in sortedValues(result)" :key="value.id || value.field_key">
+                <td class="col-parameter">{{ value.field_label }}</td>
+                <td class="col-result bidi-text">{{ value.field_value || '—' }}</td>
+                <td class="col-unit">{{ value.unit || '—' }}</td>
+                <td class="col-range">{{ value.reference_range || '—' }}</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <p v-if="result.remarks" class="lab-remarks bidi-text">
+            <strong>Remarks:</strong> {{ result.remarks }}
+          </p>
+        </article>
+      </main>
+
+      <footer class="lab-report-footer">
+        <div class="lab-signature-grid">
+          <div class="lab-signature-block">
+            Lab Technician
+            <span class="lab-signature-line" />
+          </div>
+          <div class="lab-signature-block">
+            Authorized By
+            <span class="lab-signature-line" />
+          </div>
         </div>
-        <div class="lab-signature-block">
-          Authorized By
-          <span class="lab-signature-line" />
-        </div>
-      </div>
-      <p v-for="(line, index) in footerLines" :key="index" class="lab-print-note">{{ line }}</p>
-    </footer>
+        <p v-for="(line, index) in footerLines" :key="index" class="lab-print-note">{{ line }}</p>
+      </footer>
+    </template>
+
+    <section
+      v-for="(result, index) in imagingResults"
+      :key="`xray-${result.id}`"
+      class="lab-xray-print-page"
+      :class="{ 'lab-xray-print-page--break': index > 0 || standardResults.length > 0 }"
+    >
+      <img
+        v-for="value in imageValues(result)"
+        :key="`img-${value.id || value.field_key}`"
+        :src="value.preview_url"
+        :alt="value.field_label || 'X-Ray'"
+        class="lab-xray-print-page-image"
+      />
+    </section>
   </div>
 </template>
 
@@ -133,10 +150,22 @@ const laboratoryResults = computed(() => {
   return [];
 });
 
+const standardResults = computed(() =>
+  laboratoryResults.value.filter((result) => !isImagingResult(result))
+);
+
+const imagingResults = computed(() =>
+  laboratoryResults.value.filter((result) => isImagingResult(result))
+);
+
+const isXrayOnlyPrint = computed(() =>
+  imagingResults.value.length > 0 && standardResults.value.length === 0
+);
+
 const duplicateTestNameCounts = computed(() => {
   const counts = {};
 
-  laboratoryResults.value.forEach((result) => {
+  standardResults.value.forEach((result) => {
     const name = result.test_name || '';
     counts[name] = (counts[name] || 0) + 1;
   });
@@ -164,12 +193,21 @@ const reportDateTimeLabel = computed(() => {
     return formatDate(visit.value.visit_date);
   }
 
-  const latest = laboratoryResults.value[laboratoryResults.value.length - 1];
+  const latest = standardResults.value[standardResults.value.length - 1]
+    ?? imagingResults.value[imagingResults.value.length - 1];
   return latest ? resultDateTimeLabel(latest) : PRINT_NA;
 });
 
 function sortedValues(result) {
   return [...(result?.values ?? [])].sort((a, b) => (a.sort_order || 0) - (b.sort_order || 0));
+}
+
+function isImagingResult(result) {
+  return result?.test_type === 'imaging';
+}
+
+function imageValues(result) {
+  return sortedValues(result).filter((value) => value.field_type === 'image' && value.preview_url);
 }
 
 function formatResultTime(time) {

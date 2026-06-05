@@ -14,6 +14,17 @@
         placeholder="Example: CBC"
         :error="errors.test_code"
       />
+      <div>
+        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Test Type</label>
+        <select
+          v-model="form.test_type"
+          class="w-full rounded-lg border border-gray-300 dark:border-gray-600 px-3 py-2 text-sm dark:bg-gray-800"
+        >
+          <option v-for="type in LABORATORY_TEST_TYPES" :key="type.value" :value="type.value">
+            {{ type.label }}
+          </option>
+        </select>
+      </div>
       <BaseInput
         v-model="form.test_price"
         type="number"
@@ -167,6 +178,7 @@ import BaseButton from '@/components/ui/BaseButton.vue';
 import BaseInput from '@/components/ui/BaseInput.vue';
 import {
   LABORATORY_FIELD_TYPES,
+  LABORATORY_TEST_TYPES,
   createTemplateFieldRow,
   mapTemplateFieldToRow,
   serializeTemplateFields,
@@ -184,6 +196,7 @@ const emit = defineEmits(['submit']);
 const form = reactive({
   test_name: '',
   test_code: '',
+  test_type: 'standard',
   test_price: '',
   description: '',
   is_active: true,
@@ -198,6 +211,7 @@ watch(
 
     form.test_name = value.test_name ?? '';
     form.test_code = value.test_code ?? '';
+    form.test_type = value.test_type ?? 'standard';
     form.test_price = value.test_price ?? '';
     form.description = value.description ?? '';
     form.is_active = value.is_active ?? true;
@@ -246,6 +260,7 @@ function handleSubmit() {
   emit('submit', {
     test_name: form.test_name.trim(),
     test_code: form.test_code?.trim() || null,
+    test_type: form.test_type || 'standard',
     test_price: form.test_price === '' || form.test_price === null ? 0 : Number(form.test_price),
     description: form.description?.trim() || null,
     is_active: !!form.is_active,

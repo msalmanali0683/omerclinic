@@ -12,9 +12,16 @@ class LaboratoryTestTemplate extends Model
 {
     use HasFactory, SoftDeletes;
 
+    public const TYPE_STANDARD = 'standard';
+
+    public const TYPE_IMAGING = 'imaging';
+
+    public const TYPES = [self::TYPE_STANDARD, self::TYPE_IMAGING];
+
     protected $fillable = [
         'test_name',
         'test_code',
+        'test_type',
         'test_price',
         'description',
         'is_active',

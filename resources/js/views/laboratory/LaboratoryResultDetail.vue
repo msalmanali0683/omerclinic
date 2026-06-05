@@ -69,8 +69,14 @@
       </div>
 
       <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5 shadow-sm space-y-4 mb-6">
-        <h3 class="font-semibold text-lg">Values</h3>
-        <div class="overflow-x-auto rounded-lg border border-gray-200 dark:border-gray-700">
+        <h3 class="font-semibold text-lg">{{ isImagingTest ? 'X-Ray Report' : 'Values' }}</h3>
+
+        <LaboratoryXrayPreview
+          v-if="isImagingTest"
+          :values="sortedValues"
+        />
+
+        <div v-else class="overflow-x-auto rounded-lg border border-gray-200 dark:border-gray-700">
           <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700 text-sm">
             <thead class="bg-gray-50 dark:bg-gray-900/50">
               <tr>
@@ -112,8 +118,10 @@ import { useAuthStore } from '@/stores/auth';
 import { useToastStore } from '@/stores/toast';
 import { laboratoryResultService } from '@/services/laboratoryResultService';
 import { displayPatientAge, formatDate, formatGender, formatCurrency } from '@/utils/formatters';
+import { isImagingTestType } from '@/utils/laboratory';
 import BaseButton from '@/components/ui/BaseButton.vue';
 import LaboratoryResultPrintModal from '@/components/laboratory/LaboratoryResultPrintModal.vue';
+import LaboratoryXrayPreview from '@/components/laboratory/LaboratoryXrayPreview.vue';
 
 const route = useRoute();
 const router = useRouter();
@@ -130,6 +138,10 @@ const printLoading = ref(false);
 
 const sortedValues = computed(() =>
   [...(result.value?.values ?? [])].sort((a, b) => (a.sort_order || 0) - (b.sort_order || 0))
+);
+
+const isImagingTest = computed(() =>
+  isImagingTestType(result.value?.test_type || result.value?.template?.test_type)
 );
 
 function statusClass(status) {

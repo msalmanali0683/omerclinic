@@ -1,0 +1,6757 @@
+[
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "PANADOL",
+    "mdcn_size": "500"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "SPASRID",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "ASTADOL",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "ASTRID",
+    "mdcn_size": "50"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "CALCIU-FORT",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Capsule",
+    "mdcn_name": "DITS",
+    "mdcn_size": "20"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "ITP",
+    "mdcn_size": "50"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "IGNITE",
+    "mdcn_size": "50"
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "LEVIJON",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "NIMEROL",
+    "mdcn_size": "100"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "NIMSIDE",
+    "mdcn_size": "100"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "NIMS",
+    "mdcn_size": "100"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "LCYN",
+    "mdcn_size": "500"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "LCYN",
+    "mdcn_size": "250"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "PREDNISILONE",
+    "mdcn_size": "5"
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "HYDRALLIN",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Capsule",
+    "mdcn_name": "RULING",
+    "mdcn_size": "20"
+  },
+  {
+    "mdcn_type": "Capsule",
+    "mdcn_name": "ESOMALT",
+    "mdcn_size": "40"
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "BRONOCHOL",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "STOMACOL",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "QMOX",
+    "mdcn_size": "400"
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "NT CID",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "AUGMENTIN",
+    "mdcn_size": "375"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "AUGMENTIN",
+    "mdcn_size": "625"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "BETAMARK",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "URICON",
+    "mdcn_size": "200"
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "CAVALOR",
+    "mdcn_size": "125/5ML"
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "CAVALOR",
+    "mdcn_size": "250/5ML"
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "CARICEF",
+    "mdcn_size": "100MG/5ML"
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "CARICEF DS",
+    "mdcn_size": "200MG/5ML"
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "WELZIM",
+    "mdcn_size": "100MG/5ML"
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "WELZIM DS",
+    "mdcn_size": "200MG/5ML"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "BETAMARK",
+    "mdcn_size": "20MG"
+  },
+  {
+    "mdcn_type": "Capsule",
+    "mdcn_name": "WELZIM",
+    "mdcn_size": "400"
+  },
+  {
+    "mdcn_type": "Capsule",
+    "mdcn_name": "NEUCEF",
+    "mdcn_size": "500"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "BRITANYL",
+    "mdcn_size": "2.5"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "NEWDAY",
+    "mdcn_size": "5/80"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "BYSCARD",
+    "mdcn_size": "2.5"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "BYSCARD",
+    "mdcn_size": "5.0"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "SAR K",
+    "mdcn_size": "50"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "SAR K +",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "SPIROMIDE",
+    "mdcn_size": "20"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "SPIROMIDE",
+    "mdcn_size": "40"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "SUSTAC",
+    "mdcn_size": "2.6"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "NOCLOT",
+    "mdcn_size": "75"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "PRESTOR",
+    "mdcn_size": "5/80"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "LODOPIN",
+    "mdcn_size": "5"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "ESCI",
+    "mdcn_size": "10"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "UFRIM",
+    "mdcn_size": "10"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "LEMIT",
+    "mdcn_size": "250"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "LEMIT",
+    "mdcn_size": "500"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "CIPNESS",
+    "mdcn_size": "250"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "CIPNESS",
+    "mdcn_size": "500"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "NOVIDATE",
+    "mdcn_size": "500"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "NOVIDATE",
+    "mdcn_size": "250"
+  },
+  {
+    "mdcn_type": "Capsule",
+    "mdcn_name": "FIXIRIN",
+    "mdcn_size": "400"
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "AUGMENTIN",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "AUGMENTIN BD",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "AUGMENTIN DS",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "PINQ D",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "HIZYME",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "MUCAIN",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "CESTONIL +",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "APIZYT",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "BRISDEL",
+    "mdcn_size": "20"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "DELPOFLEX",
+    "mdcn_size": "2"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "DELPOFLEX",
+    "mdcn_size": "4"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "DEXXOO",
+    "mdcn_size": "60"
+  },
+  {
+    "mdcn_type": "Capsule",
+    "mdcn_name": "FANAZE",
+    "mdcn_size": "150"
+  },
+  {
+    "mdcn_type": "Mix",
+    "mdcn_name": "KETODAN CREAM",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Mix",
+    "mdcn_name": "FENACIN GEL",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "FUNGI RID",
+    "mdcn_size": "125"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "FUNGI RID",
+    "mdcn_size": "250"
+  },
+  {
+    "mdcn_type": "Capsule",
+    "mdcn_name": "LANCERID",
+    "mdcn_size": "30"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "MOFOXIN",
+    "mdcn_size": "400"
+  },
+  {
+    "mdcn_type": "Capsule",
+    "mdcn_name": "RAMACIN",
+    "mdcn_size": "250"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "REDRINE",
+    "mdcn_size": "450/35"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "STAAR",
+    "mdcn_size": "10"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "STAAR",
+    "mdcn_size": "20"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "TUKOL",
+    "mdcn_size": "250"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "TUKOL",
+    "mdcn_size": "500"
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "TUKOL",
+    "mdcn_size": "125/5ML"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "VILDROZONE-M",
+    "mdcn_size": "50/500"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "VILDOMET",
+    "mdcn_size": "50/1000"
+  },
+  {
+    "mdcn_type": "Capsule",
+    "mdcn_name": "XILPORIN",
+    "mdcn_size": "500"
+  },
+  {
+    "mdcn_type": "Capsule",
+    "mdcn_name": "ZOBLIN",
+    "mdcn_size": "50"
+  },
+  {
+    "mdcn_type": "Capsule",
+    "mdcn_name": "ZOBLIN",
+    "mdcn_size": "75"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "MILK D",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "QUPRON",
+    "mdcn_size": "250"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "QUPRON",
+    "mdcn_size": "500"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "NATALVIT IQ",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "CALCIU FORT",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "FREEHALE",
+    "mdcn_size": "10"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "FREEHALE",
+    "mdcn_size": "5"
+  },
+  {
+    "mdcn_type": "Mix",
+    "mdcn_name": "FREEHALE SACHET",
+    "mdcn_size": "4"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "ZINARYL",
+    "mdcn_size": "2"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "ZINARYL",
+    "mdcn_size": "3"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "ZINARYL",
+    "mdcn_size": "4"
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "ACEFYL",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "HEDERA",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "HYDRALLIN DM",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "HYDRALLIN SF",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "DUPHALAC",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "LEXOBERON",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "ULCENIL",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "FAMOBEX",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Mix",
+    "mdcn_name": "ORS",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "OSIRIS",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "NIKAL",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "STAQ",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "VETINIL",
+    "mdcn_size": "16"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "VETINIL",
+    "mdcn_size": "8"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "ANTIAL",
+    "mdcn_size": "10"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "NOXICAM",
+    "mdcn_size": "8"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "ALP",
+    "mdcn_size": "0.25"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "ALP",
+    "mdcn_size": "0.5"
+  },
+  {
+    "mdcn_type": "Capsule",
+    "mdcn_name": "ERICA",
+    "mdcn_size": "50"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "AMDIK",
+    "mdcn_size": "50"
+  },
+  {
+    "mdcn_type": "Capsule",
+    "mdcn_name": "DEXXOO",
+    "mdcn_size": "60"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "KESTINE",
+    "mdcn_size": "10"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "ATMOS",
+    "mdcn_size": "10"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "METROZINE",
+    "mdcn_size": "400"
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "METROZINE",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "NEGRAM",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "BISMOL",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "GEXIM",
+    "mdcn_size": "100/5ML"
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "ALKACITRON",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "BRUFEN",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "BRUFEN DS",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "BELTON",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "TIXYLIX",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "TERCICA",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "POLYBION FORT",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Capsule",
+    "mdcn_name": "BRINO",
+    "mdcn_size": "500"
+  },
+  {
+    "mdcn_type": "Capsule",
+    "mdcn_name": "VG ROX",
+    "mdcn_size": "500"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "TILAXIN",
+    "mdcn_size": "4"
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "BONTIN",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "TRUAPP",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "SATQ",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "REWALK",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "VENTOLIN",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "FEBROL",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "FEBROL DS",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "CARICEF",
+    "mdcn_size": "200"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "DELANZO DR",
+    "mdcn_size": "60"
+  },
+  {
+    "mdcn_type": "Capsule",
+    "mdcn_name": "COMBIVAIR WITH REVOLIZER",
+    "mdcn_size": "400"
+  },
+  {
+    "mdcn_type": "Capsule",
+    "mdcn_name": "TIOVAIR WITH REVOLIZER",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "FOTIFLOX",
+    "mdcn_size": "400"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "GLUCOPHAGE",
+    "mdcn_size": "500"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "GLUCOPHAGE",
+    "mdcn_size": "850"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "GLUCOPHAGE",
+    "mdcn_size": "1000"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "NOGERD",
+    "mdcn_size": "50"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "LOPRIN",
+    "mdcn_size": "75"
+  },
+  {
+    "mdcn_type": "Mix",
+    "mdcn_name": "CRANE CURE SACHET",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "CAL CO C 1000",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "YOXI",
+    "mdcn_size": "400"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "PIROXIFARM",
+    "mdcn_size": "20"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "QVTAL 10",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Capsule",
+    "mdcn_name": "FAPRAZOLE",
+    "mdcn_size": "20"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "PIPROXCIN",
+    "mdcn_size": "500"
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "DOPIN",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "MOTIVAL",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "PERIDONE",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "IBERT FOLIC",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "SPASLAR P",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Mix",
+    "mdcn_name": "CIPOCAIN EAR DROPS",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "ZURIG",
+    "mdcn_size": "40"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "COLOFAC",
+    "mdcn_size": "135"
+  },
+  {
+    "mdcn_type": "Mix",
+    "mdcn_name": "POLYFAX SKIN OINTMENT",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Mix",
+    "mdcn_name": "POLYFAX + GEL",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "VITAMIN K",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Mix",
+    "mdcn_name": "PROVATE LOTION",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "GRAVINATE",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "CIPESTA",
+    "mdcn_size": "250/5ML"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "ABLIXA",
+    "mdcn_size": "10"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "GRAVINATE",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "FLOVIX",
+    "mdcn_size": "200"
+  },
+  {
+    "mdcn_type": "Mix",
+    "mdcn_name": "HYDROZOLE CREAM",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Capsule",
+    "mdcn_name": "TAMSUMED",
+    "mdcn_size": "0.4"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "ACABEL",
+    "mdcn_size": "8"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "CAL COC 1000+",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "BRITANYL",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "RINTAL",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "ANTIAL",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Mix",
+    "mdcn_name": "CLOTRIM LOTION",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "CARA",
+    "mdcn_size": "20"
+  },
+  {
+    "mdcn_type": "Mix",
+    "mdcn_name": "PROVATE G CREAM",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "VESOPRIDE",
+    "mdcn_size": "50"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "JARDIN",
+    "mdcn_size": "10"
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "VERMOX",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "ARTECXCIN",
+    "mdcn_size": "20/120"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "ARTECXIN",
+    "mdcn_size": "40/240"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "ARTECXIN",
+    "mdcn_size": "80/480"
+  },
+  {
+    "mdcn_type": "Mix",
+    "mdcn_name": "GUT CARE SACHET",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Capsule",
+    "mdcn_name": "EVION",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "BIORED",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Capsule",
+    "mdcn_name": "DELANZO DR",
+    "mdcn_size": "60"
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "CIPESTA",
+    "mdcn_size": "125/5ML"
+  },
+  {
+    "mdcn_type": "Mix",
+    "mdcn_name": "SCABION LOTION",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "TEGRAL",
+    "mdcn_size": "200"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "PEDROL",
+    "mdcn_size": "500"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "DANZEN DS",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "DEVAZO",
+    "mdcn_size": "60"
+  },
+  {
+    "mdcn_type": "Capsule",
+    "mdcn_name": "OCVIR",
+    "mdcn_size": "400"
+  },
+  {
+    "mdcn_type": "Capsule",
+    "mdcn_name": "RYBIO",
+    "mdcn_size": "400"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "AMROCIP",
+    "mdcn_size": "500"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "ORVAST",
+    "mdcn_size": "10"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "NEUMO",
+    "mdcn_size": "250"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "NEUMO",
+    "mdcn_size": "500"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "MEDIGESIC",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "FLAGYL",
+    "mdcn_size": "400"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "PROTONIX",
+    "mdcn_size": "40"
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "COLENTICON GEL",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "ZOVANTA",
+    "mdcn_size": "40 MG"
+  },
+  {
+    "mdcn_type": "Mix",
+    "mdcn_name": "NEPHRA SACHET",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "EM-FLOX",
+    "mdcn_size": "400MG"
+  },
+  {
+    "mdcn_type": "Mix",
+    "mdcn_name": "RULING + SACHET",
+    "mdcn_size": "40MG"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "FOLIC ACID",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "PLASIL WITH ENZYME",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Capsule",
+    "mdcn_name": "SOPRAN",
+    "mdcn_size": "30MG"
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "POLYMALT",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Mix",
+    "mdcn_name": "NILSTAT ORAL DROPS",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "SULPIR",
+    "mdcn_size": "50MG"
+  },
+  {
+    "mdcn_type": "Mix",
+    "mdcn_name": "SODA GLYCERINE EAR DROPS",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Mix",
+    "mdcn_name": "CLINAGEL GEL",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Mix",
+    "mdcn_name": "BREVOXYL CREAM",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "NEBIX",
+    "mdcn_size": "2.5"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "NEBIX",
+    "mdcn_size": "5.0MG"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "CATIC 1000",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Capsule",
+    "mdcn_name": "AZIT",
+    "mdcn_size": "250MG"
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "METODINE",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "FLAGYL",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "ACYLEX",
+    "mdcn_size": "800MG"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "EM FLOX",
+    "mdcn_size": "400MG"
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "SCOT EXPECTORANT",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "MECONOR",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "ENIER",
+    "mdcn_size": "16MG"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "ENIER",
+    "mdcn_size": "8MG"
+  },
+  {
+    "mdcn_type": "Capsule",
+    "mdcn_name": "SOLOSIN",
+    "mdcn_size": "0.4MG"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "CALDREE",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "NERVIN",
+    "mdcn_size": "0.5MG"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "NERVIN",
+    "mdcn_size": "0.25MG"
+  },
+  {
+    "mdcn_type": "Mix",
+    "mdcn_name": "PROCORT LOTION",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "MIXEL DS",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "MONPAL",
+    "mdcn_size": "10MG"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "COLOPRID",
+    "mdcn_size": "25MG"
+  },
+  {
+    "mdcn_type": "Capsule",
+    "mdcn_name": "PROACE",
+    "mdcn_size": "20MG"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "MONOCOR",
+    "mdcn_size": "5MG"
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "VITANOR-D",
+    "mdcn_size": "STAT"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "REVOLIC",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "OCVIR",
+    "mdcn_size": "400MG"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "FANTAZOLE",
+    "mdcn_size": "40MG"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "XYQUIL DR",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Capsule",
+    "mdcn_name": "CARICEF",
+    "mdcn_size": "400MG"
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "NYMBEX",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "NYMBEX 6 +",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "FAMOPSIN",
+    "mdcn_size": "20MG"
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "CIBCOS",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Mix",
+    "mdcn_name": "SALINASE NASAL DROPS",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Mix",
+    "mdcn_name": "CREPE BADAGAE",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "PYLOKLAR",
+    "mdcn_size": "250MG"
+  },
+  {
+    "mdcn_type": "Capsule",
+    "mdcn_name": "PROP-ACE",
+    "mdcn_size": "20MG"
+  },
+  {
+    "mdcn_type": "Capsule",
+    "mdcn_name": "VELOSEF",
+    "mdcn_size": "500MG"
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "AMCLAV",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "AMCLAV PLUS",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "AMCLAV DS",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "AMCLAV",
+    "mdcn_size": "625"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "ZETRO",
+    "mdcn_size": "500MG"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "LINZOLEY",
+    "mdcn_size": "600MG"
+  },
+  {
+    "mdcn_type": "Capsule",
+    "mdcn_name": "AZIBAC",
+    "mdcn_size": "250MG"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "MISAR AM",
+    "mdcn_size": "5/40"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "ZOVANTA",
+    "mdcn_size": "40MG"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "FREDA",
+    "mdcn_size": "15MG"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "UBEX",
+    "mdcn_size": "40MG"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "DOSTERIL",
+    "mdcn_size": "37.5/325MG"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "DICLORAN DISP.",
+    "mdcn_size": "50MG"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "FA-CIN",
+    "mdcn_size": "250MG"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "FA-CIN",
+    "mdcn_size": "500MG"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "DAPARIL DS",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "PANGESIC",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "PANGESIC FORT",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "LEVOSAFE",
+    "mdcn_size": "500MG"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "CIPROSAFE",
+    "mdcn_size": "500MG"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "AMROFEC",
+    "mdcn_size": "50MG"
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "GEXIM",
+    "mdcn_size": "200MG/5ML"
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "SELDOM",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "X-TRAM",
+    "mdcn_size": "325/37.5MG"
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "MINCON",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "LACTODIL",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Capsule",
+    "mdcn_name": "LANCERID",
+    "mdcn_size": "30MG"
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "COMBINOL H+",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "PACIFICS DM",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "STONOTS",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "MECOBORN",
+    "mdcn_size": "500MCG"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "CAVALOR DROPS",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "VERZ",
+    "mdcn_size": "16"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "SULPIR",
+    "mdcn_size": "50"
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "RAFIX",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "HIRON",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Mix",
+    "mdcn_name": "PANADOL DROPS",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Mix",
+    "mdcn_name": "CAVALOR DROPD",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Capsule",
+    "mdcn_name": "GABATEL",
+    "mdcn_size": "75"
+  },
+  {
+    "mdcn_type": "Capsule",
+    "mdcn_name": "COLONIL BR",
+    "mdcn_size": "200"
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "VIOPHOS",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "VOLOXO",
+    "mdcn_size": "5"
+  },
+  {
+    "mdcn_type": "Capsule",
+    "mdcn_name": "ERICA",
+    "mdcn_size": "75"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "CIPROZ",
+    "mdcn_size": "500"
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "MANT GAS",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "VIDA Z",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Capsule",
+    "mdcn_name": "EMPEROL",
+    "mdcn_size": "20"
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "MULTIBIONTA",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Capsule",
+    "mdcn_name": "CEFKAN",
+    "mdcn_size": "400"
+  },
+  {
+    "mdcn_type": "Capsule",
+    "mdcn_name": "ESOMALT",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "SURBEX Z",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "NEUCURE",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "ZINPLEX",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Mix",
+    "mdcn_name": "STEAM INHALATION",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Capsule",
+    "mdcn_name": "ROMY",
+    "mdcn_size": "500"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "ANGESID       S/L",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "ANGESID          S/L",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "MAXFYL",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "BOFORGE",
+    "mdcn_size": "10/160"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "BIFORGE",
+    "mdcn_size": "10/160"
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "LINKUS",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "COMBINOL E",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "NOOTROPIL",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "CROHIST",
+    "mdcn_size": "320"
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "CITRALKA",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "DIJEX MP",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "SULVORID",
+    "mdcn_size": "50"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "VENTOLIN",
+    "mdcn_size": "2"
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "PERDOLAN 6+",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "PERKODIN",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "ALPRAZOLAM",
+    "mdcn_size": "0.25"
+  },
+  {
+    "mdcn_type": "Capsule",
+    "mdcn_name": "PERKODIN",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "VG ROX",
+    "mdcn_size": "250MG/5ML"
+  },
+  {
+    "mdcn_type": "Mix",
+    "mdcn_name": "CUTIVATE CREAM",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "APOZYME",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "LIVOPERK",
+    "mdcn_size": "500"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "AZOLAM",
+    "mdcn_size": "0.5"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "AZOLAM",
+    "mdcn_size": "0.25"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "HRZE",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "HR",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "LORIN NSA",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "CAC1000+",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "CYCIN 250",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "CYCIN",
+    "mdcn_size": "500"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "CYCIN",
+    "mdcn_size": "250"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "CARVEDA",
+    "mdcn_size": "3.125"
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "P CIT",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "HELIFAX",
+    "mdcn_size": "550"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "ITOWIN",
+    "mdcn_size": "50"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "PERCIP",
+    "mdcn_size": "250"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "KLINT",
+    "mdcn_size": "400"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "MODRIN",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "MECOBORN",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "SAMEROL-N",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "SAMEROL N FORT",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "OSSMAX DHA",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "SAVARIL",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "RADIFLOX",
+    "mdcn_size": "125"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "COLONIL MR",
+    "mdcn_size": "200"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "STAT A",
+    "mdcn_size": "10"
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "IMUZON",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Mix",
+    "mdcn_name": "CRANTOP SACHET",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "TEST",
+    "mdcn_size": "25"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "TEST",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "TEST2",
+    "mdcn_size": "25"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "TEST3",
+    "mdcn_size": "20"
+  },
+  {
+    "mdcn_type": "Capsule",
+    "mdcn_name": "SPORONAX",
+    "mdcn_size": "100"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "ARCEVA",
+    "mdcn_size": "80/480"
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "RADIFLOX",
+    "mdcn_size": "250/5ML"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "ELERAL",
+    "mdcn_size": "50"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "POLYROLE",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "IROPAL",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "PERKCIN",
+    "mdcn_size": "400"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "ITOPER",
+    "mdcn_size": "50"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "BETOXI",
+    "mdcn_size": "20"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "QUIS",
+    "mdcn_size": "600"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "IPD",
+    "mdcn_size": "50"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "NOWEEZ",
+    "mdcn_size": "10"
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "RELISH",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "ONEFOLIN",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "SERDAN",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "HCQ",
+    "mdcn_size": "200"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "ENDTRON",
+    "mdcn_size": "8"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "POLYMALT F",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "VOLOXO",
+    "mdcn_size": "2.5"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "STEMATIL",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "ZEECIN",
+    "mdcn_size": "500"
+  },
+  {
+    "mdcn_type": "Capsule",
+    "mdcn_name": "ETIPRO",
+    "mdcn_size": "20"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "MOZTER",
+    "mdcn_size": "400"
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "QUASH 125MG/5ML",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "QUASH 250MG/5ML",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "FAMOT",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "TERIL",
+    "mdcn_size": "200"
+  },
+  {
+    "mdcn_type": "Mix",
+    "mdcn_name": "CLYCIN T LOTION",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Capsule",
+    "mdcn_name": "ZEECIN",
+    "mdcn_size": "250"
+  },
+  {
+    "mdcn_type": "Capsule",
+    "mdcn_name": "SAFDROXIL",
+    "mdcn_size": "500"
+  },
+  {
+    "mdcn_type": "Capsule",
+    "mdcn_name": "MECOCID",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Mix",
+    "mdcn_name": "VIDACAL C SACHET",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "RIAM",
+    "mdcn_size": "400"
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "VIDAYLIN L",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "ONE FOLIN",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "ALVOSTAN",
+    "mdcn_size": "5/80"
+  },
+  {
+    "mdcn_type": "Mix",
+    "mdcn_name": "ORAN-G SACHET",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Mix",
+    "mdcn_name": "ACK-DERM SOAP",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Mix",
+    "mdcn_name": "FUNGI-RID CREAM",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "ENERGIN",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Mix",
+    "mdcn_name": "VIDAYLIN DROPS",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Mix",
+    "mdcn_name": "PROSFIN-AS SOAP",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "VINDRIL",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "CIPROSAFE",
+    "mdcn_size": "250"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "AXAL",
+    "mdcn_size": "0.25"
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "OSS-PRO",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Mix",
+    "mdcn_name": "PROSFIN-AS LOTION",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "ZYTO",
+    "mdcn_size": "250"
+  },
+  {
+    "mdcn_type": "Capsule",
+    "mdcn_name": "ISFLO",
+    "mdcn_size": "150"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "QSARTAN",
+    "mdcn_size": "50"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "QSARTAN PLUS",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Capsule",
+    "mdcn_name": "ESODAY",
+    "mdcn_size": "40"
+  },
+  {
+    "mdcn_type": "Capsule",
+    "mdcn_name": "PEGALIN",
+    "mdcn_size": "75"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "QALSAN D",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "ASTRID",
+    "mdcn_size": "150"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "AEWIN",
+    "mdcn_size": "400"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "CECON",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "VORBO",
+    "mdcn_size": "10MG"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "C-VIT",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "FAMOPSIN",
+    "mdcn_size": "40"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "ROLIPEZE",
+    "mdcn_size": "5/10"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "DUPHASTON",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Mix",
+    "mdcn_name": "GTN OINTMENT",
+    "mdcn_size": "0.5%"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "WARIOR",
+    "mdcn_size": "250"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "WARIOR",
+    "mdcn_size": "500"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "METHYCOBAL",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "COLISAN",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Capsule",
+    "mdcn_name": "CEFIA",
+    "mdcn_size": "200"
+  },
+  {
+    "mdcn_type": "Mix",
+    "mdcn_name": "CRANBIOTIC SACHET",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "DAFLON",
+    "mdcn_size": "500"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "ENTAMIZOLE DS",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "OXYCLOR",
+    "mdcn_size": "200"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "ENTAMOZOLE",
+    "mdcn_size": "200"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "RIDOSPA",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Mix",
+    "mdcn_name": "VOLTRAL EMULGEL",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "MON DEW",
+    "mdcn_size": "10"
+  },
+  {
+    "mdcn_type": "Mix",
+    "mdcn_name": "COMATIC GEL",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "AZOCID",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Mix",
+    "mdcn_name": "URICA SACHET",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "VILDOMET",
+    "mdcn_size": "50/500"
+  },
+  {
+    "mdcn_type": "Mix",
+    "mdcn_name": "D MAX DROPS",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "D MUG",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Mix",
+    "mdcn_name": "SEROX SACHET",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "OSSPRO",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "OCE-LYSINE",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "BEZOLID",
+    "mdcn_size": "20"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "NUPENTA",
+    "mdcn_size": "40"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "VONNP",
+    "mdcn_size": "20"
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "FIXIRIN DS",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "ETOGESIC",
+    "mdcn_size": "60"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "CALPEK",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "ONECEF",
+    "mdcn_size": "125/5ML"
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "ONECEF",
+    "mdcn_size": "250/5ML"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "SB-ZOLE",
+    "mdcn_size": "40"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "MOXIDANZ",
+    "mdcn_size": "400"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "GARNTRIDE",
+    "mdcn_size": "50"
+  },
+  {
+    "mdcn_type": "Mix",
+    "mdcn_name": "EAZY GEL",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "NUBERRY",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "SAMTEK",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "EBAK",
+    "mdcn_size": "10"
+  },
+  {
+    "mdcn_type": "Capsule",
+    "mdcn_name": "TIOGET WITH PROHALER",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Capsule",
+    "mdcn_name": "FORMIGET WITH PROHALER",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "ADMIRA",
+    "mdcn_size": "500"
+  },
+  {
+    "mdcn_type": "Capsule",
+    "mdcn_name": "BRULYN",
+    "mdcn_size": "25"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "COLOPRID",
+    "mdcn_size": "25"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "COLOPRID",
+    "mdcn_size": "50"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "DRATE PLUS D",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "EXPOREN",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Mix",
+    "mdcn_name": "E-RID SACHET",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "MOZIFLOX",
+    "mdcn_size": "400"
+  },
+  {
+    "mdcn_type": "Mix",
+    "mdcn_name": "MAC-D DROPS",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "MAC-D",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "MAC-D",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Mix",
+    "mdcn_name": "COLOSPAS FIBRO",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Capsule",
+    "mdcn_name": "MEDITON",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Mix",
+    "mdcn_name": "PAINSET GEL",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "DOSCAL-T",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "PLANAX",
+    "mdcn_size": "100MG/SML"
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "PALXIME DS",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Capsule",
+    "mdcn_name": "E-ROSE",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "KLEENLAC",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "POFERA-S",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "CIPROJAN",
+    "mdcn_size": "250MG/5ML"
+  },
+  {
+    "mdcn_type": "Capsule",
+    "mdcn_name": "EENERGIN",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "KERT",
+    "mdcn_size": "16"
+  },
+  {
+    "mdcn_type": "Capsule",
+    "mdcn_name": "RUMAXOL",
+    "mdcn_size": "20"
+  },
+  {
+    "mdcn_type": "Capsule",
+    "mdcn_name": "ENERGIN",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Mix",
+    "mdcn_name": "OSLIA DROPS",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "DIAGESIC-P",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "AMLOVASTAN",
+    "mdcn_size": "10/160"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "ELMECOB",
+    "mdcn_size": "500MCG"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "PLATLO",
+    "mdcn_size": "75"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "AMLO Q",
+    "mdcn_size": "5"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "HI NUTRITION MEN",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "HI NUTRITION WOMEN",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "PALFLOX",
+    "mdcn_size": "500"
+  },
+  {
+    "mdcn_type": "Capsule",
+    "mdcn_name": "PALXIME",
+    "mdcn_size": "400"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "DICLOPAL",
+    "mdcn_size": "50"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "LODOPIN-V",
+    "mdcn_size": "5/80"
+  },
+  {
+    "mdcn_type": "Mix",
+    "mdcn_name": "ADE CARE DROPS",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "ZINCO",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "NEUTROTRON",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Mix",
+    "mdcn_name": "ACYLEX SKIN OINTMENT",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "BS-PRAM",
+    "mdcn_size": "10"
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "FAI MINT",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Capsule",
+    "mdcn_name": "RUMOXAL",
+    "mdcn_size": "40"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "TRUMED P",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "K2-D+",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "DYNOFER-F",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "CRESCOR",
+    "mdcn_size": "5"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "BRULYN",
+    "mdcn_size": "25"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "FEBONOV",
+    "mdcn_size": "40"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "ONGENE",
+    "mdcn_size": "8"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "DISPIRIN GARGLES",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "CALPOL 6 +",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "NUBEROL",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "NUBEROL FORT",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "PROVAS N",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "PROVAS N FORT",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Mix",
+    "mdcn_name": "HIGH-C 1000",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Capsule",
+    "mdcn_name": "LEZOXIB",
+    "mdcn_size": "200"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "FLEET PLUS",
+    "mdcn_size": "75/75"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "RA-MIDE",
+    "mdcn_size": "20"
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "BIG 3",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Mix",
+    "mdcn_name": "FUROCID CREAM",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "SEEF",
+    "mdcn_size": "25"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "ORVAST",
+    "mdcn_size": "20"
+  },
+  {
+    "mdcn_type": "Capsule",
+    "mdcn_name": "RINGET",
+    "mdcn_size": "20"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "PALFLOX",
+    "mdcn_size": "250"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "NUBAL",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "PYTEX",
+    "mdcn_size": "20"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "PEPZYME",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "CIPROJAN",
+    "mdcn_size": "250"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "FIBER-ZEL",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "LEWDIS",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "ZITAMIX",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "LEVIED",
+    "mdcn_size": "50"
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "IBOXIME",
+    "mdcn_size": "100MG/5ML"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "AZINEU",
+    "mdcn_size": "500"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "NUTRAFOLIC",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Capsule",
+    "mdcn_name": "XIME-C",
+    "mdcn_size": "400"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "FEBROL",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Capsule",
+    "mdcn_name": "MUCOGEN",
+    "mdcn_size": "4"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "CIROL-D3",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Capsule",
+    "mdcn_name": "SGINDROP D",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Capsule",
+    "mdcn_name": "FLUCOMED",
+    "mdcn_size": "150"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "PIROMED",
+    "mdcn_size": "20"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "AMEIT",
+    "mdcn_size": "10/10"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "OPERA MV",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Mix",
+    "mdcn_name": "ACNE AID BAR SOAP",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "VIGLITA",
+    "mdcn_size": "50/1000"
+  },
+  {
+    "mdcn_type": "Capsule",
+    "mdcn_name": "ESPO",
+    "mdcn_size": "40"
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "DEPCID",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Capsule",
+    "mdcn_name": "OLX",
+    "mdcn_size": "20"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "WELRIDE",
+    "mdcn_size": "50"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "ONE-3",
+    "mdcn_size": "20/120"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "ONE-3",
+    "mdcn_size": "40/240"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "ONE-3",
+    "mdcn_size": "80/480"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "PREXA",
+    "mdcn_size": "10"
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "RELTUS DM",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "INDERAL",
+    "mdcn_size": "10"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "INDERAL",
+    "mdcn_size": "40"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "STIVER",
+    "mdcn_size": "6"
+  },
+  {
+    "mdcn_type": "Capsule",
+    "mdcn_name": "MIXEL",
+    "mdcn_size": "200"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "FELDENE",
+    "mdcn_size": "20"
+  },
+  {
+    "mdcn_type": "Mix",
+    "mdcn_name": "FELDENE GEL",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "METHYSAP",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "SERC",
+    "mdcn_size": "16"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "SIMSTINE",
+    "mdcn_size": "20"
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "IBOXIME DS",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Capsule",
+    "mdcn_name": "ICE30",
+    "mdcn_size": "30"
+  },
+  {
+    "mdcn_type": "Mix",
+    "mdcn_name": "MONTY SACHET",
+    "mdcn_size": "4"
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "ZIDOR",
+    "mdcn_size": "200MG/5ML"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "AVSAR",
+    "mdcn_size": "5/80"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "AVSAR",
+    "mdcn_size": "5/160"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "AVSAR",
+    "mdcn_size": "10/160"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "UBIX",
+    "mdcn_size": "100"
+  },
+  {
+    "mdcn_type": "Capsule",
+    "mdcn_name": "MAXINON",
+    "mdcn_size": "10"
+  },
+  {
+    "mdcn_type": "Mix",
+    "mdcn_name": "ACNEEZ CREAM",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Mix",
+    "mdcn_name": "ACNEEZ PLUS FACE WASH",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Mix",
+    "mdcn_name": "ACNEX SOAP",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Mix",
+    "mdcn_name": "SOLOTAN SPF 100CREAM",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "HOOXIM",
+    "mdcn_size": "100/5ML"
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "HOOXIM DS",
+    "mdcn_size": "200MG/5ML"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "UNIX",
+    "mdcn_size": "100"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "LEVOSAFE",
+    "mdcn_size": "250"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "FRENDOL-P",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "NILDEN",
+    "mdcn_size": "100"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "MULTI-W",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "MULTI-G",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "NOVELACT",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "XIME-C",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "GENCID",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "BERCID",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Capsule",
+    "mdcn_name": "MEDICINE NAME",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Capsule",
+    "mdcn_name": "OMEZOLE",
+    "mdcn_size": "20"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "F-AIZ",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "ITOZON",
+    "mdcn_size": "50"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "CANER",
+    "mdcn_size": "15"
+  },
+  {
+    "mdcn_type": "Capsule",
+    "mdcn_name": "CESAVE",
+    "mdcn_size": "400"
+  },
+  {
+    "mdcn_type": "Capsule",
+    "mdcn_name": "PHYTOFLAVIN",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "D-LIV",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Capsule",
+    "mdcn_name": "D-LIV",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "RENERVE",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "VENU",
+    "mdcn_size": "20"
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "IQ MEGA",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "ETORIJUP",
+    "mdcn_size": "60"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "XILICA",
+    "mdcn_size": "25"
+  },
+  {
+    "mdcn_type": "Mix",
+    "mdcn_name": "MAYCAL SACHET",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "PRUVIX",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "RAPARIL DS",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "KESTINE",
+    "mdcn_size": "20"
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "FERROMAX",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "ERIZINE",
+    "mdcn_size": "10"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "PIROMED",
+    "mdcn_size": "20MG"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "JANGULIP-M",
+    "mdcn_size": "50/500"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "JANGULIP-M",
+    "mdcn_size": "50/1000"
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "LIMOZID",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "APRICS-D",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "CAM-Z",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Capsule",
+    "mdcn_name": "PEPSO",
+    "mdcn_size": "40"
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "GINKO",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "SADIP",
+    "mdcn_size": "50"
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "ANTASIP",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "WELCAM B",
+    "mdcn_size": "20"
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "MOTILIUM",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "ZEEK-N",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Capsule",
+    "mdcn_name": "SAF-D",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "TRIXIN 20MG",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "MEGA-Z",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Mix",
+    "mdcn_name": "EMB GEL",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Capsule",
+    "mdcn_name": "JUMEP",
+    "mdcn_size": "20"
+  },
+  {
+    "mdcn_type": "Capsule",
+    "mdcn_name": "CELSTAR",
+    "mdcn_size": "200"
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "ENTAMIZOLE",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Mix",
+    "mdcn_name": "KYNO SACHET",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Capsule",
+    "mdcn_name": "SAF-D 5000 IU",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "FEBSTAT",
+    "mdcn_size": "40"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "STAJER",
+    "mdcn_size": "400"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "UZARIL",
+    "mdcn_size": "500"
+  },
+  {
+    "mdcn_type": "Capsule",
+    "mdcn_name": "SALLAR",
+    "mdcn_size": "400"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "ITOMED",
+    "mdcn_size": "50"
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "ORBITOL",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "MOXILEY",
+    "mdcn_size": "400"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "LEROZINE",
+    "mdcn_size": "5"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "DICLORAN DISPERLET",
+    "mdcn_size": "50"
+  },
+  {
+    "mdcn_type": "Capsule",
+    "mdcn_name": "BELFIX",
+    "mdcn_size": "400"
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "NEXCIP 250MG/5ML",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "JACK & JILL MIXTURE",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Mix",
+    "mdcn_name": "ACIDAX SACHET",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "LEMOX",
+    "mdcn_size": "400"
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "CAM-Z",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Mix",
+    "mdcn_name": "TERBISIL CREAM",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "ESTAR",
+    "mdcn_size": "10"
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "BRONCHOSAFE",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "ULZEC",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "CIPREXIS",
+    "mdcn_size": "500"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "CIPREXIS",
+    "mdcn_size": "250"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "HAVIT-D",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Capsule",
+    "mdcn_name": "ZOLPRO",
+    "mdcn_size": "20"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "ACENAC",
+    "mdcn_size": "100"
+  },
+  {
+    "mdcn_type": "Mix",
+    "mdcn_name": "ACENAC GEL",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "EXEMP-LIN MET",
+    "mdcn_size": "10/5/1000"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "EXEMPA-LIN MET",
+    "mdcn_size": "12.5/2.5/1000"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "EXEMPA-LIN MET",
+    "mdcn_size": "25/5/1000"
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "NOPOFIN",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "EFFICENT",
+    "mdcn_size": "10"
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "COUGHESE",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "CEPMOL-T",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "TERBISIL",
+    "mdcn_size": "125"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "TERBISIL",
+    "mdcn_size": "250"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "NEWVIT IQ",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "METHCOMIN",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "ACUTITE",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "SELMOXI",
+    "mdcn_size": "400"
+  },
+  {
+    "mdcn_type": "Mix",
+    "mdcn_name": "MYFOSIN SACHET",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Capsule",
+    "mdcn_name": "CFD",
+    "mdcn_size": "500"
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "O-MONIX",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "XIB",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Capsule",
+    "mdcn_name": "AULTADEX",
+    "mdcn_size": "30"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "SEROFT",
+    "mdcn_size": "50"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "SALAZOPYRIN",
+    "mdcn_size": "500"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "CETA-T",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "OBSTINE",
+    "mdcn_size": "10"
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "ACUMEG",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "KETIN",
+    "mdcn_size": "10"
+  },
+  {
+    "mdcn_type": "Mix",
+    "mdcn_name": "CHIRO-D SACHET",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Capsule",
+    "mdcn_name": "INFORIL",
+    "mdcn_size": "500"
+  },
+  {
+    "mdcn_type": "Capsule",
+    "mdcn_name": "PLANAX",
+    "mdcn_size": "400"
+  },
+  {
+    "mdcn_type": "Mix",
+    "mdcn_name": "GENTRO GEL",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "INFORILL",
+    "mdcn_size": "250mg/5ml"
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "INFORIL",
+    "mdcn_size": "125mg/5ml"
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "RAVOGLOBIN",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "HIGAB",
+    "mdcn_size": "75"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "JOYEL",
+    "mdcn_size": "10"
+  },
+  {
+    "mdcn_type": "Capsule",
+    "mdcn_name": "LUNAR",
+    "mdcn_size": "5"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "VESOPRIDE",
+    "mdcn_size": "25"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "SILIVER",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "COVANCE",
+    "mdcn_size": "5/80"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "ITOTEC",
+    "mdcn_size": "50"
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "VIDAPLEX",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "LIMOZID",
+    "mdcn_size": "600"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "SULBIR",
+    "mdcn_size": "100"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "NIMVENT",
+    "mdcn_size": "100"
+  },
+  {
+    "mdcn_type": "Capsule",
+    "mdcn_name": "DEXOKYT",
+    "mdcn_size": "60"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "FASIGYL",
+    "mdcn_size": "400"
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "LICID",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "K-CYTRATE",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "ORNITATE",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "HYDEEN DM",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "BREXIN",
+    "mdcn_size": "20"
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "RANCIL",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "MYRIN P FORT",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "RESTIRO",
+    "mdcn_size": "80"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "EPERA",
+    "mdcn_size": "50"
+  },
+  {
+    "mdcn_type": "Mix",
+    "mdcn_name": "SOGIN LOTION",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Capsule",
+    "mdcn_name": "INVENZOL",
+    "mdcn_size": "20"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "NIPSSO",
+    "mdcn_size": "500/20"
+  },
+  {
+    "mdcn_type": "Capsule",
+    "mdcn_name": "CEFSPAN",
+    "mdcn_size": "400"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "VONOPRAN",
+    "mdcn_size": "20"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "MAGNISH-G",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "XECOR",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "FESEGOR",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "ASPITE",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "BUDEX DS",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "BUDEX",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Mix",
+    "mdcn_name": "CALAMINE LOTION",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "REBAMID",
+    "mdcn_size": "100"
+  },
+  {
+    "mdcn_type": "Capsule",
+    "mdcn_name": "REMEP",
+    "mdcn_size": "40"
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "AGLOP",
+    "mdcn_size": "200mg/5ml"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "SPASTER",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "ETOMOR",
+    "mdcn_size": "60"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "RESTORAM",
+    "mdcn_size": "80"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "BESMEM",
+    "mdcn_size": "10"
+  },
+  {
+    "mdcn_type": "Capsule",
+    "mdcn_name": "FIXIKEF",
+    "mdcn_size": "400"
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "HEPA MERZ",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "ACETOFEN FORT",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "GAVISCON ADVANCE",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Mix",
+    "mdcn_name": "KETAGEN LOTION",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Mix",
+    "mdcn_name": "LUMBOSACRAL BELT",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "AXYCID",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "CEBOSCH",
+    "mdcn_size": "200"
+  },
+  {
+    "mdcn_type": "Capsule",
+    "mdcn_name": "FLUCOXAN",
+    "mdcn_size": "150"
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "HEPASURE",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Capsule",
+    "mdcn_name": "HEPASURE",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "COGNILINK",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "COGNILINK",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "ACEBRO",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "ACASIA",
+    "mdcn_size": "500"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "MOLOX",
+    "mdcn_size": "400"
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "VASEDEX-L",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "MYFISIN",
+    "mdcn_size": "250mg/5ml"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "UNIPEP",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "ACCULEAF",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Mix",
+    "mdcn_name": "BEASY SACHET",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Mix",
+    "mdcn_name": "FUDERM-H CREAM",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "OSTI-GLU",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "CALCIU-FORT",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "ZEKAR",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Capsule",
+    "mdcn_name": "VILANTO-UF WITH REVOLIZER",
+    "mdcn_size": "200+62.5+25mg"
+  },
+  {
+    "mdcn_type": "Capsule",
+    "mdcn_name": "VILANTO-F WITH REVOLIZER",
+    "mdcn_size": "200+25mg"
+  },
+  {
+    "mdcn_type": "Capsule",
+    "mdcn_name": "OMEGA COMPLEX",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "NEVRIX",
+    "mdcn_size": "5MG"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "NEVRIX",
+    "mdcn_size": "2.5MG"
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "ROJEL",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "D-SOM",
+    "mdcn_size": "200,000"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "NAVIX",
+    "mdcn_size": "5MG"
+  },
+  {
+    "mdcn_type": "Mix",
+    "mdcn_name": "FAMISIN SACHET",
+    "mdcn_size": "3G"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "BINALFINE",
+    "mdcn_size": "125MG"
+  },
+  {
+    "mdcn_type": "Capsule",
+    "mdcn_name": "MENS STROVER",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "AZEEBID",
+    "mdcn_size": "500MG"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "ACOTE",
+    "mdcn_size": "100MG"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "BILTINE",
+    "mdcn_size": "20MG"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "VELKER",
+    "mdcn_size": "5/80MG"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "VELKER",
+    "mdcn_size": "5/160MG"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "VELKER",
+    "mdcn_size": "10/160MG"
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "COOLWAY",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "MDCID",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "TRAMAL-D",
+    "mdcn_size": "75/25MG"
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "FANE",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "VIT-O-CARE",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "MOXYGEN",
+    "mdcn_size": "400MG"
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "COOLENT",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Capsule",
+    "mdcn_name": "CHOL-D",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "NISE",
+    "mdcn_size": "100MG"
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "F-TEZ",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Capsule",
+    "mdcn_name": "ESOBORN",
+    "mdcn_size": "40MG"
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "ZANXIM",
+    "mdcn_size": "100MG/5ML"
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "ZANXIM DS",
+    "mdcn_size": "200MG/5ML"
+  },
+  {
+    "mdcn_type": "Capsule",
+    "mdcn_name": "FENOPEP",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "ARTEMATE",
+    "mdcn_size": "80/480MG"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "COVANCE-H",
+    "mdcn_size": "10/160/12.5MG"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "COVANCE-H",
+    "mdcn_size": "5/160/12.5MG"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "REMESON",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "ZONRO",
+    "mdcn_size": "20MG"
+  },
+  {
+    "mdcn_type": "Mix",
+    "mdcn_name": "MAXIT SACHET",
+    "mdcn_size": "50MG"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "PROCEF",
+    "mdcn_size": "400MG"
+  },
+  {
+    "mdcn_type": "Mix",
+    "mdcn_name": "SUPER WART REMOVER",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "SIMVVY",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "SAMVY",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "COMOXI 400MG",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Capsule",
+    "mdcn_name": "ITOL",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Capsule",
+    "mdcn_name": "VOMIVAN",
+    "mdcn_size": "30MG"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "PLATLO PLUS",
+    "mdcn_size": "75/75MG"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "EZIMOL",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "P.BETA",
+    "mdcn_size": "20MG"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "ZEESPA",
+    "mdcn_size": "135MG"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "MITS",
+    "mdcn_size": "15MG"
+  },
+  {
+    "mdcn_type": "Mix",
+    "mdcn_name": "PROMIZ INSTA SACHET",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "ITRID",
+    "mdcn_size": "50MG"
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "NUTRI",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "PRUCILO",
+    "mdcn_size": "2MG"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "OCCUNET",
+    "mdcn_size": "400MG"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "MED-Z",
+    "mdcn_size": "250MG"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "BEASY",
+    "mdcn_size": "10MG"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "CEBOSCH",
+    "mdcn_size": "400MG"
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "TRIMETABOL",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Mix",
+    "mdcn_name": "SOMOGEL",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Mix",
+    "mdcn_name": "ENZICLOR MOUTH WASH",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Capsule",
+    "mdcn_name": "LAPRAZOLE",
+    "mdcn_size": "30MG"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "PEGALIN CR",
+    "mdcn_size": "82.5MG"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "ARSHOGEST",
+    "mdcn_size": "50MG"
+  },
+  {
+    "mdcn_type": "Capsule",
+    "mdcn_name": "BUDENOX WITH REVOLIZER",
+    "mdcn_size": "400/12MCG"
+  },
+  {
+    "mdcn_type": "Mix",
+    "mdcn_name": "FUDERM CREAM",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "ORGLU",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "MED-Z",
+    "mdcn_size": "500MG"
+  },
+  {
+    "mdcn_type": "Capsule",
+    "mdcn_name": "ETHERN",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "MIRBOLI",
+    "mdcn_size": "5MG"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "STAARS-Z",
+    "mdcn_size": "10/10MG"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "STAARS",
+    "mdcn_size": "10MG"
+  },
+  {
+    "mdcn_type": "Tablet",
+    "mdcn_name": "AIROSAFE",
+    "mdcn_size": "10MG"
+  },
+  {
+    "mdcn_type": "Syrup",
+    "mdcn_name": "NEUGINKO",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ OLINC 600MG IM",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ PROVAS IM",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "NEB.WITH VENTOLIN",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ HYCORTISONE 100MG IV",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ VOREN I/G",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ METHYCOBAL I/M",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ METROZIL 100ML IV",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ D CURE   STAT",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ VOREN IG",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ SPASRID IV",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ LACURA 500MG IM",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ LACURA 1G IV",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ BRINO IV",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ MOXYGET IV",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ ZOLTAR 40MG IV",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ INDROP D STAT",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ SULPERAZONE 1G IV ATD",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ LACURA 250MG IG",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ ZOVANTA 40MG IV",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "IINJ LACURA 250MG IG",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ TEPH 40MG IV",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ NOVIDATE 100ML IV",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ METOCLON    IV",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ DEVOM IM",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ SULPERAZONE 1 G IV",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ CEFTIUM 1G IV",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ PROVAS 100ML IV",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ CEFXONE IV",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ XOMAL 80MG IM",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ BENZIUM 40MG IV",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "ONJ PROV",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ BACTOWIN 1G IV",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ TRIAX 1G IV",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ LACURA 500MG IV",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ CALCIFER D STAT",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ REMETHAN IG",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ RULING 40MG IV",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJMOXIGET IV",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ MOXIGET IV",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ GRAVINATE I/M",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ. VORENINJ LACURA 250",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "ANJ RE",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ BIOCOBOL IM",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ R/L1000ML IV",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "NEB.WITH CLENIL A",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ FEVERAL IM",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ DACADRAN 1CC IM",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ TETNUS TOXOID IM",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ HYCORTISONE 250MG IV",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ CYCIN 100ML IV",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ MECONOR IM",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ DAYLINE 500MG IG",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ SUNVIT D STAT",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ DAYLINE 250MG IG",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "MAINTAIN I/V LINE",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ DAYLINE 500MG IV",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "NEU",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "SPAS",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "METR",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "NEB WITH CLENIL A",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ CEFXONE 1G IV",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ CEFTIUM 2G IV",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "NEB.WITH ATEM",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ MECONOR IV",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ AMKAY 50MG IV",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ OXIDIL 1G IV",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ ONDAN IV",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ Q BACT 1G IV",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "ONJ DAYL",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "HY",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ SAFETAM 1G IV",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "NEB.WITH AVENTOLIN",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ LACURA 1G IM",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ MUZELUS IV",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "NJ ULCE",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "RE",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ DEBORN L IM",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ DEBORN-L I/M",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ RUMON IM",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ LEVOSAFE 100ML IV",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "ONJ ULCER",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "ONJ OLI",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "BIO",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "ZOLTA",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJMECON",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ RAPID IV",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ FEVR",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ ESOPROL IV",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ DAYLINE IV",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "DAYL",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ SAFETAM 2G IV",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "NEB WITH AT",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "ONJ ZOLT",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ CIPROSAFE 100ML IV",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ R/L 500ML IV",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ NAXONE 500MG IG",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "NEB.WITH NEBULIZ",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "NJ D C",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ JENECEF 1G IV",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ BEU",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "NEB.WITH NUBLIZ",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ JOINCEF 1G IV",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "NJ SPAS",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "COU",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ ADOLAN IM",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "LAC",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ LACURA 500MG IC",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ ENDTRON IV",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ CELTIS 1G IV",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ VITMIN K IM",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ OMEZOLE 40MG IV",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ ESOX 40MG IV",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "GERD",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "APOZ",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "I NJ",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ BEXUS 100ML IV",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ R/L500ML IV",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "SOB",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "PALPI",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ NIL",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJN ESOP",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "BRANULA",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "OLI",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJN CEFT",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "NEB INJ HY",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJNOVI",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "IN CAL",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ RANITIDE IV",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "CELTIS 1",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJDAYL",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ PEMAFOZ 500MG IV",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ GAV",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ D C",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJHY",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJD C",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ SERDAN IV",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "CIP",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ VITAMIN K IM",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJCELTIS 1",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "UTI",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ AVIL IM",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ BBEXU",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ 5% D/W 1000CC IV",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ QUASH 100ML IV",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ RINGET 40MG IV",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "ONJ R",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ RINGET 40MG",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ ONSET IV",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJN SPAS",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJSERD",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ SOLUTINA 250MD IV",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ SOLUTINA 100MG IV",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "NJ RE",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ RINMG",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJS APS",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ NIM",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ CCELTIS 1",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ OPLI",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ RER",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ RIDOSPA",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ SOMEZOLE IV",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ RIDOSPA IV",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ DAYTAXIME 500MG IM",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ BRIN\\",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ CEFTRO 1G IV",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "COMA",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ MOFEST IV",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "ISPAS",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "IJNJ RE",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJU CELTIS 1",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ KETOMED IM",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ CEFOCEF 1G IV",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ CELTIS 250MG IV",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ CELTIS 250MG IG",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "DYS",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ NOVEL-D STAT",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ CEFTAM 2G IV",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "NEB WITH ATEM",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "LT SCI",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "NEB",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ PLAZONE 250MG IG",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ KETOMED IV",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ NEUROBEDOXINE IV",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ ELMECOB IM",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "RUL",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "ENB",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ RUMAXOL 40MG IV",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "IJ GRAVI",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ XOMOL IM",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ VITCO D 1 STAT",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "ONJ METR",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ DAYL;",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ VOTC",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ NRE",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ VITIC",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ VOTIC",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJMETR",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ PALZONE 250MG IV",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ AVELON 250ML IV",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJELM",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "ININJ RE",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ NNEU",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ FLAGYL 100ML IV",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ METR]",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ RULINJ RE",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ RULINJ NEU",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ AMKAY 100MG IV",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "IINJ RE",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ ONGENE IV",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ REINJ NEU",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ METRINJ RE",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ NEUINJ VITC",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "NEBU",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ RU;",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ RICER",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ REINJ METHY",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ VVITC",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJN KETOM",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJROCER",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ KATOROMAC IM",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ  DAYL",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ  METR",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ  SPAS",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ KATOROMAC IV",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ ORC",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ JOINCEF 2G IV",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "TAB SAMBRO 3MG",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ MNETR",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "FEV",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ RUL;",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ SPAS\\",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "CAP SG INDROP D STAT",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "CA",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJNKA",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ ESPO 40MG IV",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ NKA",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ ETOLAC IM",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "I NJ SPAS",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ STAXIN  IV",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "ETOL",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "NEBUL",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ ENTUM 80MG IM",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ METHR",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ VIVTC",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ NWU",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "CAP",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJN ETOL",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ LANSPRO 30MG IV",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJETOL",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ INJ DAY",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ JOIM",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "NJ ETOL",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ METRE",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ METHYSAP IM",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ SPLO",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ TOTAL 1G IV",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ VIC",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "IINJ ETOL",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "\\",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ HARION 1G IV",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "I J ETOL",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "IONJ RE",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ WINZEK 40MG IV",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ VELOIN 400MG/250ML IV",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ VELOXIN 400MG/250ML",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ VELOXIN 400MG/250ML IV",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "TAB CAPOTEN",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "TAB CAPOTEN 25MG",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "ONJ FEV",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "STEAM INHALATION",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ KADEX IM",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ KADEX I/M",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "BENZ",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ SAFEMED 100ML IV",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ COL D STAT",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "IJNJ ROCE",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ DAUL",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ RISEK 40MG IV",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ LNSP",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "TOT",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ GAVI",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ NEU CAP",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ NECAP",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ KADEX IV",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "IMJ METR",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ CYI",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "CAOP",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "IJ KETO",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ INJ SPAS",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "NEB.WITH ATEE",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "IJNJ KE",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "CAPP",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ KETAROMAC IM",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ JUPE-D STAT",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ ISMAXONE 1G IV",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ JUM",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ JUMEP 40MG IV",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ SPANSEL IV",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ ROCERAX 1G IV",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ DC",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJJUMEP",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ NEUINJ D",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJSPAS",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ ZEEK-N IM",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "CALBID D STAT",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ CALBID D STAT",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ OLINC 300MG IG",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ CAL",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "IN JUMEP",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJNEU",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ NEI",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ SPI",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ CALBN",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "IINJ METR",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "IONJ METR",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ SAFTAM 2G IV ATD",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ PROC",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ ESOMEGA 40MG IV",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ GRASIRON IV",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ UCEFORE 500MG IV",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "IONJ D",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "NEB.WITHATEM",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "NEB.WITHCLE",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "IONJ SPAS",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ PROVINJ ISMA",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ ,METR",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ MTER",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ KJET",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ SPASS",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "LNJ ONG",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ  KET",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ PORV",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ ROCR",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ ROCEER",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ ACU D STAT",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ CEFBACTUM 1G IV",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ PETRA 40MG IV",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "IINJ NEU",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ SPOAS",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "CAPX",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJKET",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "IINJ D",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ ,ETR",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ DAYLINE 1G IV",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ DAYLINE 500M1G IV",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "IINJ SPAS",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ ORCER",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "ACU-D INSTA SHOT STAT",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ KT",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ KLET",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "0",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ LKET",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ  ONG",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ IVTC",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "IINJ VITC",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJPROV",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INMJ NEU",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "CAM",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ DAYLINE 1G IG",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ CARA D 3 STAT",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "NJ KE",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ INDA",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ INDAMOL 100ML IV",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ EK",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ LONC",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "BODY",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ AUC",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "CHEST",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ INJ ROCER",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ CEFACTUM 1G IV",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ CAFCT",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ CAFAC",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "ICEFAC",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJVITC",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ MEY",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ OMG",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ RL",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ CEBB",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ EUL",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ 2SUM 1G IV",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "IINJ DAYL",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ INVENZOL 40MG IV",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ INEU",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ K-DOL30 I/M",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ ESON",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ NAROBE 100ML IV",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ NETR",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ INARO",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INEU",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ NERO",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJJOINC",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJNEUR",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ SHINE-D STAT",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ ENU",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ ESOMEGA 40MG IV IN 100ML N/S",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJNARO",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ ACCU",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJN NEU",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ PER",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJACU",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ EMTR",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ ROCERAX 500MG I/G",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ ARO",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "ESPO",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ ESPOL 40MG IV",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ EPSOL 40MG IV",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ VEFB",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ PEO",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJJ BAC",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ SG INDROP DX STAT",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJOLI",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ INVEZ",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ ESSOM",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ SANTE 40MG IV",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ EAOM",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ CEFBACTUM 2G IV",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "IJ NEU",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ REMEP 40MG IV",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "NEB.WITH PACIHALE",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "RTI",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "IBJ KE",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ NAU",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ INJ ESPOL",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ FRIEZOLE 100ML IV",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ ESIM",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ SOLUTINA 100MG IM",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "ABD",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ CAFBA",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ BACR",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "LT LOWER CHEST",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "IMJ ESOM",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ INVENZZ",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "PRURI",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "HEADA",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "COUG",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ                                      METR",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ M,ETR",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ [RO",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ SOLI",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ SPASTER IV",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "IV",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "CAP D-SOM 200,000IU",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "AFTER FOOD",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ FRIZ",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ ESPOL IN 100ML N/S IV",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "IINJ FRI",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ NRU",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "IINJ KE",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ RIG",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJBACT",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ BCT",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ UP-D3 STAT",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ CEFRASUL 1G IV ATD",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJCEFRA",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "NEB WITH PACI",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJCEFBA",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ OLINC 600MG IMINJ FRI",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ HYZONATE  250MG IV",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ ROCDER",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "CAP CHOL-D STAT",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ KETINJ NEU",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "CAP RGA-D3",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "RG",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ RUNG",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "CAAP CHOL",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ ONGINJ CEFBAC",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ KETMED IV",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ ESOB",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "IINJ KET",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ CEFBC",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ OLINC 600MG IMNJ KET",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ OLINC 600MG IMNJ KETJ ESOM",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ OLINC 600MG IMNJ KETJ ESOM RUL",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "NEB WITH PACIHALE",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "PAIN IN RHC",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ TRIJECT 500MG IG",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ NCEFR",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ RINGET 40MG IV IN 100ML N/S",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ KETINJ ESOM",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ KETINJ FR",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "FLU",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "IBJ NEU",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "BLL",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ ROCERAX 250MG IG",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "IINJ RING",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ KETINJ RUL",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ HIZ",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ FIRIEZOLE 100ML IV",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ VEFBAC",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ SANTE 40MG IV IN 100ML N/S IV",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ QZONE 500MG I/M",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ DSYL",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJNDAYL",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ ESPOL 40MG IV IN 100CC N/S IV",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ CEGR",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJBRI",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ HYZONATE  100MG IV",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ OPRIME 40MG IV",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ SERGIFEX 1G IV",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ OPRIME 40MG IV IN 100ML N/S",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ ORP",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ KETIN IM",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ SLU",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJNBACT",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "CONSTIP",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ NIXVOM 8MG IV",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ KETINJ FRI",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ LET",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "INJ LIFODOX IV",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "ONJ CEFBAC",
+    "mdcn_size": null
+  },
+  {
+    "mdcn_type": "Inj",
+    "mdcn_name": "GRAVI",
+    "mdcn_size": null
+  }
+]

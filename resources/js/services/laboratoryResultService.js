@@ -17,4 +17,8 @@ export const laboratoryResultService = {
     getPatientVisitsOverview: (patientId) => api.get(`/laboratory-results/patients/${patientId}/visits-overview`),
     getNoVisitTests: (patientId) => api.get(`/laboratory-results/patients/${patientId}/no-visit-tests`),
     getVisitTests: (patientId, visitId) => api.get(`/laboratory-results/patients/${patientId}/visits/${visitId}/tests`),
+    uploadAttachment: (resultId, formData) => api.post(`/laboratory-results/${resultId}/attachments`, formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+    }),
+    deleteAttachment: (resultId, attachmentId) => api.delete(`/laboratory-results/${resultId}/attachments/${attachmentId}`),
 };

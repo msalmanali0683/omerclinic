@@ -16,6 +16,7 @@ class LaboratoryReportPrintDataService
         $result->loadMissing([
             'patient',
             'visit',
+            'template',
             'values' => fn ($query) => $query->orderBy('sort_order'),
         ]);
 
@@ -70,7 +71,7 @@ class LaboratoryReportPrintDataService
         }
 
         return LaboratoryResult::query()
-            ->with(['values' => fn ($query) => $query->orderBy('sort_order')])
+            ->with(['template', 'values' => fn ($query) => $query->orderBy('sort_order')])
             ->where('patient_visit_id', $visit->id)
             ->whereIn('status', $statuses)
             ->orderBy('result_date')
@@ -101,16 +102,29 @@ class LaboratoryReportPrintDataService
             'result_date' => $result->result_date?->format('Y-m-d'),
             'result_time' => $result->result_time,
             'remarks'     => $result->remarks,
-            'values'      => $result->values->map(fn ($value) => [
-                'id'              => $value->id,
-                'field_label'     => $value->field_label,
-                'field_key'       => $value->field_key,
-                'field_type'      => $value->field_type,
-                'field_value'     => $value->field_value,
-                'unit'            => $value->unit,
-                'reference_range' => $value->reference_range,
-                'sort_order'      => $value->sort_order,
-            ])->values()->all(),
+            'values'      => $result->values->map(function ($value) use ($result) {
+                $previewUrl = null;
+
+                if ($value->field_type === 'image' && filled($value->field_value) && is_numeric($value->field_value)) {
+                    $previewUrl = route('laboratory-results.attachments.preview', [
+                        'laboratoryResult' => $result->id,
+                        'attachment'       => (int) $value->field_value,
+                    ]);
+                }
+
+                return [
+                    'id'              => $value->id,
+                    'field_label'     => $value->field_label,
+                    'field_key'       => $value->field_key,
+                    'field_type'      => $value->field_type,
+                    'field_value'     => $value->field_value,
+                    'preview_url'     => $previewUrl,
+                    'unit'            => $value->unit,
+                    'reference_range' => $value->reference_range,
+                    'sort_order'      => $value->sort_order,
+                ];
+            })->values()->all(),
+            'test_type'   => $result->template?->test_type ?? 'standard',
         ];
     }
 }

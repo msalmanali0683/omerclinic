@@ -16,6 +16,7 @@ class LaboratoryTestTemplateService
             $template = LaboratoryTestTemplate::create([
                 'test_name'   => $data['test_name'],
                 'test_code'   => $data['test_code'] ?? null,
+                'test_type'   => $data['test_type'] ?? LaboratoryTestTemplate::TYPE_STANDARD,
                 'test_price'  => $data['test_price'] ?? 0,
                 'description' => $data['description'] ?? null,
                 'is_active'   => $data['is_active'] ?? true,
@@ -35,6 +36,7 @@ class LaboratoryTestTemplateService
             $template->update([
                 'test_name'   => $data['test_name'],
                 'test_code'   => $data['test_code'] ?? null,
+                'test_type'   => $data['test_type'] ?? $template->test_type ?? LaboratoryTestTemplate::TYPE_STANDARD,
                 'test_price'  => $data['test_price'] ?? $template->test_price ?? 0,
                 'description' => $data['description'] ?? null,
                 'is_active'   => $data['is_active'] ?? $template->is_active,

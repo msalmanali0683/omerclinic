@@ -13,6 +13,7 @@ class LaboratoryTestTemplateResource extends JsonResource
             'id'          => $this->id,
             'test_name'   => $this->test_name,
             'test_code'   => $this->test_code,
+            'test_type'   => $this->test_type ?? 'standard',
             'test_price'  => $this->test_price,
             'description' => $this->description,
             'is_active'   => $this->is_active,

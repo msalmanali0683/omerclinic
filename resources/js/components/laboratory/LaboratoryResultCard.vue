@@ -23,7 +23,13 @@
       </BaseButton>
     </div>
 
-    <div v-if="sortedValues.length" class="scan-values-grid mt-2">
+    <LaboratoryXrayPreview
+      v-if="isImagingTest && sortedValues.length"
+      :values="sortedValues"
+      class="mt-2"
+    />
+
+    <div v-else-if="sortedValues.length" class="scan-values-grid mt-2">
       <div
         v-for="value in sortedValues"
         :key="value.id || value.field_key"
@@ -47,7 +53,9 @@
 <script setup>
 import { computed } from 'vue';
 import { formatDate } from '@/utils/formatters';
+import { isImagingTestType } from '@/utils/laboratory';
 import BaseButton from '@/components/ui/BaseButton.vue';
+import LaboratoryXrayPreview from '@/components/laboratory/LaboratoryXrayPreview.vue';
 
 const props = defineProps({
   result: { type: Object, required: true },
@@ -59,6 +67,10 @@ defineEmits(['print']);
 
 const sortedValues = computed(() =>
   [...(props.result?.values ?? [])].sort((a, b) => (a.sort_order || 0) - (b.sort_order || 0))
+);
+
+const isImagingTest = computed(() =>
+  isImagingTestType(props.result?.test_type || props.result?.template?.test_type)
 );
 </script>
 

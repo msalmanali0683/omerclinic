@@ -62,7 +62,18 @@
         <div v-if="templateLoading" class="h-32 bg-gray-100 dark:bg-gray-700 rounded-lg animate-pulse" />
 
         <template v-else-if="resultValues.length">
-          <LaboratoryDynamicFields v-model="resultValues" :error="errors.values" />
+          <LaboratoryXrayForm
+            v-if="isImagingTest"
+            v-model="resultValues"
+            :result-id="editingResultId"
+            :test-type="currentTestType"
+            :error="errors.values"
+          />
+          <LaboratoryDynamicFields
+            v-else
+            v-model="resultValues"
+            :error="errors.values"
+          />
 
           <div>
             <label class="block text-sm font-medium mb-1">Remarks</label>
@@ -95,11 +106,12 @@ import { useRoute, useRouter } from 'vue-router';
 import { useToastStore } from '@/stores/toast';
 import { laboratoryResultService } from '@/services/laboratoryResultService';
 import { useFormErrors } from '@/composables/useFormErrors';
-import { serializeResultValues } from '@/utils/laboratory';
+import { isImagingTestType, serializeResultValues } from '@/utils/laboratory';
 import { fetchDraftTests, loadDraftResultForm } from '@/utils/laboratoryDraftQueue';
 import BaseButton from '@/components/ui/BaseButton.vue';
 import BaseInput from '@/components/ui/BaseInput.vue';
 import LaboratoryDynamicFields from '@/components/laboratory/LaboratoryDynamicFields.vue';
+import LaboratoryXrayForm from '@/components/laboratory/LaboratoryXrayForm.vue';
 
 const route = useRoute();
 const router = useRouter();
@@ -118,6 +130,7 @@ const currentDraftLabel = ref('');
 
 const templateLoading = ref(false);
 const resultValues = ref([]);
+const currentTestType = ref('standard');
 
 const form = reactive({
   test_price: '',
@@ -132,6 +145,8 @@ const currentDraftIndex = computed(() => {
   const index = draftQueue.value.findIndex((d) => d.id === editingResultId.value);
   return index >= 0 ? index + 1 : 1;
 });
+
+const isImagingTest = computed(() => isImagingTestType(currentTestType.value));
 
 async function refreshDraftQueue() {
   if (!selectedPatient.value) {
@@ -151,6 +166,7 @@ async function openDraftResult(resultId) {
     const loaded = await loadDraftResultForm(resultId);
     editingResultId.value = loaded.result.id;
     currentDraftLabel.value = loaded.result.test_name || loaded.result.template?.test_name || 'Laboratory Test';
+    currentTestType.value = loaded.result.test_type || loaded.result.template?.test_type || 'standard';
     form.test_price = loaded.form.test_price;
     form.remarks = loaded.form.remarks;
     resultValues.value = loaded.resultValues;

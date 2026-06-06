@@ -1,12 +1,11 @@
 <template>
-  <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4 shadow-sm mt-6">
+  <div
+    v-if="shouldShow"
+    class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4 shadow-sm mt-6"
+  >
     <h3 class="font-semibold text-gray-900 dark:text-white mb-4">Laboratory History</h3>
 
     <div v-if="isLoading" class="h-20 bg-gray-100 dark:bg-gray-700 rounded-lg animate-pulse" />
-
-    <p v-else-if="!hasAnyResults" class="text-sm text-gray-500 dark:text-gray-400">
-      No laboratory history available.
-    </p>
 
     <div v-else class="space-y-5">
       <section v-if="currentVisitResults.length">
@@ -60,6 +59,7 @@ const props = defineProps({
   laboratoryHistory: { type: Object, default: null },
   loading: { type: Boolean, default: false },
   printingResultId: { type: [Number, String, null], default: null },
+  hideWhenEmpty: { type: Boolean, default: true },
 });
 
 const emit = defineEmits(['print-result']);
@@ -78,6 +78,13 @@ const isLoading = computed(() => props.loading || internalLoading.value);
 const currentVisitResults = computed(() => history.value.current_visit_results ?? []);
 const previousResults = computed(() => history.value.previous_results ?? []);
 const hasAnyResults = computed(() => currentVisitResults.value.length > 0 || previousResults.value.length > 0);
+const shouldShow = computed(() => {
+  if (!props.hideWhenEmpty) {
+    return true;
+  }
+
+  return isLoading.value || hasAnyResults.value;
+});
 
 function applyHistory(payload) {
   history.value = {

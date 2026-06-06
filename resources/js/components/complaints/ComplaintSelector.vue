@@ -99,10 +99,11 @@ async function fetchOptions() {
   }
 }
 
-function selectOption(opt) {
+async function selectOption(opt) {
   query.value = opt.label;
   selectedMaster.value = opt;
   showDropdown.value = false;
+  await addItem();
 }
 
 function onBlur() {

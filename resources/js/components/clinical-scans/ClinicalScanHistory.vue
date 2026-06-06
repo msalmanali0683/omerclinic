@@ -1,12 +1,11 @@
 <template>
-  <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4 shadow-sm mt-6">
+  <div
+    v-if="shouldShow"
+    class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4 shadow-sm mt-6"
+  >
     <h3 class="font-semibold text-gray-900 dark:text-white mb-4">Clinical Scan History</h3>
 
     <div v-if="isLoading" class="h-20 bg-gray-100 dark:bg-gray-700 rounded-lg animate-pulse" />
-
-    <p v-else-if="!hasAnyScans" class="text-sm text-gray-500 dark:text-gray-400">
-      No clinical scan history available.
-    </p>
 
     <div v-else class="space-y-5">
       <section v-if="currentVisitScans.length">
@@ -61,6 +60,7 @@ const props = defineProps({
   clinicalScanHistory: { type: Object, default: null },
   loading: { type: Boolean, default: false },
   printingScanId: { type: [Number, String, null], default: null },
+  hideWhenEmpty: { type: Boolean, default: true },
 });
 
 const emit = defineEmits(['print-scan']);
@@ -79,6 +79,13 @@ const isLoading = computed(() => props.loading || internalLoading.value);
 const currentVisitScans = computed(() => history.value.current_visit_scans ?? []);
 const previousScans = computed(() => history.value.previous_scans ?? []);
 const hasAnyScans = computed(() => currentVisitScans.value.length > 0 || previousScans.value.length > 0);
+const shouldShow = computed(() => {
+  if (!props.hideWhenEmpty) {
+    return true;
+  }
+
+  return isLoading.value || hasAnyScans.value;
+});
 
 function applyHistory(payload) {
   history.value = {

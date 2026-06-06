@@ -74,7 +74,7 @@
             :mr-number="visit.patient?.mr_number"
           />
           <ClinicalScanHistory
-            v-if="canViewClinicalScans"
+            v-if="showClinicalScanHistory"
             :patient-id="visit.patient_id"
             :current-visit-id="visit.id"
             :clinical-scan-history="clinicalScanHistory"
@@ -82,7 +82,7 @@
             @print-scan="openScanPrintPreview"
           />
           <LaboratoryHistory
-            v-if="canViewLaboratoryResults"
+            v-if="showLaboratoryHistory"
             :patient-id="visit.patient_id"
             :current-visit-id="visit.id"
             :laboratory-history="laboratoryHistory"
@@ -321,6 +321,21 @@ const canViewClinicalScans = computed(() =>
 );
 const canViewLaboratoryResults = computed(() =>
   authStore.can('view laboratory results') || authStore.can('view patient laboratory history')
+);
+
+function hasClinicalScanHistoryData(history) {
+  return Boolean(history?.current_visit_scans?.length || history?.previous_scans?.length);
+}
+
+function hasLaboratoryHistoryData(history) {
+  return Boolean(history?.current_visit_results?.length || history?.previous_results?.length);
+}
+
+const showClinicalScanHistory = computed(() =>
+  canViewClinicalScans.value && hasClinicalScanHistoryData(clinicalScanHistory.value)
+);
+const showLaboratoryHistory = computed(() =>
+  canViewLaboratoryResults.value && hasLaboratoryHistoryData(laboratoryHistory.value)
 );
 
 const canUseDiagnosisMedicineTemplates = computed(() =>

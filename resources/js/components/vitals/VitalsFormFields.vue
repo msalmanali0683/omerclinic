@@ -7,19 +7,9 @@
         class="rounded-2xl border p-3 shadow-sm"
         :class="getVitalFieldStyle(field.color).card"
       >
-        <div class="mb-2 flex items-center gap-2">
-          <span
-            class="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-xs font-bold"
-            :class="getVitalFieldStyle(field.color).badge"
-          >
-            {{ field.label }}
-          </span>
-          <div class="min-w-0">
-            <p class="truncate text-sm font-semibold" :class="getVitalFieldStyle(field.color).label">
-              {{ field.title }}
-            </p>
-          </div>
-        </div>
+        <p class="mb-2 truncate text-sm font-semibold" :class="getVitalFieldStyle(field.color).label">
+          {{ field.title }}
+        </p>
         <input
           v-model="form[field.key]"
           :type="field.type"

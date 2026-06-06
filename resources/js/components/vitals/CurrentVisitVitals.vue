@@ -29,18 +29,12 @@
         class="rounded-xl border p-3"
         :class="getVitalFieldStyle(field.color).card"
       >
-        <div class="mb-1 flex items-center gap-2">
-          <span
-            class="rounded-md px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide"
-            :class="getVitalFieldStyle(field.color).badge"
-          >
-            {{ field.label }}
-          </span>
-        </div>
+        <p class="mb-1 text-sm font-semibold" :class="getVitalFieldStyle(field.color).label">
+          {{ field.title }}
+        </p>
         <p class="text-lg font-bold" :class="getVitalFieldStyle(field.color).value">
           {{ displayValue(vitals[field.key]) }}
         </p>
-        <p class="text-xs" :class="getVitalFieldStyle(field.color).hint">{{ field.title }}</p>
       </div>
     </div>
 

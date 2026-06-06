@@ -27,8 +27,7 @@
 
     <div class="main-body prescription-body">
       <div
-        class="prescription-left"
-        :class="{ 'has-treatment-given': injectionMedicines.length }"
+        class="prescription-left has-treatment-given"
         :style="treatmentGivenReserveStyle"
       >
         <div class="clinical-left-top">
@@ -101,22 +100,22 @@
           </div>
         </div>
 
-        <div
-          v-if="injectionMedicines.length"
-          class="treatment-given-print-section"
-        >
+        <div class="treatment-given-print-section">
           <div class="section-title">Treatment Given</div>
 
           <div class="treatment-given-list">
-            <div
-              v-for="medicine in injectionMedicines"
-              :key="medicine.id"
-              class="treatment-given-item bidi-text"
-            >
-              <span v-if="medicine.mdcn_type">{{ medicine.mdcn_type }}</span>
-              <span>{{ medicine.mdcn_name }}</span>
-              <span v-if="medicine.mdcn_size">{{ medicine.mdcn_size }}</span>
-            </div>
+            <template v-if="injectionMedicines.length">
+              <div
+                v-for="medicine in injectionMedicines"
+                :key="medicine.id"
+                class="treatment-given-item bidi-text"
+              >
+                <span v-if="medicine.mdcn_type">{{ medicine.mdcn_type }}</span>
+                <span>{{ medicine.mdcn_name }}</span>
+                <span v-if="medicine.mdcn_size">{{ medicine.mdcn_size }}</span>
+              </div>
+            </template>
+            <div v-else class="treatment-given-item">{{ printNa }}</div>
           </div>
         </div>
       </div>
@@ -208,12 +207,7 @@ const printableClinicalScans = computed(() => withScanValueLayout(
 const dateTimeLabel = computed(() => formatPrescriptionDateTime(prescription.value, visit.value));
 
 const treatmentGivenReserveStyle = computed(() => {
-  const count = injectionMedicines.value.length;
-
-  if (!count) {
-    return {};
-  }
-
+  const count = Math.max(injectionMedicines.value.length, 1);
   const base = 0.28;
   const perItem = 0.18;
   const reserve = Math.min(1.4, base + count * perItem);

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
+use App\Support\AdminAccess;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
@@ -66,11 +67,22 @@ class AuthController extends Controller
     {
         $user = $request->user();
 
-        $validated = $request->validate([
-            'name'  => 'sometimes|required|string|max:255',
-            'email' => 'sometimes|required|email|unique:users,email,'.$user->id,
+        if (! AdminAccess::canUpdateUserIdentity($user) && $request->hasAny(['name', 'email'])) {
+            return response()->json([
+                'message' => 'Only administrators can update name and email.',
+            ], 403);
+        }
+
+        $rules = [
             'password' => 'sometimes|nullable|string|min:8|confirmed',
-        ]);
+        ];
+
+        if (AdminAccess::canUpdateUserIdentity($user)) {
+            $rules['name'] = 'sometimes|required|string|max:255';
+            $rules['email'] = 'sometimes|required|email|unique:users,email,'.$user->id;
+        }
+
+        $validated = $request->validate($rules);
 
         if (isset($validated['password'])) {
             $validated['password'] = bcrypt($validated['password']);

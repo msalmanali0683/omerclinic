@@ -33,6 +33,10 @@ export function isSuperAdmin(user) {
     return hasRole(user, 'super-admin');
 }
 
+export function isHospitalAdmin(user) {
+    return hasAnyRole(user, ['super-admin', 'hospital-admin']);
+}
+
 export function hasAnyRole(user, roles) {
     if (!roles?.length || !user) {
         return false;

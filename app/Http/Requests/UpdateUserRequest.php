@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Support\AdminAccess;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -16,14 +17,19 @@ class UpdateUserRequest extends FormRequest
     {
         $userId = $this->route('user')?->id ?? $this->route('id');
 
-        return [
-            'name'        => 'sometimes|required|string|max:255',
-            'email'       => ['sometimes', 'required', 'email', Rule::unique('users', 'email')->ignore($userId)],
+        $rules = [
             'password'    => 'sometimes|nullable|string|min:8|confirmed',
             'roles'       => 'nullable|array',
             'roles.*'     => 'string|exists:roles,name',
             'permissions' => 'nullable|array',
             'permissions.*' => 'string|exists:permissions,name',
         ];
+
+        if (AdminAccess::canUpdateUserIdentity($this->user())) {
+            $rules['name'] = 'sometimes|required|string|max:255';
+            $rules['email'] = ['sometimes', 'required', 'email', Rule::unique('users', 'email')->ignore($userId)];
+        }
+
+        return $rules;
     }
 }

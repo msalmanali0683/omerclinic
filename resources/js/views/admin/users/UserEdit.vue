@@ -8,8 +8,22 @@
     <div v-if="pageLoading" class="animate-pulse h-64 bg-gray-200 dark:bg-gray-700 rounded-xl" />
 
     <form v-else class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6 shadow-sm space-y-5" @submit.prevent="submit">
-      <BaseInput v-model="form.name" label="Name" :error="errors.name" required />
-      <BaseInput v-model="form.email" label="Email" type="email" :error="errors.email" required />
+      <BaseInput
+        v-model="form.name"
+        label="Name"
+        :error="errors.name"
+        :required="canEditIdentity"
+        :disabled="!canEditIdentity"
+        :hint="canEditIdentity ? '' : 'Only administrators can change name and email.'"
+      />
+      <BaseInput
+        v-model="form.email"
+        label="Email"
+        type="email"
+        :error="errors.email"
+        :required="canEditIdentity"
+        :disabled="!canEditIdentity"
+      />
       <BaseInput v-model="form.password" label="New Password" type="password" hint="Leave blank to keep current password" :error="errors.password" />
       <BaseInput v-model="form.password_confirmation" label="Confirm New Password" type="password" :error="errors.password_confirmation" />
 
@@ -43,7 +57,7 @@
 </template>
 
 <script setup>
-import { onMounted, reactive, ref } from 'vue';
+import { computed, onMounted, reactive, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
 import { useToastStore } from '@/stores/toast';
@@ -51,6 +65,7 @@ import { userService } from '@/services/userService';
 import { roleService } from '@/services/roleService';
 import { permissionService } from '@/services/permissionService';
 import { useFormErrors } from '@/composables/useFormErrors';
+import { isHospitalAdmin } from '@/utils/permissions';
 import BaseInput from '@/components/ui/BaseInput.vue';
 import BaseButton from '@/components/ui/BaseButton.vue';
 import PermissionPicker from '@/components/admin/PermissionPicker.vue';
@@ -74,6 +89,7 @@ const roles = ref([]);
 const permissions = ref([]);
 const saving = ref(false);
 const pageLoading = ref(true);
+const canEditIdentity = computed(() => isHospitalAdmin(authStore.user));
 
 function toggleRole(name) {
   if (form.roles.includes(name)) {
@@ -90,6 +106,10 @@ async function submit() {
   if (!payload.password) {
     delete payload.password;
     delete payload.password_confirmation;
+  }
+  if (!canEditIdentity.value) {
+    delete payload.name;
+    delete payload.email;
   }
   if (!authStore.can('assign permissions')) {
     delete payload.permissions;

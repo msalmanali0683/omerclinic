@@ -7,6 +7,7 @@ use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
+use App\Support\AdminAccess;
 use App\Support\ClearsPermissionCache;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -93,7 +94,15 @@ class UserManagementController extends Controller
             return response()->json(['message' => 'You cannot edit a super-admin user.'], 403);
         }
 
-        $data = $request->only(['name', 'email']);
+        if (! AdminAccess::canUpdateUserIdentity($request->user()) && $request->hasAny(['name', 'email'])) {
+            return response()->json([
+                'message' => 'Only administrators can update user name and email.',
+            ], 403);
+        }
+
+        $data = AdminAccess::canUpdateUserIdentity($request->user())
+            ? $request->only(['name', 'email'])
+            : [];
 
         if ($request->filled('password')) {
             $data['password'] = Hash::make($request->password);

@@ -24,8 +24,20 @@
       </div>
 
       <form class="space-y-4" @submit.prevent="submit">
-        <BaseInput v-model="form.name" label="Name" :error="errors.name" />
-        <BaseInput v-model="form.email" label="Email" type="email" :error="errors.email" />
+        <BaseInput
+          v-model="form.name"
+          label="Name"
+          :error="errors.name"
+          :disabled="!canEditIdentity"
+          :hint="canEditIdentity ? '' : 'Only administrators can change name and email.'"
+        />
+        <BaseInput
+          v-model="form.email"
+          label="Email"
+          type="email"
+          :error="errors.email"
+          :disabled="!canEditIdentity"
+        />
         <BaseInput v-model="form.password" label="New Password" type="password" hint="Leave blank to keep current" :error="errors.password" />
         <BaseInput v-model="form.password_confirmation" label="Confirm Password" type="password" :error="errors.password_confirmation" />
 
@@ -45,6 +57,7 @@ import { useAuthStore } from '@/stores/auth';
 import { useToastStore } from '@/stores/toast';
 import { authService } from '@/services/authService';
 import { useFormErrors } from '@/composables/useFormErrors';
+import { isHospitalAdmin } from '@/utils/permissions';
 import BaseInput from '@/components/ui/BaseInput.vue';
 import BaseButton from '@/components/ui/BaseButton.vue';
 
@@ -60,6 +73,8 @@ const initials = computed(() =>
   (authStore.user?.name ?? '?').split(' ').map((n) => n[0]).join('').slice(0, 2).toUpperCase()
 );
 
+const canEditIdentity = computed(() => isHospitalAdmin(authStore.user));
+
 watch(
   () => authStore.user,
   (user) => {
@@ -74,7 +89,11 @@ watch(
 async function submit() {
   clearErrors();
   saving.value = true;
-  const payload = { name: form.name, email: form.email };
+  const payload = {};
+  if (canEditIdentity.value) {
+    payload.name = form.name;
+    payload.email = form.email;
+  }
   if (form.password) {
     payload.password = form.password;
     payload.password_confirmation = form.password_confirmation;

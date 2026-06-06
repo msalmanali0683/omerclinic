@@ -28,7 +28,7 @@
     <div
       v-for="(row, index) in rows"
       :key="row._key"
-      class="overflow-hidden rounded-2xl border shadow-sm transition-shadow hover:shadow-md"
+      class="rounded-2xl border shadow-sm transition-shadow hover:shadow-md"
       :class="rowCardClass(row, index)"
     >
       <div
@@ -78,7 +78,8 @@
             />
             <ul
               v-if="row.show_dropdown && row.medicine_options.length"
-              class="absolute z-20 mt-1 w-full max-h-44 overflow-auto rounded-xl border border-emerald-200 bg-white shadow-xl dark:border-emerald-800 dark:bg-gray-900 text-sm"
+              class="absolute z-30 mt-1 w-full overflow-y-auto rounded-xl border border-emerald-200 bg-white shadow-xl dark:border-emerald-800 dark:bg-gray-900 text-sm"
+              :style="medicineDropdownStyle(row)"
             >
               <li
                 v-for="opt in row.medicine_options"
@@ -151,6 +152,7 @@
         </div>
 
         <label
+          v-if="isMedicineSelected(row)"
           class="flex cursor-pointer items-start gap-3 rounded-xl border px-3 py-2.5 transition-colors"
           :class="row.show_in_treatment_given
             ? 'border-amber-300 bg-amber-50 dark:border-amber-700 dark:bg-amber-900/20'
@@ -205,6 +207,8 @@ const rows = computed({
 });
 
 const searchTimers = new Map();
+const MEDICINE_OPTION_HEIGHT_PX = 40;
+const MEDICINE_DROPDOWN_MIN_VISIBLE = 10;
 
 const fieldBase = 'w-full rounded-lg border px-3 py-2 text-sm bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 shadow-sm transition-colors focus:outline-none focus:ring-2';
 
@@ -283,6 +287,19 @@ function rowSummary(row) {
   return parts.length ? parts.join(' · ') : 'Fill medicine details below';
 }
 
+function medicineDropdownStyle(row) {
+  const count = row.medicine_options?.length ?? 0;
+  const visibleCount = Math.min(Math.max(count, 1), MEDICINE_DROPDOWN_MIN_VISIBLE);
+
+  return {
+    maxHeight: `${visibleCount * MEDICINE_OPTION_HEIGHT_PX}px`,
+  };
+}
+
+function isMedicineSelected(row) {
+  return Boolean(row.medicine_id) || Boolean(row.mdcn_name?.trim());
+}
+
 function onMedicineSearch(row) {
   clearTimeout(searchTimers.get(row._key));
   searchTimers.set(row._key, setTimeout(() => fetchMedicineOptions(row), 250));
@@ -297,7 +314,7 @@ async function fetchMedicineOptions(row) {
   }
 
   try {
-    const { data } = await medicineService.getMedicineOptions({ search: term, limit: 20 });
+    const { data } = await medicineService.getMedicineOptions({ search: term, limit: 30 });
     row.medicine_options = data.data ?? [];
     row.show_dropdown = true;
   } catch {

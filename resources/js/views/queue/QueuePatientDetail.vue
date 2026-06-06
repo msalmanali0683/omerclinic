@@ -137,7 +137,7 @@
       <!-- Prescription -->
       <div
         v-if="canShowPrescriptionForm"
-        class="overflow-hidden rounded-2xl border border-emerald-200 bg-white shadow-md dark:border-emerald-900/50 dark:bg-gray-800"
+        class="rounded-2xl border border-emerald-200 bg-white shadow-md dark:border-emerald-900/50 dark:bg-gray-800"
       >
         <div class="bg-gradient-to-r from-violet-600 via-emerald-600 to-teal-600 px-5 py-4 text-white">
           <div class="flex flex-wrap items-center justify-between gap-3">

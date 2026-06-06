@@ -23,6 +23,7 @@ class PrescriptionMedicine extends Model
         'mdcn_dose_from_meal_id',
         'dose_time_text',
         'dose_from_meal_text',
+        'show_in_treatment_given',
         'instructions',
         'created_by',
         'updated_by',
@@ -56,6 +57,13 @@ class PrescriptionMedicine extends Model
     public function doseFromMeal(): BelongsTo
     {
         return $this->belongsTo(MedicineDoseFromMeal::class, 'mdcn_dose_from_meal_id');
+    }
+
+    protected function casts(): array
+    {
+        return [
+            'show_in_treatment_given' => 'boolean',
+        ];
     }
 
     public function createdBy(): BelongsTo

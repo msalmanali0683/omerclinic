@@ -135,9 +135,30 @@
       </div>
 
       <!-- Prescription -->
-      <div v-if="canShowPrescriptionForm" class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6 shadow-sm">
-        <h3 class="font-semibold text-lg mb-4">{{ prescriptionMode === 'edit' ? 'Re-Prescribe' : 'Create Prescription' }}</h3>
-        <form class="space-y-4" @submit.prevent="savePrescription">
+      <div
+        v-if="canShowPrescriptionForm"
+        class="overflow-hidden rounded-2xl border border-emerald-200 bg-white shadow-md dark:border-emerald-900/50 dark:bg-gray-800"
+      >
+        <div class="bg-gradient-to-r from-violet-600 via-emerald-600 to-teal-600 px-5 py-4 text-white">
+          <div class="flex flex-wrap items-center justify-between gap-3">
+            <div class="flex items-center gap-3">
+              <span class="flex h-11 w-11 items-center justify-center rounded-2xl bg-white/20 backdrop-blur">
+                <AppIcon name="prescription" class-name="w-6 h-6 text-white" />
+              </span>
+              <div>
+                <h3 class="text-lg font-bold leading-tight">
+                  {{ prescriptionMode === 'edit' ? 'Re-Prescribe' : 'Create Prescription' }}
+                </h3>
+                <p class="text-sm text-white/85">Add medicines, follow-up visit, then save and print</p>
+              </div>
+            </div>
+            <span class="rounded-full bg-white/20 px-3 py-1 text-xs font-semibold uppercase tracking-wide">
+              {{ prescriptionMode === 'edit' ? 'Update mode' : 'New prescription' }}
+            </span>
+          </div>
+        </div>
+
+        <form class="space-y-5 p-5 sm:p-6" @submit.prevent="savePrescription">
           <PrescriptionMedicineRows
             v-if="authStore.can('select medicines in prescription')"
             v-model="prescriptionMedicineRows"
@@ -145,15 +166,31 @@
             :dose-from-meal-options="doseFromMealOptions"
             :errors="rxErrors"
           />
-          <BaseSelect
-            v-model="rx.next_visit_days"
-            label="Next Visit After"
-            :options="nextVisitDayOptions"
-            :error="rxErrors.next_visit_days"
-          />
-          <p v-if="rxErrors.medicines" class="text-sm text-red-600">{{ rxErrors.medicines }}</p>
-          <div class="flex gap-2">
-            <BaseButton type="submit" :loading="rxSaving" :disabled="rxSaving">
+
+          <div class="rounded-2xl border border-indigo-200 bg-gradient-to-br from-indigo-50 to-violet-50 p-4 dark:border-indigo-800 dark:from-indigo-950/40 dark:to-violet-950/30">
+            <div class="mb-3 flex items-center gap-2">
+              <span class="flex h-8 w-8 items-center justify-center rounded-lg bg-indigo-100 text-indigo-700 dark:bg-indigo-900/50 dark:text-indigo-300">
+                <AppIcon name="calendar" class-name="w-4 h-4" />
+              </span>
+              <div>
+                <p class="text-sm font-semibold text-indigo-900 dark:text-indigo-100">Follow-up Visit</p>
+                <p class="text-xs text-indigo-600/80 dark:text-indigo-300/80">Shown on printed prescription footer</p>
+              </div>
+            </div>
+            <BaseSelect
+              v-model="rx.next_visit_days"
+              label="Next Visit After"
+              :options="nextVisitDayOptions"
+              :error="rxErrors.next_visit_days"
+            />
+          </div>
+
+          <p v-if="rxErrors.medicines" class="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700 dark:bg-red-900/20 dark:text-red-300">
+            {{ rxErrors.medicines }}
+          </p>
+
+          <div class="flex flex-wrap gap-3 border-t border-gray-100 pt-4 dark:border-gray-700">
+            <BaseButton type="submit" class="min-w-[180px]" :loading="rxSaving" :disabled="rxSaving">
               {{ prescriptionMode === 'edit' ? 'Update Prescription' : 'Save Prescription' }}
             </BaseButton>
           </div>
@@ -225,6 +262,7 @@ import LaboratoryResultPrintModal from '@/components/laboratory/LaboratoryResult
 import PrescriptionPrintSettingsModal from '@/components/prescription/PrescriptionPrintSettingsModal.vue';
 import { NEXT_VISIT_DAY_OPTIONS } from '@/utils/prescriptionPrintSettings';
 import { displayPatientAge, formatGender } from '@/utils/formatters';
+import AppIcon from '@/components/ui/AppIcon.vue';
 import BaseButton from '@/components/ui/BaseButton.vue';
 import BaseSelect from '@/components/ui/BaseSelect.vue';
 import BaseModal from '@/components/ui/BaseModal.vue';

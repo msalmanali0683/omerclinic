@@ -1,24 +1,27 @@
 <template>
-  <BaseModal :model-value="show" size="lg" @update:model-value="onClose">
+  <BaseModal :model-value="modelValue" size="lg" @update:model-value="onClose">
     <template #title>
       <div class="flex items-center gap-3">
         <span class="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-sky-500 to-teal-600 text-white shadow-sm">
           <AppIcon name="heart" class-name="w-5 h-5 text-white" />
         </span>
-        <div>
-          <p class="text-base font-bold text-gray-900 dark:text-white">Edit Visit Vitals</p>
-          <p class="text-xs font-normal text-gray-500 dark:text-gray-400">Update readings for the current visit</p>
+        <div class="min-w-0">
+          <p class="text-base font-bold text-gray-900 dark:text-white">Record Visit Vitals</p>
+          <p class="truncate text-xs font-normal text-gray-500 dark:text-gray-400">
+            {{ patientName }}
+            <span v-if="mrNumber" class="font-mono"> · MR {{ mrNumber }}</span>
+          </p>
         </div>
       </div>
     </template>
 
-    <form id="edit-vitals-form" @submit.prevent="submit">
+    <form id="register-patient-vitals-form" @submit.prevent="submit">
       <VitalsFormFields :form="form" :errors="errors" />
     </form>
 
     <template #footer>
-      <BaseButton type="button" variant="secondary" @click="onClose">Cancel</BaseButton>
-      <BaseButton type="submit" form="edit-vitals-form" :loading="saving" :disabled="saving">
+      <BaseButton type="button" variant="secondary" @click="onClose">Skip</BaseButton>
+      <BaseButton type="submit" form="register-patient-vitals-form" :loading="saving" :disabled="saving">
         Save Vitals
       </BaseButton>
     </template>
@@ -35,13 +38,14 @@ import BaseButton from '@/components/ui/BaseButton.vue';
 import VitalsFormFields from '@/components/vitals/VitalsFormFields.vue';
 
 const props = defineProps({
-  show: { type: Boolean, default: false },
-  vitals: { type: Object, default: null },
-  patientId: { type: [Number, String], required: true },
-  visitId: { type: [Number, String], required: true },
+  modelValue: { type: Boolean, default: false },
+  patientId: { type: [Number, String], default: null },
+  visitId: { type: [Number, String], default: null },
+  patientName: { type: String, default: '' },
+  mrNumber: { type: String, default: '' },
 });
 
-const emit = defineEmits(['saved', 'close', 'error']);
+const emit = defineEmits(['update:modelValue', 'saved', 'closed', 'error']);
 
 const { errors, setErrors, clearErrors } = useFormErrors();
 
@@ -56,32 +60,35 @@ const form = reactive({
 
 const saving = ref(false);
 
-function fillForm(vital) {
-  form.blood_pressure = vital?.blood_pressure ?? '';
-  form.temperature = vital?.temperature ?? '';
-  form.weight = vital?.weight ?? '';
-  form.pulse_rate = vital?.pulse_rate ?? '';
-  form.respiratory_rate = vital?.respiratory_rate ?? '';
-  form.notes = vital?.notes ?? '';
+function resetForm() {
+  form.blood_pressure = '';
+  form.temperature = '';
+  form.weight = '';
+  form.pulse_rate = '';
+  form.respiratory_rate = '';
+  form.notes = '';
 }
 
 watch(
-  () => [props.show, props.vitals],
-  ([visible, vital]) => {
-    if (visible && vital) {
+  () => props.modelValue,
+  (open) => {
+    if (open) {
       clearErrors();
-      fillForm(vital);
+      resetForm();
     }
   },
-  { immediate: true }
 );
 
 function onClose() {
-  emit('close');
+  emit('update:modelValue', false);
+  emit('closed');
 }
 
 async function submit() {
-  if (!props.vitals?.id) return;
+  if (!props.patientId || !props.visitId) {
+    onClose();
+    return;
+  }
 
   clearErrors();
   saving.value = true;
@@ -98,8 +105,9 @@ async function submit() {
   };
 
   try {
-    const { data } = await patientVitalService.updateVital(props.vitals.id, payload);
+    const { data } = await patientVitalService.createVital(payload);
     const vital = data.vital ?? data.data ?? data;
+    emit('update:modelValue', false);
     emit('saved', vital);
   } catch (e) {
     setErrors(e);

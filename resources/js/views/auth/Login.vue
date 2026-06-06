@@ -23,6 +23,7 @@
             label="Password"
             type="password"
             autocomplete="current-password"
+            show-password-toggle
             :error="errors.password"
             required
           />

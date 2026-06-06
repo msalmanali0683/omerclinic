@@ -1,26 +1,22 @@
 <template>
-  <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4 shadow-sm">
-    <h3 class="font-semibold text-gray-900 dark:text-white mb-4">Record Vitals</h3>
+  <div class="overflow-hidden rounded-2xl border border-sky-200 bg-white shadow-md dark:border-sky-900/50 dark:bg-gray-800">
+    <div class="bg-gradient-to-r from-sky-600 via-cyan-600 to-teal-600 px-5 py-4 text-white">
+      <div class="flex items-center gap-3">
+        <span class="flex h-11 w-11 items-center justify-center rounded-2xl bg-white/20 backdrop-blur">
+          <AppIcon name="heart" class-name="w-6 h-6 text-white" />
+        </span>
+        <div>
+          <h3 class="text-lg font-bold leading-tight">Record Vitals</h3>
+          <p class="text-sm text-white/85">Capture blood pressure, temperature, weight, pulse, and respiration</p>
+        </div>
+      </div>
+    </div>
 
-    <form class="space-y-4" @submit.prevent="submit">
-      <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
-        <BaseInput v-model="form.blood_pressure" label="B.P" placeholder="120/80" :error="errors.blood_pressure" />
-        <BaseInput v-model="form.temperature" label="Temp" type="number" step="0.1" placeholder="98.6" :error="errors.temperature" />
-        <BaseInput v-model="form.weight" label="Weight" type="number" step="0.1" placeholder="kg" :error="errors.weight" />
-        <BaseInput v-model="form.pulse_rate" label="P/R" type="number" placeholder="72" :error="errors.pulse_rate" />
-        <BaseInput v-model="form.respiratory_rate" label="R/R" type="number" placeholder="16" :error="errors.respiratory_rate" />
-      </div>
-      <div>
-        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Notes</label>
-        <textarea
-          v-model="form.notes"
-          rows="2"
-          class="block w-full rounded-lg border border-gray-300 dark:border-gray-600 px-3 py-2 text-sm bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-teal-500 focus:outline-none"
-        />
-        <p v-if="errors.notes" class="text-sm text-red-600 mt-1">{{ errors.notes }}</p>
-      </div>
-      <div>
-        <BaseButton type="submit" :loading="saving" :disabled="saving">
+    <form class="space-y-5 p-5" @submit.prevent="submit">
+      <VitalsFormFields :form="form" :errors="errors" />
+
+      <div class="border-t border-gray-100 pt-4 dark:border-gray-700">
+        <BaseButton type="submit" class="min-w-[140px]" :loading="saving" :disabled="saving">
           Save Vitals
         </BaseButton>
       </div>
@@ -32,8 +28,9 @@
 import { reactive, ref } from 'vue';
 import { patientVitalService } from '@/services/patientVitalService';
 import { useFormErrors } from '@/composables/useFormErrors';
-import BaseInput from '@/components/ui/BaseInput.vue';
+import AppIcon from '@/components/ui/AppIcon.vue';
 import BaseButton from '@/components/ui/BaseButton.vue';
+import VitalsFormFields from '@/components/vitals/VitalsFormFields.vue';
 
 const props = defineProps({
   patientId: { type: [Number, String], required: true },

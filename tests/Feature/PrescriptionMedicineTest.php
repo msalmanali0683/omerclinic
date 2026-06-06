@@ -82,6 +82,56 @@ class PrescriptionMedicineTest extends TestCase
         ]);
     }
 
+    public function test_prescription_medicine_can_be_saved_with_treatment_given_flag(): void
+    {
+        $doctor = $this->makeUser('doctor');
+        $visit = $this->createVisit($doctor, PatientVisit::STATUS_IN_CONSULTATION);
+        $this->addVisitDiagnosis($visit);
+        $medicine = Medicine::where('mdcn_name', 'Panadol')->first();
+
+        $this->actingAs($doctor)->postJson('/api/prescriptions', $this->prescriptionPayload($visit, [
+            'medicines' => [[
+                'medicine_id'             => $medicine->id,
+                'mdcn_type'               => $medicine->mdcn_type,
+                'mdcn_name'               => $medicine->mdcn_name,
+                'mdcn_size'               => $medicine->mdcn_size,
+                'show_in_treatment_given' => true,
+            ]],
+        ]))->assertCreated()
+            ->assertJsonPath('data.medicines.0.show_in_treatment_given', true)
+            ->assertJsonPath('print_data.medicines.0.show_in_treatment_given', true);
+
+        $this->assertDatabaseHas('prescription_medicines', [
+            'mdcn_name'               => 'Panadol',
+            'show_in_treatment_given' => true,
+        ]);
+    }
+
+    public function test_injection_can_be_saved_for_regular_print_section_when_flag_is_false(): void
+    {
+        $doctor = $this->makeUser('doctor');
+        $visit = $this->createVisit($doctor, PatientVisit::STATUS_IN_CONSULTATION);
+        $this->addVisitDiagnosis($visit);
+        $injection = Medicine::where('mdcn_type', 'Inj')->firstOrFail();
+
+        $this->actingAs($doctor)->postJson('/api/prescriptions', $this->prescriptionPayload($visit, [
+            'medicines' => [[
+                'medicine_id'             => $injection->id,
+                'mdcn_type'               => $injection->mdcn_type,
+                'mdcn_name'               => $injection->mdcn_name,
+                'mdcn_size'               => $injection->mdcn_size,
+                'show_in_treatment_given' => false,
+            ]],
+        ]))->assertCreated()
+            ->assertJsonPath('data.medicines.0.show_in_treatment_given', false)
+            ->assertJsonPath('print_data.medicines.0.show_in_treatment_given', false);
+
+        $this->assertDatabaseHas('prescription_medicines', [
+            'mdcn_name'               => $injection->mdcn_name,
+            'show_in_treatment_given' => false,
+        ]);
+    }
+
     public function test_doctor_can_edit_medicine_name_before_saving_without_updating_master(): void
     {
         $doctor = $this->makeUser('doctor');

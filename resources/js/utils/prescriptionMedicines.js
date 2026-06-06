@@ -1,3 +1,5 @@
+import { isInjectionMedicine } from '@/utils/prescriptionPrintMedicines';
+
 export function mapPrescriptionMedicineToRow(item) {
   const label = [item.mdcn_type, item.mdcn_name, item.mdcn_size].filter(Boolean).join(' ');
 
@@ -10,6 +12,7 @@ export function mapPrescriptionMedicineToRow(item) {
     mdcn_size: item.mdcn_size ?? '',
     mdcn_time_id: item.mdcn_time_id ? String(item.mdcn_time_id) : '',
     mdcn_dose_from_meal_id: item.mdcn_dose_from_meal_id ? String(item.mdcn_dose_from_meal_id) : '',
+    show_in_treatment_given: item.show_in_treatment_given ?? isInjectionMedicine(item),
   });
 }
 
@@ -26,6 +29,7 @@ export function createPrescriptionMedicineRow(overrides = {}) {
     mdcn_size: '',
     mdcn_time_id: '',
     mdcn_dose_from_meal_id: '',
+    show_in_treatment_given: false,
     ...overrides,
   };
 }
@@ -41,6 +45,7 @@ export function serializePrescriptionMedicineRows(rows) {
       mdcn_size: row.mdcn_size || null,
       mdcn_time_id: row.mdcn_time_id ? Number(row.mdcn_time_id) : null,
       mdcn_dose_from_meal_id: row.mdcn_dose_from_meal_id ? Number(row.mdcn_dose_from_meal_id) : null,
+      show_in_treatment_given: !!row.show_in_treatment_given,
     }));
 }
 

@@ -1,6 +1,6 @@
 <template>
   <div class="min-h-screen bg-gray-50 dark:bg-gray-900 flex">
-    <aside class="hidden lg:flex lg:flex-col w-64 bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-700 fixed inset-y-0 left-0 z-20">
+    <aside class="hidden lg:flex lg:flex-col w-64 bg-white/95 dark:bg-gray-900/95 backdrop-blur border-r border-gray-200 dark:border-gray-700 fixed inset-y-0 left-0 z-20 shadow-sm">
       <div class="flex items-center gap-2 h-16 px-4 border-b border-gray-200 dark:border-gray-700">
         <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-teal-500 to-teal-700 flex items-center justify-center text-white font-bold">H+</div>
         <div>

@@ -50,9 +50,6 @@ const loading = ref(true);
 const cardConfig = [
   { key: 'total_users', label: 'Total Users', icon: 'users', color: 'teal', permission: 'view users' },
   { key: 'total_patients', label: 'Total Patients', icon: 'patients', color: 'blue', permission: 'view patients' },
-  { key: 'appointments_today', label: 'Appointments Today', icon: 'calendar', color: 'purple', permission: 'view appointments' },
-  { key: 'pending_lab_reports', label: 'Pending Lab Reports', icon: 'lab', color: 'amber', permission: 'view lab requests' },
-  { key: 'unpaid_invoices', label: 'Unpaid Invoices', icon: 'invoice', color: 'rose', permission: 'view invoice' },
 ];
 
 const visibleCards = computed(() =>
@@ -67,8 +64,8 @@ const quickActions = computed(() => {
   if (authStore.can('view users')) actions.push({ label: 'Manage Users', to: '/admin/users' });
   if (authStore.can('create patients')) actions.push({ label: 'New Patient', to: '/patients/create' });
   if (authStore.can('view patients') || authStore.can('view limited patient info')) actions.push({ label: 'Patients', to: '/patients' });
-  if (authStore.can('view lab requests')) actions.push({ label: 'Lab Requests', to: '/dashboard' });
-  if (authStore.can('view invoice')) actions.push({ label: 'Invoices', to: '/dashboard' });
+  if (authStore.can('view patient queue')) actions.push({ label: 'Patient Queue', to: '/queue' });
+  if (authStore.can('view laboratory results')) actions.push({ label: 'Laboratory Results', to: '/laboratory-results' });
   return actions;
 });
 

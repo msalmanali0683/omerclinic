@@ -137,7 +137,12 @@ export function canAccessMenuItem(item, user) {
 
 export function filterMenuByPermissions(items, user) {
     return items
+        .filter((item) => !item.hidden && !item.placeholder)
         .map((item) => {
+            if (item.hidden || item.placeholder) {
+                return null;
+            }
+
             if (item.children?.length) {
                 const children = filterMenuByPermissions(item.children, user);
 

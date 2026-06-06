@@ -1,57 +1,36 @@
 <template>
-  <div class="max-w-2xl">
-    <div class="mb-6">
-      <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Edit Patient</h2>
-      <p class="text-gray-500 dark:text-gray-400 text-sm mt-1">{{ form.patient_name }}</p>
+  <div class="max-w-3xl">
+    <div v-if="pageLoading" class="overflow-hidden rounded-2xl border border-violet-200 bg-white shadow-md dark:border-violet-900/50 dark:bg-gray-800">
+      <div class="h-20 animate-pulse bg-gradient-to-r from-violet-200 via-purple-200 to-fuchsia-200 dark:from-violet-900/40 dark:via-purple-900/40 dark:to-fuchsia-900/40" />
+      <div class="space-y-4 p-5">
+        <div class="h-24 animate-pulse rounded-2xl bg-gray-100 dark:bg-gray-700" />
+        <div class="h-24 animate-pulse rounded-2xl bg-gray-100 dark:bg-gray-700" />
+        <div class="h-32 animate-pulse rounded-2xl bg-gray-100 dark:bg-gray-700" />
+      </div>
     </div>
 
-    <div v-if="pageLoading" class="animate-pulse h-64 bg-gray-200 dark:bg-gray-700 rounded-xl" />
-
-    <form v-else class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6 shadow-sm space-y-5" @submit.prevent="submit">
-      <BaseInput v-model="form.patient_name" label="Patient Name" :error="errors.patient_name" required />
-      <BaseInput v-model="form.patient_father_name" label="S/o, W/o, D/o" :error="errors.patient_father_name" />
-      <BaseSelect
-        v-model="form.patient_gender"
-        label="Gender"
-        placeholder="Select gender"
-        :options="genderOptions"
-        :error="errors.patient_gender"
-        required
-      />
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <BaseInput v-model="form.patient_age" label="Age" type="number" min="0" max="150" :error="errors.patient_age" required />
-        <BaseSelect
-          v-model="form.patient_age_unit"
-          label="Age Unit"
-          :options="ageUnitOptions"
-          :error="errors.patient_age_unit"
-          required
-        />
-      </div>
-      <BaseInput v-model="form.patient_cell" label="Cell Number" :error="errors.patient_cell" required />
-      <BaseInput
-        :model-value="form.patient_cnic"
-        label="CNIC"
-        hint="e.g. 35202-1234567-1"
-        placeholder="XXXXX-XXXXXXX-X"
-        :error="errors.patient_cnic"
-        @update:model-value="onCnicInput"
-      />
-      <div>
-        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Address</label>
-        <textarea
-          v-model="form.patient_address"
-          rows="3"
-          class="block w-full rounded-lg border border-gray-300 dark:border-gray-600 px-3 py-2 text-sm bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-teal-500 focus:outline-none"
-        />
-        <p v-if="errors.patient_address" class="mt-1 text-sm text-red-600">{{ errors.patient_address }}</p>
+    <div v-else class="overflow-hidden rounded-2xl border border-violet-200 bg-white shadow-md dark:border-violet-900/50 dark:bg-gray-800">
+      <div class="bg-gradient-to-r from-violet-600 via-purple-600 to-fuchsia-600 px-5 py-4 text-white">
+        <div class="flex items-center gap-3">
+          <span class="flex h-11 w-11 items-center justify-center rounded-2xl bg-white/20 backdrop-blur">
+            <AppIcon name="user" class-name="w-6 h-6 text-white" />
+          </span>
+          <div class="min-w-0">
+            <h2 class="text-xl font-bold leading-tight sm:text-2xl">Edit Patient</h2>
+            <p class="truncate text-sm text-white/85">{{ form.patient_name || 'Update patient record' }}</p>
+          </div>
+        </div>
       </div>
 
-      <div class="flex gap-3 pt-2">
-        <BaseButton type="submit" :loading="saving">Save Changes</BaseButton>
-        <BaseButton variant="secondary" @click="$router.back()">Cancel</BaseButton>
-      </div>
-    </form>
+      <form class="space-y-5 p-5" @submit.prevent="submit">
+        <PatientFormFields :form="form" :errors="errors" />
+
+        <div class="flex flex-wrap gap-3 border-t border-gray-100 pt-4 dark:border-gray-700">
+          <BaseButton type="submit" class="min-w-[140px]" :loading="saving">Save Changes</BaseButton>
+          <BaseButton variant="secondary" @click="$router.back()">Cancel</BaseButton>
+        </div>
+      </form>
+    </div>
   </div>
 </template>
 
@@ -61,9 +40,9 @@ import { useRoute, useRouter } from 'vue-router';
 import { useToastStore } from '@/stores/toast';
 import { patientService } from '@/services/patientService';
 import { useFormErrors } from '@/composables/useFormErrors';
-import { AGE_UNIT_OPTIONS, formatCnicInput, GENDER_OPTIONS } from '@/utils/formatters';
-import BaseInput from '@/components/ui/BaseInput.vue';
-import BaseSelect from '@/components/ui/BaseSelect.vue';
+import { formatCnicInput } from '@/utils/formatters';
+import PatientFormFields from '@/components/patients/PatientFormFields.vue';
+import AppIcon from '@/components/ui/AppIcon.vue';
 import BaseButton from '@/components/ui/BaseButton.vue';
 
 const route = useRoute();
@@ -82,15 +61,8 @@ const form = reactive({
   patient_cnic: '',
 });
 
-const genderOptions = GENDER_OPTIONS;
-const ageUnitOptions = AGE_UNIT_OPTIONS;
-
 const saving = ref(false);
 const pageLoading = ref(true);
-
-function onCnicInput(value) {
-  form.patient_cnic = formatCnicInput(value);
-}
 
 async function submit() {
   clearErrors();

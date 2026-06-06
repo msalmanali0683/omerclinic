@@ -12,7 +12,10 @@
           :class="sizeClass"
         >
           <div class="flex items-center justify-between px-6 py-4 border-b border-gray-200 dark:border-gray-700">
-            <h3 class="text-lg font-semibold text-gray-900 dark:text-white">{{ title }}</h3>
+            <div class="min-w-0 flex-1">
+              <slot v-if="$slots.title" name="title" />
+              <h3 v-else class="text-lg font-semibold text-gray-900 dark:text-white">{{ title }}</h3>
+            </div>
             <button
               type="button"
               class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200"

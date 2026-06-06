@@ -27,6 +27,7 @@ export const permissionModules = {
     'Patient Vitals': [
         'view patient vitals', 'create patient vitals', 'edit patient vitals',
         'delete patient vitals', 'view previous patient vitals',
+        'record vitals on patient registration',
     ],
     'Appointment Management': [
         'view appointments', 'create appointments', 'edit appointments',

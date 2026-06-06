@@ -169,8 +169,9 @@ class PrescriptionService
             'mdcn_size'              => $row['mdcn_size'] ?? null,
             'mdcn_time_id'           => $row['mdcn_time_id'] ?? null,
             'mdcn_dose_from_meal_id' => $row['mdcn_dose_from_meal_id'] ?? null,
-            'dose_time_text'         => $doseTimeText,
-            'dose_from_meal_text'    => $doseFromMealText,
+            'dose_time_text'            => $doseTimeText,
+            'dose_from_meal_text'       => $doseFromMealText,
+            'show_in_treatment_given'   => (bool) ($row['show_in_treatment_given'] ?? false),
         ];
     }
 

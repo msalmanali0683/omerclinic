@@ -1,121 +1,76 @@
 <template>
   <div class="max-w-7xl">
-    <div class="mb-6">
-      <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Register New Patient</h2>
-      <p class="text-gray-500 dark:text-gray-400 text-sm mt-1">
-        {{ isDoctor ? 'New patients are added to your queue automatically' : 'A unique MR number will be assigned automatically' }}
-      </p>
-    </div>
-
     <div
       v-if="!isDoctor && duplicateInfo"
-      class="mb-4 p-4 rounded-xl border border-amber-200 bg-amber-50 dark:bg-amber-900/20 dark:border-amber-700"
+      class="mb-4 rounded-2xl border border-amber-200 bg-gradient-to-br from-amber-50 to-orange-50 p-4 shadow-sm dark:border-amber-700 dark:from-amber-900/20 dark:to-orange-900/10"
     >
-      <p class="text-sm text-amber-800 dark:text-amber-200">{{ duplicateInfo.message }}</p>
-      <p v-if="duplicateInfo.patient" class="text-sm mt-1 font-mono">MR: {{ duplicateInfo.patient.mr_number }}</p>
-      <div class="flex gap-2 mt-3">
+      <p class="text-sm font-medium text-amber-900 dark:text-amber-200">{{ duplicateInfo.message }}</p>
+      <p v-if="duplicateInfo.patient" class="mt-1 font-mono text-sm text-amber-800 dark:text-amber-300">MR: {{ duplicateInfo.patient.mr_number }}</p>
+      <div class="mt-3 flex flex-wrap gap-2">
         <BaseButton v-if="authStore.can('add patient to queue')" size="sm" @click="openAddExistingToQueueModal">Add to Queue</BaseButton>
         <BaseButton v-if="duplicateInfo.code === 'possible_duplicate'" variant="secondary" size="sm" @click="forceCreate">Create Anyway</BaseButton>
         <BaseButton variant="ghost" size="sm" @click="duplicateInfo = null">Dismiss</BaseButton>
       </div>
     </div>
 
-    <form class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6 shadow-sm space-y-4" @submit.prevent="submit">
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <BaseInput v-model="form.patient_name" label="Patient Name" :error="errors.patient_name" required />
-        <BaseInput v-model="form.patient_father_name" label="S/o, W/o, D/o" :error="errors.patient_father_name" />
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <BaseSelect
-          v-model="form.patient_gender"
-          label="Gender"
-          placeholder="Select gender"
-          :options="genderOptions"
-          :error="errors.patient_gender"
-          required
-        />
-        <div>
-          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-            Age
-            <span class="text-red-500">*</span>
-          </label>
-          <div class="grid grid-cols-5 gap-2">
-            <div class="col-span-3">
-              <BaseInput
-                v-model="form.patient_age"
-                type="number"
-                min="0"
-                max="150"
-                :error="errors.patient_age"
-                required
-              />
-            </div>
-            <div class="col-span-2">
-              <BaseSelect
-                v-model="form.patient_age_unit"
-                :options="ageUnitOptions"
-                :error="errors.patient_age_unit"
-                required
-              />
-            </div>
+    <div class="overflow-hidden rounded-2xl border border-emerald-200 bg-white shadow-md dark:border-emerald-900/50 dark:bg-gray-800">
+      <div class="bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 px-5 py-4 text-white">
+        <div class="flex items-center gap-3">
+          <span class="flex h-11 w-11 items-center justify-center rounded-2xl bg-white/20 backdrop-blur">
+            <AppIcon name="user-plus" class-name="w-6 h-6 text-white" />
+          </span>
+          <div>
+            <h2 class="text-xl font-bold leading-tight sm:text-2xl">Register New Patient</h2>
+            <p class="text-sm text-white/85">
+              {{ isDoctor ? 'New patients are added to your queue automatically' : 'A unique MR number will be assigned automatically' }}
+            </p>
           </div>
         </div>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        <BaseInput v-model="form.patient_cell" label="Cell Number" :error="errors.patient_cell" required />
-        <BaseInput
-          :model-value="form.patient_cnic"
-          label="CNIC"
-          hint="e.g. 35202-1234567-1"
-          placeholder="XXXXX-XXXXXXX-X"
-          :error="errors.patient_cnic"
-          @update:model-value="onCnicInput"
-        />
-        <div class="md:col-span-2 lg:col-span-1">
-          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Address</label>
-          <textarea
-            v-model="form.patient_address"
-            rows="2"
-            class="block w-full rounded-lg border border-gray-300 dark:border-gray-600 px-3 py-2 text-sm bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-teal-500 focus:outline-none"
-            :class="errors.patient_address ? 'border-red-500 focus:ring-red-500' : ''"
-          />
-          <p v-if="errors.patient_address" class="mt-1 text-sm text-red-600 dark:text-red-400">{{ errors.patient_address }}</p>
+      <form class="space-y-5 p-5" @submit.prevent="submit">
+        <PatientFormFields :form="form" :errors="errors">
+          <template #after-fields>
+            <div v-if="isDoctor" class="rounded-2xl border border-teal-200 bg-gradient-to-br from-teal-50 to-cyan-50 p-4 dark:border-teal-800 dark:from-teal-950/30 dark:to-cyan-950/20">
+              <div class="flex items-start gap-3">
+                <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-teal-100 text-teal-700 dark:bg-teal-900/50 dark:text-teal-200">
+                  <AppIcon name="queue" class-name="w-5 h-5" />
+                </span>
+                <p class="text-sm text-teal-800 dark:text-teal-200">
+                  This patient will be automatically added to your queue with status pending prescription.
+                </p>
+              </div>
+            </div>
+
+            <div v-else-if="canAddToQueue" class="rounded-2xl border p-4 shadow-sm" :class="getPatientFieldStyle('amber').card">
+              <PatientFormFieldHeader title="Assign Doctor" subtitle="Select consulting doctor" color="amber" required />
+              <select v-model="form.doctor_id" :class="getPatientFieldStyle('amber').input">
+                <option value="" disabled>Select doctor</option>
+                <option v-for="opt in doctorOptions" :key="opt.value" :value="opt.value">{{ opt.label }}</option>
+              </select>
+              <PatientFormFieldError :message="fieldError('doctor_id')" />
+            </div>
+          </template>
+        </PatientFormFields>
+
+        <div class="flex flex-wrap gap-3 border-t border-gray-100 pt-4 dark:border-gray-700">
+          <BaseButton type="submit" class="min-w-[160px]" :loading="saving">
+            {{ isDoctor ? 'Register & Add to My Queue' : 'Register Patient' }}
+          </BaseButton>
+          <BaseButton variant="secondary" @click="$router.back()">Cancel</BaseButton>
         </div>
-      </div>
+      </form>
+    </div>
 
-      <div v-if="isDoctor" class="p-3 rounded-lg bg-teal-50 dark:bg-teal-900/20 border border-teal-200 dark:border-teal-800">
-        <p class="text-sm text-teal-800 dark:text-teal-200">
-          This patient will be automatically added to your queue with status pending prescription.
-        </p>
-      </div>
-
-      <template v-else-if="canAddToQueue">
-        <p class="text-sm text-gray-600 dark:text-gray-300">
-          Patient will be registered and added to the selected doctor&apos;s queue.
-        </p>
-
-        <BaseSelect
-          v-model="form.doctor_id"
-          label="Assign Doctor"
-          placeholder="Select doctor"
-          :options="doctorOptions"
-          :error="errors.doctor_id"
-          required
-        />
-      </template>
-
-      <div class="flex gap-3 pt-2">
-        <BaseButton type="submit" :loading="saving">{{ isDoctor ? 'Register & Add to My Queue' : 'Register Patient' }}</BaseButton>
-        <BaseButton variant="secondary" @click="$router.back()">Cancel</BaseButton>
-      </div>
-    </form>
-
-    <section v-if="canViewPatientList" class="mt-10 pt-8 border-t border-gray-200 dark:border-gray-700">
-      <div class="mb-6">
-        <h3 class="text-xl font-bold text-gray-900 dark:text-white">Registered Patients</h3>
-        <p class="text-gray-500 dark:text-gray-400 text-sm mt-1">Recent and searchable patient records</p>
+    <section v-if="canViewPatientList" class="mt-10 border-t border-gray-200 pt-8 dark:border-gray-700">
+      <div class="mb-6 flex items-center gap-3">
+        <span class="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-100 text-emerald-700 dark:bg-emerald-900/50 dark:text-emerald-200">
+          <AppIcon name="patients" class-name="w-5 h-5" />
+        </span>
+        <div>
+          <h3 class="text-xl font-bold text-gray-900 dark:text-white">Registered Patients</h3>
+          <p class="text-sm text-gray-500 dark:text-gray-400">Recent and searchable patient records</p>
+        </div>
       </div>
 
       <PatientListTable
@@ -143,6 +98,17 @@
       @added="handlePatientAddedToQueue"
     />
 
+    <RegisterPatientVitalsModal
+      v-model="showRegisterVitalsModal"
+      :patient-id="registerVitalsContext.patientId"
+      :visit-id="registerVitalsContext.visitId"
+      :patient-name="registerVitalsContext.patientName"
+      :mr-number="registerVitalsContext.mrNumber"
+      @saved="onRegisterVitalsSaved"
+      @closed="onRegisterVitalsClosed"
+      @error="onRegisterVitalsError"
+    />
+
     <BaseModal v-model="deleteModal.open" title="Delete Patient" size="sm">
       <p class="text-gray-600 dark:text-gray-300">
         Delete patient <strong>{{ deleteModal.patient?.patient_name }}</strong>? This can be restored from the database if needed (soft delete).
@@ -163,14 +129,17 @@ import { useToastStore } from '@/stores/toast';
 import { patientService } from '@/services/patientService';
 import { userService } from '@/services/userService';
 import { useFormErrors } from '@/composables/useFormErrors';
-import { AGE_UNIT_OPTIONS, formatCnicInput, GENDER_OPTIONS } from '@/utils/formatters';
+import { getPatientFieldStyle } from '@/utils/patientFieldTheme';
+import PatientFormFields from '@/components/patients/PatientFormFields.vue';
+import PatientFormFieldHeader from '@/components/patients/PatientFormFieldHeader.vue';
+import PatientFormFieldError from '@/components/patients/PatientFormFieldError.vue';
 import PatientListTable from '@/components/patients/PatientListTable.vue';
 import PatientVisitsDrawer from '@/components/patient-visits/PatientVisitsDrawer.vue';
 import PatientTokenPrintModal from '@/components/tokens/PatientTokenPrintModal.vue';
 import AddPatientToQueueModal from '@/components/queue/AddPatientToQueueModal.vue';
+import RegisterPatientVitalsModal from '@/components/vitals/RegisterPatientVitalsModal.vue';
 import { buildTokenPrintDataFromResponse, shouldOpenTokenPrintModal } from '@/utils/patientQueueToken';
-import BaseInput from '@/components/ui/BaseInput.vue';
-import BaseSelect from '@/components/ui/BaseSelect.vue';
+import AppIcon from '@/components/ui/AppIcon.vue';
 import BaseButton from '@/components/ui/BaseButton.vue';
 import BaseModal from '@/components/ui/BaseModal.vue';
 
@@ -192,17 +161,16 @@ const form = reactive({
   force_create: false,
 });
 
-const genderOptions = GENDER_OPTIONS;
-const ageUnitOptions = AGE_UNIT_OPTIONS;
-
 const saving = ref(false);
 const duplicateInfo = ref(null);
 const doctorOptions = ref([]);
 const isDoctor = computed(() => authStore.hasRole('doctor'));
 const canAddToQueue = computed(() => authStore.can('add patient to queue'));
 
-function onCnicInput(value) {
-  form.patient_cnic = formatCnicInput(value);
+function fieldError(key) {
+  const err = errors[key];
+
+  return Array.isArray(err) ? err[0] : (err ?? '');
 }
 
 const canViewPatientList = computed(() =>
@@ -223,6 +191,19 @@ const showTokenPrintModal = ref(false);
 const tokenPrintData = ref({});
 const addToQueueModalOpen = ref(false);
 const queueModalPatient = ref(null);
+const showRegisterVitalsModal = ref(false);
+const pendingRegistrationData = ref(null);
+const registerVitalsContext = reactive({
+  patientId: null,
+  visitId: null,
+  patientName: '',
+  mrNumber: '',
+});
+
+const canRecordVitalsOnRegistration = computed(() =>
+  authStore.can('record vitals on patient registration')
+  && authStore.can('create patient vitals')
+);
 
 function maybeOpenTokenPrintModal(data) {
   if (!shouldOpenTokenPrintModal(data)) {
@@ -231,6 +212,54 @@ function maybeOpenTokenPrintModal(data) {
 
   tokenPrintData.value = buildTokenPrintDataFromResponse(data);
   showTokenPrintModal.value = true;
+}
+
+function shouldOpenRegisterVitalsModal(data) {
+  return canRecordVitalsOnRegistration.value
+    && data?.patient?.id
+    && data?.visit?.id;
+}
+
+function openRegisterVitalsModal(data) {
+  pendingRegistrationData.value = data;
+  registerVitalsContext.patientId = data.patient.id;
+  registerVitalsContext.visitId = data.visit.id;
+  registerVitalsContext.patientName = data.patient.patient_name ?? '';
+  registerVitalsContext.mrNumber = data.patient.mr_number ?? '';
+  showRegisterVitalsModal.value = true;
+}
+
+async function completeRegistration(data) {
+  if (!data) {
+    return;
+  }
+
+  maybeOpenTokenPrintModal(data);
+  resetForm();
+  clearErrors();
+  pendingRegistrationData.value = null;
+
+  if (canViewPatientList.value) {
+    searchQuery.value = '';
+    await refreshPatientList();
+  }
+}
+
+async function onRegisterVitalsSaved() {
+  const data = pendingRegistrationData.value;
+  toastStore.success('Vitals recorded successfully.');
+  showRegisterVitalsModal.value = false;
+  await completeRegistration(data);
+}
+
+async function onRegisterVitalsClosed() {
+  const data = pendingRegistrationData.value;
+  showRegisterVitalsModal.value = false;
+  await completeRegistration(data);
+}
+
+function onRegisterVitalsError(e) {
+  toastStore.error(e?.response?.data?.message ?? 'Unable to save vitals.');
 }
 
 function openAddToQueueModal(patient) {
@@ -336,13 +365,11 @@ async function submit() {
   try {
     const { data } = await patientService.createPatient(buildPayload());
     toastStore.success(data.message ?? 'Patient registered successfully.');
-    maybeOpenTokenPrintModal(data);
-    resetForm();
-    clearErrors();
 
-    if (canViewPatientList.value) {
-      searchQuery.value = '';
-      await refreshPatientList();
+    if (shouldOpenRegisterVitalsModal(data)) {
+      openRegisterVitalsModal(data);
+    } else {
+      await completeRegistration(data);
     }
   } catch (e) {
     const data = e.response?.data;

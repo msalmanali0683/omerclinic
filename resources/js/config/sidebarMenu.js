@@ -5,18 +5,20 @@
  * Fields:
  * - label: display text
  * - icon: AppIcon name
+ * - color: theme color key for sidebar badges
  * - to: route path (leaf items)
  * - routeName: Vue Router route name (used for default redirects)
  * - permissions: required permission name(s)
  * - permissionMode: 'any' (default) | 'all'
  * - publicAuthenticated: visible to any logged-in user when true
- * - placeholder: shows "Soon" badge; excluded from default redirect
+ * - hidden: excluded from sidebar (unfinished features)
  * - children: nested menu items
  */
 export const sidebarMenu = [
     {
         label: 'Dashboard',
         icon: 'dashboard',
+        color: 'teal',
         to: '/dashboard',
         routeName: 'dashboard',
         permissions: ['view dashboard'],
@@ -24,23 +26,27 @@ export const sidebarMenu = [
     {
         label: 'Administration',
         icon: 'settings',
+        color: 'indigo',
         permissions: ['view users', 'assign roles', 'assign permissions'],
         permissionMode: 'any',
         children: [
             {
                 label: 'Users',
+                icon: 'users',
                 to: '/admin/users',
                 routeName: 'users.index',
                 permissions: ['view users'],
             },
             {
                 label: 'Roles',
+                icon: 'shield',
                 to: '/admin/roles',
                 routeName: 'roles.index',
                 permissions: ['assign roles'],
             },
             {
                 label: 'Permissions',
+                icon: 'key',
                 to: '/admin/permissions',
                 routeName: 'permissions.index',
                 permissions: ['assign permissions'],
@@ -50,6 +56,7 @@ export const sidebarMenu = [
     {
         label: 'Patients',
         icon: 'patients',
+        color: 'rose',
         permissions: [
             'view patients',
             'view limited patient info',
@@ -62,6 +69,7 @@ export const sidebarMenu = [
         children: [
             {
                 label: 'Patient List',
+                icon: 'list',
                 to: '/patients',
                 routeName: 'patients.index',
                 permissions: ['view patients', 'view limited patient info'],
@@ -69,12 +77,14 @@ export const sidebarMenu = [
             },
             {
                 label: 'Register New Patient',
+                icon: 'user-plus',
                 to: '/patients/create',
                 routeName: 'patients.create',
                 permissions: ['create patients'],
             },
             {
                 label: 'Search Patient',
+                icon: 'search',
                 to: '/patients/search',
                 routeName: 'patients.search',
                 permissions: ['search patients', 'view patient visits', 'view limited patient visit history'],
@@ -84,18 +94,21 @@ export const sidebarMenu = [
     },
     {
         label: 'Queue',
-        icon: 'calendar',
+        icon: 'queue',
+        color: 'amber',
         permissions: ['view patient queue', 'start consultation', 'create prescription'],
         permissionMode: 'any',
         children: [
             {
                 label: 'Patient Queue',
+                icon: 'queue',
                 to: '/queue',
                 routeName: 'queue.index',
                 permissions: ['view patient queue'],
             },
             {
                 label: 'Doctor Queue',
+                icon: 'stethoscope',
                 to: '/doctor-queue',
                 routeName: 'queue.doctor',
                 permissions: ['start consultation', 'create prescription'],
@@ -105,7 +118,8 @@ export const sidebarMenu = [
     },
     {
         label: 'Medicine Master',
-        icon: 'pharmacy',
+        icon: 'pill',
+        color: 'emerald',
         permissions: [
             'view medicines',
             'view medicine dose times',
@@ -116,18 +130,21 @@ export const sidebarMenu = [
         children: [
             {
                 label: 'Medicines',
+                icon: 'pill',
                 to: '/medicine-master/medicines',
                 routeName: 'medicines.index',
                 permissions: ['view medicines'],
             },
             {
                 label: 'Dose Times',
+                icon: 'clock',
                 to: '/medicine-master/dose-times',
                 routeName: 'medicine-dose-times.index',
                 permissions: ['view medicine dose times'],
             },
             {
                 label: 'Dose From Meal',
+                icon: 'meal',
                 to: '/medicine-master/dose-from-meals',
                 routeName: 'medicine-dose-from-meals.index',
                 permissions: ['view medicine dose from meals'],
@@ -137,17 +154,20 @@ export const sidebarMenu = [
     {
         label: 'Clinical Master',
         icon: 'prescription',
+        color: 'violet',
         permissions: ['view complaint masters', 'view diagnosis masters'],
         permissionMode: 'any',
         children: [
             {
                 label: 'Complaint Master',
+                icon: 'clipboard',
                 to: '/clinical-master/complaints',
                 routeName: 'complaint-masters.index',
                 permissions: ['view complaint masters'],
             },
             {
                 label: 'Diagnosis Master',
+                icon: 'diagnosis',
                 to: '/clinical-master/diagnosis',
                 routeName: 'diagnosis-masters.index',
                 permissions: ['view diagnosis masters'],
@@ -156,7 +176,8 @@ export const sidebarMenu = [
     },
     {
         label: 'Clinical Scans',
-        icon: 'report',
+        icon: 'scan',
+        color: 'sky',
         permissions: [
             'view clinical scans',
             'create clinical scans',
@@ -167,18 +188,21 @@ export const sidebarMenu = [
         children: [
             {
                 label: 'Scan Patient',
+                icon: 'scan',
                 to: '/clinical-scans/create',
                 routeName: 'clinical-scans.create',
                 permissions: ['create clinical scans'],
             },
             {
                 label: 'Clinical Scan List',
+                icon: 'list',
                 to: '/clinical-scans',
                 routeName: 'clinical-scans.index',
                 permissions: ['view clinical scans'],
             },
             {
                 label: 'Scan Templates',
+                icon: 'template',
                 to: '/clinical-scans/templates',
                 routeName: 'clinical-scan-templates.index',
                 permissions: ['view clinical scan templates'],
@@ -188,6 +212,7 @@ export const sidebarMenu = [
     {
         label: 'Laboratory',
         icon: 'lab',
+        color: 'blue',
         permissions: [
             'view laboratory results',
             'create laboratory results',
@@ -198,12 +223,14 @@ export const sidebarMenu = [
         children: [
             {
                 label: 'Test Billing',
+                icon: 'billing',
                 to: '/laboratory/billing',
                 routeName: 'laboratory.billing',
                 permissions: ['create lab bills'],
             },
             {
                 label: 'Laboratory Results',
+                icon: 'results',
                 to: '/laboratory-results',
                 routeName: 'laboratory-results.index',
                 permissions: ['view laboratory results', 'create laboratory results'],
@@ -211,6 +238,7 @@ export const sidebarMenu = [
             },
             {
                 label: 'Test Templates',
+                icon: 'template',
                 to: '/laboratory-results/templates',
                 routeName: 'laboratory-test-templates.index',
                 permissions: ['view laboratory test templates'],
@@ -218,44 +246,9 @@ export const sidebarMenu = [
         ],
     },
     {
-        label: 'Prescriptions',
-        icon: 'prescription',
-        to: '/prescriptions',
-        permissions: ['view prescriptions'],
-        placeholder: true,
-    },
-    {
-        label: 'Lab Requests',
-        icon: 'lab',
-        to: '/lab-requests',
-        permissions: ['view lab requests'],
-        placeholder: true,
-    },
-    {
-        label: 'Lab Reports',
-        icon: 'report',
-        to: '/lab-reports',
-        permissions: ['view lab reports', 'view assigned lab reports'],
-        permissionMode: 'any',
-        placeholder: true,
-    },
-    {
-        label: 'Medicine Stock',
-        icon: 'pharmacy',
-        to: '/medicine-stock',
-        permissions: ['manage medicine stock'],
-        placeholder: true,
-    },
-    {
-        label: 'Invoices',
-        icon: 'invoice',
-        to: '/invoices',
-        permissions: ['view invoice'],
-        placeholder: true,
-    },
-    {
         label: 'Reports',
         icon: 'chart',
+        color: 'fuchsia',
         permissions: [
             'view reports',
             'view patient reports',
@@ -269,12 +262,14 @@ export const sidebarMenu = [
         children: [
             {
                 label: 'Patient Report',
+                icon: 'report',
                 to: '/reports/patients',
                 routeName: 'reports.patients',
                 permissions: ['view patient reports'],
             },
             {
                 label: 'Laboratory Report',
+                icon: 'lab',
                 to: '/reports/laboratory',
                 routeName: 'reports.laboratory',
                 permissions: ['view laboratory reports'],
@@ -283,30 +278,10 @@ export const sidebarMenu = [
     },
     {
         label: 'Profile',
-        icon: 'users',
+        icon: 'user',
+        color: 'slate',
         to: '/profile',
         routeName: 'profile',
         publicAuthenticated: true,
-    },
-    {
-        label: 'My Appointments',
-        icon: 'calendar',
-        to: '/my-appointments',
-        permissions: ['view own appointments'],
-        placeholder: true,
-    },
-    {
-        label: 'My Prescriptions',
-        icon: 'prescription',
-        to: '/my-prescriptions',
-        permissions: ['view own prescriptions'],
-        placeholder: true,
-    },
-    {
-        label: 'My Lab Reports',
-        icon: 'report',
-        to: '/my-lab-reports',
-        permissions: ['view own lab reports'],
-        placeholder: true,
     },
 ];

@@ -1,52 +1,65 @@
 <template>
-  <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4 shadow-sm">
-    <div class="flex items-center justify-between mb-3">
-      <h3 class="font-semibold text-gray-900 dark:text-white">Current Visit Vitals</h3>
+  <div class="overflow-hidden rounded-2xl border border-cyan-200 bg-white shadow-md dark:border-cyan-900/50 dark:bg-gray-800">
+    <div class="flex items-center justify-between gap-3 border-b border-cyan-100 bg-gradient-to-r from-cyan-50 to-sky-50 px-4 py-3 dark:border-cyan-900/40 dark:from-cyan-950/30 dark:to-sky-950/20">
+      <div class="flex items-center gap-3">
+        <span class="flex h-10 w-10 items-center justify-center rounded-xl bg-cyan-100 text-cyan-700 dark:bg-cyan-900/50 dark:text-cyan-200">
+          <AppIcon name="heart" class-name="w-5 h-5" />
+        </span>
+        <div>
+          <h3 class="font-bold text-gray-900 dark:text-white">Current Visit Vitals</h3>
+          <p class="text-xs text-gray-500 dark:text-gray-400">Latest readings for this consultation</p>
+        </div>
+      </div>
       <BaseButton
         v-if="canEdit"
         type="button"
         variant="ghost"
         size="sm"
+        class="text-cyan-700 hover:bg-cyan-100 dark:text-cyan-300 dark:hover:bg-cyan-900/30"
         @click="$emit('edit')"
       >
         Edit
       </BaseButton>
     </div>
 
-    <dl class="grid grid-cols-2 sm:grid-cols-3 gap-3 text-sm">
-      <div>
-        <dt class="text-gray-500 dark:text-gray-400">B.P</dt>
-        <dd class="font-medium text-gray-900 dark:text-white">{{ displayValue(vitals.blood_pressure) }}</dd>
+    <div class="grid grid-cols-2 gap-3 p-4 sm:grid-cols-3">
+      <div
+        v-for="field in vitalFieldMeta"
+        :key="field.key"
+        class="rounded-xl border p-3"
+        :class="getVitalFieldStyle(field.color).card"
+      >
+        <div class="mb-1 flex items-center gap-2">
+          <span
+            class="rounded-md px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide"
+            :class="getVitalFieldStyle(field.color).badge"
+          >
+            {{ field.label }}
+          </span>
+        </div>
+        <p class="text-lg font-bold" :class="getVitalFieldStyle(field.color).value">
+          {{ displayValue(vitals[field.key]) }}
+        </p>
+        <p class="text-xs" :class="getVitalFieldStyle(field.color).hint">{{ field.title }}</p>
       </div>
-      <div>
-        <dt class="text-gray-500 dark:text-gray-400">Temp</dt>
-        <dd class="font-medium text-gray-900 dark:text-white">{{ displayValue(vitals.temperature) }}</dd>
+    </div>
+
+    <div v-if="vitals.recorded_at || vitals.recorded_by?.name || vitals.notes" class="space-y-3 border-t border-gray-100 px-4 py-3 dark:border-gray-700">
+      <div v-if="vitals.recorded_at" class="flex items-center gap-2 text-sm">
+        <AppIcon name="clock" class-name="w-4 h-4 text-gray-400" />
+        <span class="text-gray-500 dark:text-gray-400">Recorded:</span>
+        <span class="font-medium text-gray-900 dark:text-white">{{ formatDate(vitals.recorded_at) }}</span>
       </div>
-      <div>
-        <dt class="text-gray-500 dark:text-gray-400">Weight</dt>
-        <dd class="font-medium text-gray-900 dark:text-white">{{ displayValue(vitals.weight) }}</dd>
+      <div v-if="vitals.recorded_by?.name" class="flex items-center gap-2 text-sm">
+        <AppIcon name="user" class-name="w-4 h-4 text-gray-400" />
+        <span class="text-gray-500 dark:text-gray-400">By:</span>
+        <span class="font-medium text-gray-900 dark:text-white">{{ vitals.recorded_by.name }}</span>
       </div>
-      <div>
-        <dt class="text-gray-500 dark:text-gray-400">P/R</dt>
-        <dd class="font-medium text-gray-900 dark:text-white">{{ displayValue(vitals.pulse_rate) }}</dd>
+      <div v-if="vitals.notes" class="rounded-xl border border-violet-200 bg-violet-50/70 px-3 py-2 text-sm dark:border-violet-800 dark:bg-violet-900/20">
+        <p class="text-xs font-semibold uppercase tracking-wide text-violet-700 dark:text-violet-300">Notes</p>
+        <p class="mt-1 text-gray-700 dark:text-gray-300">{{ vitals.notes }}</p>
       </div>
-      <div>
-        <dt class="text-gray-500 dark:text-gray-400">R/R</dt>
-        <dd class="font-medium text-gray-900 dark:text-white">{{ displayValue(vitals.respiratory_rate) }}</dd>
-      </div>
-      <div v-if="vitals.recorded_at" class="col-span-2 sm:col-span-3">
-        <dt class="text-gray-500 dark:text-gray-400">Recorded At</dt>
-        <dd class="font-medium text-gray-900 dark:text-white">{{ formatDate(vitals.recorded_at) }}</dd>
-      </div>
-      <div v-if="vitals.recorded_by?.name" class="col-span-2 sm:col-span-3">
-        <dt class="text-gray-500 dark:text-gray-400">Recorded By</dt>
-        <dd class="font-medium text-gray-900 dark:text-white">{{ vitals.recorded_by.name }}</dd>
-      </div>
-      <div v-if="vitals.notes" class="col-span-2 sm:col-span-3">
-        <dt class="text-gray-500 dark:text-gray-400">Notes</dt>
-        <dd class="text-gray-700 dark:text-gray-300">{{ vitals.notes }}</dd>
-      </div>
-    </dl>
+    </div>
   </div>
 </template>
 
@@ -54,6 +67,8 @@
 import { computed } from 'vue';
 import { useAuthStore } from '@/stores/auth';
 import { formatDateTime as formatDate } from '@/utils/formatters';
+import { getVitalFieldStyle, vitalFieldMeta } from '@/utils/vitalsFieldTheme';
+import AppIcon from '@/components/ui/AppIcon.vue';
 import BaseButton from '@/components/ui/BaseButton.vue';
 
 defineProps({
@@ -70,6 +85,7 @@ function displayValue(value) {
   if (value === null || value === undefined || value === '') {
     return '—';
   }
+
   return value;
 }
 </script>

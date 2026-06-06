@@ -27,6 +27,7 @@ class StorePrescriptionRequest extends FormRequest
             'medicines.*.mdcn_size'              => 'nullable|string|max:100',
             'medicines.*.mdcn_time_id'           => 'nullable|integer|exists:medicine_dose_times,id',
             'medicines.*.mdcn_dose_from_meal_id' => 'nullable|integer|exists:medicine_dose_from_meals,id',
+            'medicines.*.show_in_treatment_given' => 'nullable|boolean',
         ];
     }
 

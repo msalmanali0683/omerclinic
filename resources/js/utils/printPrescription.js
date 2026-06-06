@@ -119,6 +119,30 @@ function buildPrintStyles(options, baseUrl = '') {
             white-space: nowrap;
         }
 
+        .rx-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 8px;
+        }
+
+        .header-vco-line {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            white-space: nowrap;
+            margin-top: 2px;
+        }
+
+        .print-checkbox {
+            display: inline-block;
+            width: 0.72rem;
+            height: 0.72rem;
+            border: 1px solid #000;
+            flex-shrink: 0;
+        }
+
         .header-field-center {
             justify-self: center;
             display: flex;
@@ -361,10 +385,6 @@ function buildPrintStyles(options, baseUrl = '') {
 
         .vitals-grid > div {
             margin-bottom: 3px;
-        }
-
-        .rx-header {
-            margin-bottom: 8px;
         }
 
         .rx-symbol,

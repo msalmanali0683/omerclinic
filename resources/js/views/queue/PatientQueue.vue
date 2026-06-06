@@ -84,7 +84,7 @@ const columns = [
   { key: 'id', label: 'Visit #' },
   { key: 'mr_number', label: 'MR No.' },
   { key: 'patient_name', label: 'Patient' },
-  { key: 'patient_father_name', label: 'Father' },
+  { key: 'patient_father_name', label: 'S/o, W/o, D/o' },
   { key: 'patient_gender', label: 'Gender' },
   { key: 'patient_age', label: 'Age' },
   { key: 'patient_cell', label: 'Cell' },

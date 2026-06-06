@@ -47,7 +47,7 @@
         <tr>
           <th>MR#</th>
           <th>Patient Name</th>
-          <th>Father Name</th>
+          <th>S/o, W/o, D/o</th>
           <th>Gender</th>
           <th>Age</th>
           <th>Cell</th>

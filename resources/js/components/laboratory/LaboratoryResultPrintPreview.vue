@@ -18,7 +18,7 @@
             <tr>
               <td class="lab-label">Patient Name</td>
               <td class="lab-value bidi-text">{{ patient.patient_name }}</td>
-              <td class="lab-label">Father Name</td>
+              <td class="lab-label">S/o, W/o, D/o</td>
               <td class="lab-value bidi-text">{{ patient.patient_father_name }}</td>
             </tr>
             <tr>

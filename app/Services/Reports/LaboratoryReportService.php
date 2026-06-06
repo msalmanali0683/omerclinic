@@ -234,7 +234,7 @@ class LaboratoryReportService
             'to_date'             => 'To Date',
             'mr_number'           => 'MR Number',
             'patient_name'        => 'Patient Name',
-            'patient_father_name' => 'Father Name',
+            'patient_father_name' => 'S/o, W/o, D/o',
             'patient_gender'      => 'Gender',
             'test_name'           => 'Test Name',
             'test_code'           => 'Test Code',

@@ -99,7 +99,7 @@ const toastStore = useToastStore();
 const columns = [
   { key: 'mr_number', label: 'MR No.' },
   { key: 'patient_name', label: 'Patient Name' },
-  { key: 'patient_father_name', label: 'Father Name' },
+  { key: 'patient_father_name', label: 'S/o, W/o, D/o' },
   { key: 'patient_gender', label: 'Gender' },
   { key: 'patient_age', label: 'Age' },
   { key: 'patient_cell', label: 'Cell' },

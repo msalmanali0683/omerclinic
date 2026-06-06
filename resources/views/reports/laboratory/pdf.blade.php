@@ -62,7 +62,7 @@
             <div class="patient-header">
                 <strong>MR#:</strong> {{ $group['mr_number'] ?? '—' }} |
                 <strong>Patient:</strong> {{ $group['patient_name'] ?? '—' }} |
-                <strong>Father:</strong> {{ $group['patient_father_name'] ?? '—' }}
+                <strong>S/o, W/o, D/o:</strong> {{ $group['patient_father_name'] ?? '—' }}
             </div>
             <table class="lab-report-table">
                 <thead>

@@ -42,7 +42,7 @@ const canViewPatient = computed(() =>
 const columns = [
   { key: 'mr_number', label: 'MR Number' },
   { key: 'patient_name', label: 'Patient Name' },
-  { key: 'patient_father_name', label: 'Father Name' },
+  { key: 'patient_father_name', label: 'S/o, W/o, D/o' },
   { key: 'patient_gender_label', label: 'Gender' },
   { key: 'patient_age_display', label: 'Age' },
   { key: 'patient_cell', label: 'Cell' },

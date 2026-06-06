@@ -14,7 +14,7 @@
       <div class="lab-bill-patient-title">Patient Details</div>
       <div class="lab-bill-patient-grid">
         <div><strong>Patient:</strong> {{ printData.patient?.patient_name || '—' }}</div>
-        <div><strong>Father:</strong> {{ printData.patient?.patient_father_name || '—' }}</div>
+        <div><strong>S/o, W/o, D/o:</strong> {{ printData.patient?.patient_father_name || '—' }}</div>
         <div><strong>MR#:</strong> {{ printData.patient?.mr_number || '—' }}</div>
         <div><strong>Cell:</strong> {{ printData.patient?.patient_cell || '—' }}</div>
         <div><strong>Visit:</strong> {{ printData.visit_label || 'Not Linked / No Visit' }}</div>

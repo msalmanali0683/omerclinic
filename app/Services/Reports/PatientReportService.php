@@ -516,7 +516,7 @@ class PatientReportService
             'to_date'               => 'To Date',
             'mr_number'             => 'MR Number',
             'patient_name'          => 'Patient Name',
-            'patient_father_name'   => 'Father Name',
+            'patient_father_name'   => 'S/o, W/o, D/o',
             'patient_gender'        => 'Gender',
             'age_from'              => 'Age From',
             'age_to'                => 'Age To',

@@ -18,7 +18,7 @@ defineProps({
 const columns = [
   { key: 'mr_number', label: 'MR Number' },
   { key: 'patient_name', label: 'Patient Name' },
-  { key: 'patient_father_name', label: 'Father Name' },
+  { key: 'patient_father_name', label: 'S/o, W/o, D/o' },
   { key: 'test_name', label: 'Test Name' },
   { key: 'test_price', label: 'Price' },
   { key: 'result_date', label: 'Result Date' },

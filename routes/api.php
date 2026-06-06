@@ -32,6 +32,7 @@ use App\Http\Controllers\Api\PatientVisitHistoryController;
 use App\Http\Controllers\Api\PatientVisitComplaintController;
 use App\Http\Controllers\Api\PatientVisitDiagnosisController;
 use App\Http\Controllers\Api\PatientVisitTokenController;
+use App\Http\Controllers\Api\PublicLaboratoryReportController;
 use App\Http\Controllers\Api\Reports\LaboratoryReportController;
 use App\Http\Controllers\Api\Reports\PatientReportController;
 
@@ -41,6 +42,21 @@ use App\Http\Controllers\Api\Reports\PatientReportController;
 |--------------------------------------------------------------------------
 */
 Route::post('/login', [AuthController::class, 'login']);
+
+/*
+|--------------------------------------------------------------------------
+| Public patient lab reports (MR + cell or CNIC verification)
+|--------------------------------------------------------------------------
+*/
+Route::prefix('public/lab-reports')->middleware('throttle:20,1')->group(function () {
+    Route::post('verify', [PublicLaboratoryReportController::class, 'verify']);
+    Route::post('logout', [PublicLaboratoryReportController::class, 'logout']);
+    Route::get('results', [PublicLaboratoryReportController::class, 'results']);
+    Route::get('print-data', [PublicLaboratoryReportController::class, 'printDataAll']);
+    Route::get('results/{laboratoryResult}/print-data', [PublicLaboratoryReportController::class, 'printData']);
+    Route::get('results/{laboratoryResult}/attachments/{attachment}/preview', [PublicLaboratoryReportController::class, 'previewAttachment'])
+        ->name('public.lab-reports.attachments.preview');
+});
 
 /*
 |--------------------------------------------------------------------------

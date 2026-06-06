@@ -36,6 +36,12 @@
             {{ errors.general }}
           </div>
 
+          <p class="text-center text-sm">
+            <router-link to="/lab-reports" class="text-teal-600 hover:text-teal-700 dark:text-teal-400">
+              Print lab reports (patient)
+            </router-link>
+          </p>
+
           <BaseButton type="submit" class="w-full" :loading="loading">
             Sign In
           </BaseButton>

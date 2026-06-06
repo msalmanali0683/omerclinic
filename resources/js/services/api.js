@@ -69,7 +69,10 @@ api.interceptors.response.use(
             const authStore = useAuthStore();
             const alive = await authStore.confirmSessionAlive();
 
-            if (!alive && !window.location.pathname.startsWith('/login')) {
+            const publicPaths = ['/login', '/lab-reports'];
+            const isPublicPath = publicPaths.some((path) => window.location.pathname.startsWith(path));
+
+            if (!alive && !isPublicPath) {
                 window.location.href = '/login';
             }
         }

@@ -16,7 +16,7 @@
         <span class="header-field header-field-date-time"><strong>Date &amp; Time:</strong> {{ dateTimeLabel }}</span>
       </div>
       <div class="header-row header-row-bottom">
-        <span class="header-field header-field-relation"><strong>D/o|S/o|W/o:</strong> {{ patient.patient_father_name }}</span>
+        <span class="header-field header-field-relation"><strong>S/o, W/o, D/o:</strong> {{ patient.patient_father_name }}</span>
         <span class="header-field-group header-field-center">
           <span class="header-field header-field-cell"><strong>Cell:</strong> {{ patient.patient_cell }}</span>
           <span class="header-field"><strong>Address:</strong> {{ patient.patient_address }}</span>

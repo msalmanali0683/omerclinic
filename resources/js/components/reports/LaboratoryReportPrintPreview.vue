@@ -42,7 +42,7 @@
       <div class="patient-group-header">
         <span><strong>MR#:</strong> {{ group.mr_number || '—' }}</span>
         <span><strong>Patient:</strong> {{ group.patient_name || '—' }}</span>
-        <span><strong>Father:</strong> {{ group.patient_father_name || '—' }}</span>
+        <span><strong>S/o, W/o, D/o:</strong> {{ group.patient_father_name || '—' }}</span>
       </div>
 
       <table class="lab-billing-table">

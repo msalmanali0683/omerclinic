@@ -15,7 +15,7 @@
           <div><dt class="text-gray-500 inline">Name:</dt> {{ details.patient?.patient_name }}</div>
           <div><dt class="text-gray-500 inline">Gender:</dt> {{ formatGender(details.patient?.patient_gender) }}</div>
           <div><dt class="text-gray-500 inline">Age:</dt> {{ displayPatientAge(details.patient) }}</div>
-          <div v-if="details.patient?.patient_father_name"><dt class="text-gray-500 inline">Father:</dt> {{ details.patient.patient_father_name }}</div>
+          <div v-if="details.patient?.patient_father_name"><dt class="text-gray-500 inline">S/o, W/o, D/o:</dt> {{ details.patient.patient_father_name }}</div>
           <div v-if="details.patient?.patient_cell"><dt class="text-gray-500 inline">Cell:</dt> {{ details.patient.patient_cell }}</div>
           <div v-if="details.patient?.patient_cnic"><dt class="text-gray-500 inline">CNIC:</dt> {{ details.patient.patient_cnic }}</div>
           <div v-if="details.patient?.patient_address" class="sm:col-span-2"><dt class="text-gray-500 inline">Address:</dt> {{ details.patient.patient_address }}</div>

@@ -11,6 +11,12 @@ const routes = [
         meta: { guest: true, layout: 'auth' },
     },
     {
+        path: '/lab-reports',
+        name: 'public.lab-reports',
+        component: () => import('@/views/public/PublicLabReports.vue'),
+        meta: { public: true, layout: 'auth', title: 'Print Lab Reports' },
+    },
+    {
         path: '/',
         name: 'home',
         redirect: '/login',
@@ -313,6 +319,13 @@ router.beforeEach(async (to) => {
 
     if (!authStore.initialized) {
         await authStore.fetchUser();
+    }
+
+    if (to.meta.public) {
+        document.title = to.meta.title
+            ? `${to.meta.title} | Hospital Admin`
+            : 'Hospital Admin';
+        return true;
     }
 
     if (to.name === 'home') {

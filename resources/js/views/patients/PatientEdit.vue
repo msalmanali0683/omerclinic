@@ -9,7 +9,7 @@
 
     <form v-else class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6 shadow-sm space-y-5" @submit.prevent="submit">
       <BaseInput v-model="form.patient_name" label="Patient Name" :error="errors.patient_name" required />
-      <BaseInput v-model="form.patient_father_name" label="Father Name" :error="errors.patient_father_name" />
+      <BaseInput v-model="form.patient_father_name" label="S/o, W/o, D/o" :error="errors.patient_father_name" />
       <BaseSelect
         v-model="form.patient_gender"
         label="Gender"
@@ -29,7 +29,14 @@
         />
       </div>
       <BaseInput v-model="form.patient_cell" label="Cell Number" :error="errors.patient_cell" required />
-      <BaseInput v-model="form.patient_cnic" label="CNIC" :error="errors.patient_cnic" />
+      <BaseInput
+        :model-value="form.patient_cnic"
+        label="CNIC"
+        hint="e.g. 35202-1234567-1"
+        placeholder="XXXXX-XXXXXXX-X"
+        :error="errors.patient_cnic"
+        @update:model-value="onCnicInput"
+      />
       <div>
         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Address</label>
         <textarea
@@ -54,7 +61,7 @@ import { useRoute, useRouter } from 'vue-router';
 import { useToastStore } from '@/stores/toast';
 import { patientService } from '@/services/patientService';
 import { useFormErrors } from '@/composables/useFormErrors';
-import { AGE_UNIT_OPTIONS, GENDER_OPTIONS } from '@/utils/formatters';
+import { AGE_UNIT_OPTIONS, formatCnicInput, GENDER_OPTIONS } from '@/utils/formatters';
 import BaseInput from '@/components/ui/BaseInput.vue';
 import BaseSelect from '@/components/ui/BaseSelect.vue';
 import BaseButton from '@/components/ui/BaseButton.vue';
@@ -80,6 +87,10 @@ const ageUnitOptions = AGE_UNIT_OPTIONS;
 
 const saving = ref(false);
 const pageLoading = ref(true);
+
+function onCnicInput(value) {
+  form.patient_cnic = formatCnicInput(value);
+}
 
 async function submit() {
   clearErrors();
@@ -111,7 +122,7 @@ onMounted(async () => {
       patient_age_unit: patient.patient_age_unit ?? 'years',
       patient_cell: patient.patient_cell ?? '',
       patient_address: patient.patient_address ?? '',
-      patient_cnic: patient.patient_cnic ?? '',
+      patient_cnic: formatCnicInput(patient.patient_cnic ?? ''),
     });
   } catch {
     toastStore.error('Failed to load patient.');

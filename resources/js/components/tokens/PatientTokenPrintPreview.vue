@@ -7,7 +7,7 @@
       {{ patientName || '—' }}
     </p>
     <p class="token-print-row">
-      <span class="token-print-label">Father Name:</span>
+      <span class="token-print-label">S/o, W/o, D/o:</span>
       {{ fatherName || '—' }}
     </p>
     <p class="token-print-row">

@@ -7,7 +7,7 @@
       <BaseInput v-model="localFilters.to_date" type="date" label="To Date" />
       <BaseInput v-model="localFilters.mr_number" label="MR Number" placeholder="MR number" />
       <BaseInput v-model="localFilters.patient_name" label="Patient Name" placeholder="Patient name" />
-      <BaseInput v-model="localFilters.patient_father_name" label="Father Name" placeholder="Father name" />
+      <BaseInput v-model="localFilters.patient_father_name" label="S/o, W/o, D/o" placeholder="S/o, W/o, D/o name" />
       <BaseSelect v-model="localFilters.patient_gender" label="Gender" :options="genderOptions" placeholder="All" />
       <BaseInput v-model="localFilters.age_from" type="number" label="Age From" min="0" />
       <BaseInput v-model="localFilters.age_to" type="number" label="Age To" min="0" />

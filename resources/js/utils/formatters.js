@@ -169,6 +169,21 @@ export function formatPrescriptionDateTime(prescription, visit) {
     return `${day}-${month}-${year}${timePart}`;
 }
 
+/** Pakistani CNIC mask: XXXXX-XXXXXXX-X */
+export function formatCnicInput(value) {
+    const digits = String(value ?? '').replace(/\D/g, '').slice(0, 13);
+
+    if (digits.length <= 5) {
+        return digits;
+    }
+
+    if (digits.length <= 12) {
+        return `${digits.slice(0, 5)}-${digits.slice(5)}`;
+    }
+
+    return `${digits.slice(0, 5)}-${digits.slice(5, 12)}-${digits.slice(12)}`;
+}
+
 export function formatCurrency(amount, currency = 'PKR') {
     if (amount === null || amount === undefined || amount === '') {
         return '—';

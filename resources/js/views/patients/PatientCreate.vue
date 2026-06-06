@@ -23,7 +23,7 @@
     <form class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6 shadow-sm space-y-4" @submit.prevent="submit">
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <BaseInput v-model="form.patient_name" label="Patient Name" :error="errors.patient_name" required />
-        <BaseInput v-model="form.patient_father_name" label="Father Name" :error="errors.patient_father_name" />
+        <BaseInput v-model="form.patient_father_name" label="S/o, W/o, D/o" :error="errors.patient_father_name" />
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -65,7 +65,14 @@
 
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         <BaseInput v-model="form.patient_cell" label="Cell Number" :error="errors.patient_cell" required />
-        <BaseInput v-model="form.patient_cnic" label="CNIC" hint="e.g. 35202-1234567-1" :error="errors.patient_cnic" />
+        <BaseInput
+          :model-value="form.patient_cnic"
+          label="CNIC"
+          hint="e.g. 35202-1234567-1"
+          placeholder="XXXXX-XXXXXXX-X"
+          :error="errors.patient_cnic"
+          @update:model-value="onCnicInput"
+        />
         <div class="md:col-span-2 lg:col-span-1">
           <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Address</label>
           <textarea
@@ -156,7 +163,7 @@ import { useToastStore } from '@/stores/toast';
 import { patientService } from '@/services/patientService';
 import { userService } from '@/services/userService';
 import { useFormErrors } from '@/composables/useFormErrors';
-import { AGE_UNIT_OPTIONS, GENDER_OPTIONS } from '@/utils/formatters';
+import { AGE_UNIT_OPTIONS, formatCnicInput, GENDER_OPTIONS } from '@/utils/formatters';
 import PatientListTable from '@/components/patients/PatientListTable.vue';
 import PatientVisitsDrawer from '@/components/patient-visits/PatientVisitsDrawer.vue';
 import PatientTokenPrintModal from '@/components/tokens/PatientTokenPrintModal.vue';
@@ -193,6 +200,10 @@ const duplicateInfo = ref(null);
 const doctorOptions = ref([]);
 const isDoctor = computed(() => authStore.hasRole('doctor'));
 const canAddToQueue = computed(() => authStore.can('add patient to queue'));
+
+function onCnicInput(value) {
+  form.patient_cnic = formatCnicInput(value);
+}
 
 const canViewPatientList = computed(() =>
   authStore.can('view patients')

@@ -27,7 +27,7 @@ export const sidebarMenu = [
         label: 'Administration',
         icon: 'settings',
         color: 'indigo',
-        permissions: ['view users', 'assign roles', 'assign permissions'],
+        permissions: ['view users', 'assign roles', 'assign permissions', 'manage prescription print settings'],
         permissionMode: 'any',
         children: [
             {
@@ -50,6 +50,13 @@ export const sidebarMenu = [
                 to: '/admin/permissions',
                 routeName: 'permissions.index',
                 permissions: ['assign permissions'],
+            },
+            {
+                label: 'Print Settings',
+                icon: 'prescription',
+                to: '/admin/prescription-print-settings',
+                routeName: 'prescription-print-settings.index',
+                permissions: ['manage prescription print settings'],
             },
         ],
     },

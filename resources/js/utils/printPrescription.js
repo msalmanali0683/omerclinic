@@ -1,4 +1,4 @@
-import { PRESCRIPTION_PRINT_SETTINGS, PRESCRIPTION_PRINT_FONT_FAMILY } from '@/utils/prescriptionPrintSettings';
+import { getDefaultResolvedSettings, getPrintElementOptions, PRESCRIPTION_PRINT_FONT_FAMILY } from '@/utils/prescriptionPrintSettings';
 import {
     buildPrescriptionPrintFontFaceCss,
     ensurePrescriptionPrintFontLoaded,
@@ -6,11 +6,17 @@ import {
 } from '@/utils/prescriptionPrintFonts';
 
 function buildPrintStyles(options, baseUrl = '') {
-    const pageSize = options.pageSize || PRESCRIPTION_PRINT_SETTINGS.pageSize || 'A4';
-    const orientation = options.orientation || PRESCRIPTION_PRINT_SETTINGS.orientation || 'portrait';
-    const margin = options.margin
-        || `${options.marginTop || PRESCRIPTION_PRINT_SETTINGS.marginTop} ${options.marginRight || PRESCRIPTION_PRINT_SETTINGS.marginRight} ${options.marginBottom || PRESCRIPTION_PRINT_SETTINGS.marginBottom} ${options.marginLeft || PRESCRIPTION_PRINT_SETTINGS.marginLeft}`;
-    const fontSize = options.fontSize || `${PRESCRIPTION_PRINT_SETTINGS.fontSize}pt`;
+    const defaults = getPrintElementOptions(getDefaultResolvedSettings());
+    const merged = { ...defaults, ...options };
+    const pageSize = merged.pageSize || 'A4';
+    const orientation = merged.orientation || 'portrait';
+    const margin = merged.margin || '0.1in 0.32in 0.2in 0.5in';
+    const fontSize = merged.fontSize || '12pt';
+    const letterheadHeight = merged.letterheadHeight || '2.45in';
+    const fontSizeVitals = merged.fontSizeVitals ?? 12;
+    const fontSizeClinicalScans = merged.fontSizeClinicalScans ?? 12;
+    const fontSizeMedicines = merged.fontSizeMedicines ?? 13;
+    const fontSizeMedicineDose = merged.fontSizeMedicineDose ?? 12;
 
     return `
         ${buildPrescriptionPrintFontFaceCss(baseUrl)}
@@ -81,7 +87,7 @@ function buildPrintStyles(options, baseUrl = '') {
 
         .letterhead-space {
             width: 100%;
-            min-height: ${options.letterheadHeight || PRESCRIPTION_PRINT_SETTINGS.letterheadHeight};
+            min-height: ${letterheadHeight};
         }
 
         .patient-header {
@@ -213,10 +219,16 @@ function buildPrintStyles(options, baseUrl = '') {
             min-width: 0;
         }
 
+        .vitals-section,
+        .vitals-grid,
+        .vitals-grid > div {
+            font-size: ${fontSizeVitals}pt;
+        }
+
         .clinical-scan-print-section {
             grid-column: 1 / -1;
             margin-top: 8px;
-            font-size: 12px;
+            font-size: ${fontSizeClinicalScans}pt;
             line-height: 1.15;
         }
 
@@ -276,7 +288,7 @@ function buildPrintStyles(options, baseUrl = '') {
 
         .scan-value-item {
             min-width: 0;
-            font-size: 12px;
+            font-size: ${fontSizeClinicalScans}pt;
             line-height: 1.15;
             white-space: normal;
             overflow-wrap: anywhere;
@@ -301,7 +313,7 @@ function buildPrintStyles(options, baseUrl = '') {
         .scan-value-impression {
             grid-column: 1 / -1;
             margin-top: 3px;
-            font-size: 12px;
+            font-size: ${fontSizeClinicalScans}pt;
             line-height: 1.15;
             white-space: normal;
             overflow-wrap: anywhere;
@@ -430,13 +442,13 @@ function buildPrintStyles(options, baseUrl = '') {
         .medicine-line,
         .medicine-main-line {
             font-weight: normal;
-            font-size: 13px;
+            font-size: ${fontSizeMedicines}pt;
             line-height: 1.2;
             margin-bottom: 2px;
         }
 
         .medicine-dose-line {
-            font-size: 12px;
+            font-size: ${fontSizeMedicineDose}pt;
             line-height: 1.2;
             margin-top: 2px;
         }
@@ -532,11 +544,7 @@ export async function printPrescriptionElement(elementId = 'prescription-print-a
     }
 
     const mergedOptions = {
-        pageSize: PRESCRIPTION_PRINT_SETTINGS.pageSize,
-        orientation: PRESCRIPTION_PRINT_SETTINGS.orientation,
-        margin: PRESCRIPTION_PRINT_SETTINGS.margin,
-        fontSize: `${PRESCRIPTION_PRINT_SETTINGS.fontSize}pt`,
-        letterheadHeight: PRESCRIPTION_PRINT_SETTINGS.letterheadHeight,
+        ...getPrintElementOptions(getDefaultResolvedSettings()),
         ...options,
     };
 

@@ -68,6 +68,17 @@ const routes = [
         },
     },
     {
+        path: '/admin/prescription-print-settings',
+        name: 'prescription-print-settings.index',
+        component: () => import('@/views/admin/PrescriptionPrintSettingsIndex.vue'),
+        meta: {
+            requiresAuth: true,
+            layout: 'dashboard',
+            permission: 'manage prescription print settings',
+            title: 'Prescription Print Settings',
+        },
+    },
+    {
         path: '/patients',
         name: 'patients.index',
         component: () => import('@/views/patients/PatientsIndex.vue'),

@@ -133,6 +133,7 @@ class VisitPrintDataService
                 : [],
             'medicines'        => $medicines,
             'clinical_scans'   => $clinicalScans ?? $this->resolveClinicalScansForPrint($visit, $user),
+            'print_settings'   => app(PrescriptionPrintSettingService::class)->resolve(),
         ];
     }
 

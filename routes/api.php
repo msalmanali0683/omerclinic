@@ -10,6 +10,7 @@ use App\Http\Controllers\Api\PatientController;
 use App\Http\Controllers\Api\PatientSearchController;
 use App\Http\Controllers\Api\PatientQueueController;
 use App\Http\Controllers\Api\PatientVitalController;
+use App\Http\Controllers\Api\PrescriptionPrintSettingController;
 use App\Http\Controllers\Api\PrescriptionController;
 use App\Http\Controllers\Api\MedicineDoseFromMealController;
 use App\Http\Controllers\Api\MedicineDoseTimeController;
@@ -156,6 +157,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('prescriptions', PrescriptionController::class)->except(['store']);
     Route::get('patient-visits/{visit}/prescription-create-data', [PrescriptionController::class, 'prescriptionCreateData'])
         ->middleware('permission:create prescription');
+    Route::get('prescription-print-settings', [PrescriptionPrintSettingController::class, 'show']);
+    Route::put('prescription-print-settings', [PrescriptionPrintSettingController::class, 'update'])
+        ->middleware('permission:manage prescription print settings');
 
     // Clinical scans
     Route::get('clinical-scans/queue-patients/search', [ClinicalScanQueueSearchController::class, 'search'])

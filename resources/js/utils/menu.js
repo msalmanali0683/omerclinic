@@ -36,7 +36,7 @@ export const permissionModules = {
     'Doctor / Medical': [
         'add diagnosis', 'create prescription', 'edit prescription',
         'view prescriptions', 'request lab test', 'view lab reports',
-        'view assigned lab reports',
+        'view assigned lab reports', 'print prescription', 'manage prescription print settings',
     ],
     'Lab': [
         'view lab requests', 'create lab report', 'edit lab report',

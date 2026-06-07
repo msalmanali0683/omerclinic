@@ -55,16 +55,32 @@
     </div>
 
     <footer class="lab-bill-footer">
-      <p v-for="(line, index) in footerLines" :key="index">{{ line }}</p>
+      <div class="lab-bill-reports-access">
+        <p class="lab-bill-reports-heading">Print Laboratory Reports Online</p>
+        <p class="lab-bill-reports-help">{{ labReportsFooterText }}</p>
+        <img
+          v-if="qrCodeDataUrl"
+          :src="qrCodeDataUrl"
+          alt="QR code for laboratory reports"
+          class="lab-bill-qr-code"
+          data-qr-ready="true"
+        >
+        <p class="lab-bill-reports-url">{{ labReportsUrl }}</p>
+      </div>
+      <div class="lab-bill-footer-notes">
+        <p v-for="(line, index) in footerLines" :key="index">{{ line }}</p>
+      </div>
     </footer>
   </div>
 </template>
 
 <script setup>
-import { computed, onMounted } from 'vue';
+import { computed, onMounted, ref, watch } from 'vue';
 import { formatCurrency } from '@/utils/formatters';
+import { generateQrCodeDataUrl } from '@/utils/generateQrCodeDataUrl';
 import { ensureBillPreviewStyles } from '@/utils/laboratoryBillPrintStyles';
 import { resolveLabReportFooterLines } from '@/constants/hospitalBrand';
+import { resolveLabReportsFooterText, resolveLabReportsUrl } from '@/utils/labReportsUrl';
 
 const props = defineProps({
   printData: { type: Object, required: true },
@@ -72,8 +88,39 @@ const props = defineProps({
 });
 
 const footerLines = computed(() => resolveLabReportFooterLines(props.printData));
+const labReportsUrl = computed(() => resolveLabReportsUrl(props.printData));
+const labReportsFooterText = computed(() => resolveLabReportsFooterText(props.printData));
+const qrCodeDataUrl = ref('');
+let qrReadyPromise = Promise.resolve();
+let resolveQrReady = null;
+
+function resetQrReadyPromise() {
+  qrReadyPromise = new Promise((resolve) => {
+    resolveQrReady = resolve;
+  });
+}
+
+async function loadQrCode() {
+  resetQrReadyPromise();
+
+  try {
+    qrCodeDataUrl.value = await generateQrCodeDataUrl(labReportsUrl.value);
+  } catch {
+    qrCodeDataUrl.value = '';
+  } finally {
+    resolveQrReady?.();
+  }
+}
+
+watch(labReportsUrl, () => {
+  loadQrCode();
+}, { immediate: true });
 
 onMounted(() => {
   ensureBillPreviewStyles();
+});
+
+defineExpose({
+  waitForQrCode: () => qrReadyPromise,
 });
 </script>

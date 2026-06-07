@@ -48,7 +48,8 @@ class LaboratoryBillTest extends TestCase
 
         $response->assertCreated()
             ->assertJsonPath('data.status', 'draft')
-            ->assertJsonStructure(['print_data' => ['visit_label', 'tests']]);
+            ->assertJsonStructure(['print_data' => ['visit_label', 'tests', 'lab_reports_url']])
+            ->assertJsonPath('print_data.lab_reports_url', rtrim(config('app.url'), '/').'/lab-reports');
 
         $this->assertDatabaseHas('laboratory_bills', [
             'patient_id'       => $patient->id,

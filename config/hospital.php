@@ -17,6 +17,15 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Public lab reports page (QR code + footer link on lab bills)
+    |--------------------------------------------------------------------------
+    */
+    'lab_reports_path' => env('HOSPITAL_LAB_REPORTS_PATH', '/lab-reports'),
+
+    'lab_reports_bill_footer_text' => 'Scan QR code or open the link below to print your laboratory reports online.',
+
+    /*
+    |--------------------------------------------------------------------------
     | Text fields normalized on save (first letter of each word uppercase)
     |--------------------------------------------------------------------------
     */

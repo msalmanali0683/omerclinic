@@ -4,7 +4,7 @@
     class="prescription-slip prescription-container visit-print-preview bg-white text-black"
     :style="slipStyle"
   >
-    <div class="letterhead-space" :style="{ minHeight: printSettings.letterheadHeight }" />
+    <div class="letterhead-space" :style="{ minHeight: resolvedSettings.letterhead_height }" />
 
     <div class="patient-header border-b border-black pb-1 mb-1">
       <div class="header-row header-row-top">
@@ -172,19 +172,22 @@ import {
 } from '@/utils/clinicalScanPrintLayout';
 import { splitPrintMedicines } from '@/utils/prescriptionPrintMedicines';
 import {
-  PRESCRIPTION_PRINT_SETTINGS,
-  PRESCRIPTION_PRINT_FONT_FAMILY,
+  buildSlipStyleVars,
   formatMedicineLine,
   formatPrescriptionDateTime,
+  mergePrescriptionPrintSettings,
 } from '@/utils/prescriptionPrintSettings';
 
 const props = defineProps({
   printData: { type: Object, required: true },
+  printSettings: { type: Object, default: null },
   printAreaId: { type: String, default: 'prescription-print-area' },
   showEmptyClinicalScansAsNa: { type: Boolean, default: true },
 });
 
-const printSettings = PRESCRIPTION_PRINT_SETTINGS;
+const resolvedSettings = computed(() => mergePrescriptionPrintSettings(
+  props.printSettings ?? props.printData?.print_settings,
+));
 const printNa = PRINT_NA;
 
 const normalized = computed(() => normalizeVisitPrintData(props.printData, {
@@ -217,12 +220,7 @@ const treatmentGivenReserveStyle = computed(() => {
   };
 });
 
-const slipStyle = computed(() => ({
-  fontFamily: PRESCRIPTION_PRINT_FONT_FAMILY,
-  fontSize: `${printSettings.fontSize}pt`,
-  lineHeight: 1.2,
-  fontWeight: 'normal',
-}));
+const slipStyle = computed(() => buildSlipStyleVars(resolvedSettings.value));
 </script>
 
 <style scoped>
@@ -372,7 +370,7 @@ const slipStyle = computed(() => ({
 
 .clinical-scan-print-section {
   margin-top: 8px;
-  font-size: 12px;
+  font-size: var(--print-font-clinical-scans, 12pt);
   line-height: 1.15;
 }
 
@@ -437,7 +435,7 @@ const slipStyle = computed(() => ({
 
 .scan-value-item {
   min-width: 0;
-  font-size: 12px;
+  font-size: var(--print-font-clinical-scans, 12pt);
   line-height: 1.15;
   white-space: normal;
   overflow-wrap: anywhere;
@@ -462,7 +460,7 @@ const slipStyle = computed(() => ({
 .scan-value-impression {
   grid-column: 1 / -1;
   margin-top: 3px;
-  font-size: 12px;
+  font-size: var(--print-font-clinical-scans, 12pt);
   line-height: 1.15;
   white-space: normal;
   overflow-wrap: anywhere;
@@ -522,6 +520,12 @@ const slipStyle = computed(() => ({
   margin-bottom: 4px;
 }
 
+.vitals-section,
+.vitals-grid,
+.vitals-grid > div {
+  font-size: var(--print-font-vitals, 12pt);
+}
+
 .vitals-grid > div {
   margin-bottom: 3px;
 }
@@ -577,13 +581,13 @@ const slipStyle = computed(() => ({
 .medicine-line,
 .medicine-main-line {
   font-weight: normal;
-  font-size: 13px;
+  font-size: var(--print-font-medicines, 13pt);
   line-height: 1.2;
   margin-bottom: 2px;
 }
 
 .medicine-dose-line {
-  font-size: 12px;
+  font-size: var(--print-font-medicine-dose, 12pt);
   line-height: 1.2;
   margin-top: 2px;
 }

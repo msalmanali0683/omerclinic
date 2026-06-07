@@ -161,6 +161,44 @@ export function buildLaboratoryBillPrintStyles() {
             color: #718096;
         }
 
+        .lab-bill-reports-access {
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px dashed #e2e8f0;
+        }
+
+        .lab-bill-reports-heading {
+            margin: 0 0 4px;
+            font-size: 9.5pt;
+            font-weight: 700;
+            color: #2d3748;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        .lab-bill-reports-help {
+            margin: 0 0 8px;
+            font-size: 8.5pt;
+            color: #4a5568;
+        }
+
+        .lab-bill-qr-code {
+            display: inline-block;
+            width: 88px;
+            height: 88px;
+            margin: 0 auto 6px;
+            image-rendering: pixelated;
+        }
+
+        .lab-bill-reports-url {
+            margin: 0;
+            font-size: 9pt;
+            font-weight: 600;
+            color: #1a365d;
+            word-break: break-all;
+        }
+
+        .lab-bill-footer-notes p,
         .lab-bill-footer p {
             margin: 2px 0;
         }

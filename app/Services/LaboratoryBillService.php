@@ -135,7 +135,16 @@ class LaboratoryBillService
             ])->values()->all(),
             'printed_by'    => auth()->user()?->name,
             'generated_at'  => now()->format('Y-m-d H:i'),
+            'lab_reports_url' => $this->labReportsUrl(),
+            'lab_reports_footer_text' => (string) config('hospital.lab_reports_bill_footer_text'),
         ];
+    }
+
+    protected function labReportsUrl(): string
+    {
+        $path = trim((string) config('hospital.lab_reports_path', '/lab-reports'), '/');
+
+        return rtrim((string) config('app.url'), '/').'/'.$path;
     }
 
     protected function resolveVisitId(Patient $patient, mixed $visitId): ?int

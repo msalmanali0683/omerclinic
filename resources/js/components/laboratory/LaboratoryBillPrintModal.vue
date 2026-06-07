@@ -14,6 +14,7 @@
               <div class="mx-auto bg-white shadow-sm" style="width: 210mm;">
                 <LaboratoryBillPrintPreview
                   v-if="printData"
+                  ref="previewRef"
                   :print-data="printData"
                   :print-area-id="printAreaId"
                 />
@@ -32,9 +33,10 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, nextTick } from 'vue';
 import { useToastStore } from '@/stores/toast';
 import { printLaboratoryBillElement } from '@/utils/printLaboratoryBill';
+import { waitForBillQrCode } from '@/utils/generateQrCodeDataUrl';
 import LaboratoryBillPrintPreview from '@/components/laboratory/LaboratoryBillPrintPreview.vue';
 import BaseButton from '@/components/ui/BaseButton.vue';
 
@@ -48,6 +50,7 @@ const emit = defineEmits(['update:modelValue', 'finished']);
 
 const toastStore = useToastStore();
 const printing = ref(false);
+const previewRef = ref(null);
 
 function finish() {
   emit('update:modelValue', false);
@@ -61,6 +64,9 @@ function handleClose() {
 async function handlePrint() {
   printing.value = true;
   try {
+    await previewRef.value?.waitForQrCode?.();
+    await nextTick();
+    await waitForBillQrCode(props.printAreaId);
     await printLaboratoryBillElement(props.printAreaId);
     finish();
   } catch (error) {

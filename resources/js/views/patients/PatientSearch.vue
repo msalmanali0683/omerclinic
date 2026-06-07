@@ -65,7 +65,7 @@
             Show Visits
           </BaseButton>
           <BaseButton
-            v-if="authStore.can('add patient to queue') && row.patient"
+            v-if="authStore.can('add patient to queue') && row.patient && !row.patient.in_queue_today"
             variant="ghost"
             size="sm"
             @click="openAddToQueueModal(row.patient)"

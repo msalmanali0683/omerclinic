@@ -150,6 +150,11 @@ class PatientVisitPolicy
         return $user->can('cancel patient queue');
     }
 
+    public function cancelStale(User $user): bool
+    {
+        return $user->can('cancel patient queue');
+    }
+
     public function returnToPendingPrescription(User $user, PatientVisit $visit): bool
     {
         if (! $user->can('return visit to pending prescription')) {

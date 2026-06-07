@@ -29,7 +29,7 @@ class PatientController extends Controller
     {
         $this->authorize('viewAny', Patient::class);
 
-        $query = Patient::query()->latest();
+        $query = Patient::query()->withInQueueTodayFlag()->latest();
 
         if ($request->filled('search')) {
             $search = $request->search;
@@ -103,7 +103,7 @@ class PatientController extends Controller
     protected function storeForStaff(StorePatientRequest $request): JsonResponse
     {
         if ($request->filled('patient_cnic')) {
-            $existing = Patient::where('patient_cnic', $request->patient_cnic)->first();
+            $existing = Patient::withInQueueTodayFlag()->where('patient_cnic', $request->patient_cnic)->first();
             if ($existing) {
                 return response()->json([
                     'message' => 'Patient already exists. Use Add to Queue for repeat visit.',
@@ -115,6 +115,7 @@ class PatientController extends Controller
 
         if (! $request->boolean('force_create')) {
             $possible = Patient::query()
+                ->withInQueueTodayFlag()
                 ->where('patient_cell', $request->patient_cell)
                 ->where('patient_name', $request->patient_name)
                 ->first();
@@ -180,7 +181,7 @@ class PatientController extends Controller
     protected function findOrCreatePatientForDoctor(StorePatientRequest $request): array
     {
         if ($request->filled('patient_cnic')) {
-            $existing = Patient::where('patient_cnic', $request->patient_cnic)->first();
+            $existing = Patient::withInQueueTodayFlag()->where('patient_cnic', $request->patient_cnic)->first();
             if ($existing) {
                 return [$existing, false];
             }

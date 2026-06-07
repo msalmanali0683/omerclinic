@@ -91,4 +91,26 @@ class PatientQueueService
 
         return $visit->fresh(['patient', 'doctor', 'queuedBy']);
     }
+
+    /**
+     * Cancel active queue visits from previous days.
+     */
+    public function cancelStaleQueueVisits(?User $user = null): int
+    {
+        return PatientVisit::query()
+            ->whereDate('visit_date', '<', today())
+            ->whereIn('status', PatientVisit::ACTIVE_STATUSES)
+            ->update([
+                'status'     => PatientVisit::STATUS_CANCELLED,
+                'updated_by' => $user?->id,
+            ]);
+    }
+
+    public function countStaleQueueVisits(): int
+    {
+        return PatientVisit::query()
+            ->whereDate('visit_date', '<', today())
+            ->whereIn('status', PatientVisit::ACTIVE_STATUSES)
+            ->count();
+    }
 }

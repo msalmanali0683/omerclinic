@@ -9,4 +9,5 @@ export const patientQueueService = {
     markPrescribed: (visitId) => api.patch(`/patient-queue/${visitId}/mark-prescribed`),
     returnToPendingPrescription: (visitId) => api.patch(`/patient-queue/${visitId}/return-to-pending-prescription`),
     cancelQueue: (visitId) => api.patch(`/patient-queue/${visitId}/cancel`),
+    cancelStaleQueue: () => api.post('/patient-queue/cancel-stale'),
 };

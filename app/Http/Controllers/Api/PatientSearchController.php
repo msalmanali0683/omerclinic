@@ -22,6 +22,7 @@ class PatientSearchController extends Controller
         $term = $request->q;
 
         $patients = Patient::query()
+            ->withInQueueTodayFlag()
             ->where(function ($query) use ($term) {
                 $query->where('mr_number', 'like', "%{$term}%")
                     ->orWhere('patient_name', 'like', "%{$term}%")
@@ -46,7 +47,7 @@ class PatientSearchController extends Controller
         ]);
 
         $query = PatientVisit::query()
-            ->with(['patient', 'doctor', 'token'])
+            ->with(['patient' => fn ($patientQuery) => $patientQuery->withInQueueTodayFlag(), 'doctor', 'token'])
             ->orderByDesc('visit_date')
             ->orderByDesc('visit_time')
             ->orderByDesc('id');

@@ -78,6 +78,26 @@ class Patient extends Model
         return $this->hasMany(PatientVisit::class);
     }
 
+    public function scopeWithInQueueTodayFlag($query)
+    {
+        return $query->withExists(['visits as in_queue_today' => function ($visitQuery) {
+            $visitQuery->whereDate('visit_date', today())
+                ->whereIn('status', PatientVisit::ACTIVE_STATUSES);
+        }]);
+    }
+
+    public function isInQueueToday(): bool
+    {
+        if (array_key_exists('in_queue_today', $this->attributes)) {
+            return (bool) $this->in_queue_today;
+        }
+
+        return $this->visits()
+            ->whereDate('visit_date', today())
+            ->whereIn('status', PatientVisit::ACTIVE_STATUSES)
+            ->exists();
+    }
+
     public function visitTokens(): HasMany
     {
         return $this->hasMany(PatientVisitToken::class);

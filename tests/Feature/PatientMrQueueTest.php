@@ -428,6 +428,111 @@ class PatientMrQueueTest extends TestCase
         ]);
     }
 
+    public function test_patient_list_includes_in_queue_today_flag(): void
+    {
+        $receptionist = $this->makeUser('receptionist');
+        $doctor = $this->makeUser('doctor');
+        $queuedPatient = $this->createPatient();
+        $availablePatient = Patient::create([
+            'mr_number'    => '99001099',
+            'patient_name' => 'Available Patient',
+            'patient_cell' => '03008888888',
+            'name'         => 'Available Patient',
+            'phone'        => '03008888888',
+        ]);
+
+        $this->actingAs($receptionist)->postJson("/api/patients/{$queuedPatient->id}/add-to-queue", [
+            'doctor_id' => $doctor->id,
+        ])->assertCreated();
+
+        $response = $this->actingAs($receptionist)->getJson('/api/patients?search='.$queuedPatient->patient_name);
+
+        $response->assertOk()
+            ->assertJsonPath('data.0.in_queue_today', true);
+
+        $availableResponse = $this->actingAs($receptionist)->getJson('/api/patients?search=Available Patient');
+
+        $availableResponse->assertOk()
+            ->assertJsonPath('data.0.in_queue_today', false);
+    }
+
+    public function test_stale_queue_visits_can_be_cancelled_from_queue_page(): void
+    {
+        Carbon::setTestNow('2026-06-02 09:00:00');
+        $receptionist = $this->makeUser('receptionist');
+        $doctor = $this->makeUser('doctor');
+        $patient = $this->createPatient();
+
+        $staleVisit = PatientVisit::create([
+            'patient_id' => $patient->id,
+            'doctor_id'  => $doctor->id,
+            'visit_date' => '2026-06-01',
+            'visit_time' => '10:00:00',
+            'status'     => PatientVisit::STATUS_PENDING,
+            'queued_by'  => $receptionist->id,
+        ]);
+
+        $this->actingAs($receptionist)->postJson('/api/patient-queue/cancel-stale')
+            ->assertOk()
+            ->assertJsonPath('cancelled_count', 1);
+
+        $this->assertDatabaseHas('patient_visits', [
+            'id'     => $staleVisit->id,
+            'status' => PatientVisit::STATUS_CANCELLED,
+        ]);
+
+        Carbon::setTestNow();
+    }
+
+    public function test_cancel_stale_queue_returns_message_when_none_found(): void
+    {
+        $receptionist = $this->makeUser('receptionist');
+
+        $this->actingAs($receptionist)->postJson('/api/patient-queue/cancel-stale')
+            ->assertOk()
+            ->assertJsonPath('cancelled_count', 0)
+            ->assertJsonPath('message', 'No old queue entries to cancel.');
+    }
+
+    public function test_cancel_stale_queue_command_cancels_previous_day_visits(): void
+    {
+        Carbon::setTestNow('2026-06-02 00:05:00');
+        $doctor = $this->makeUser('doctor');
+        $patient = $this->createPatient();
+
+        $staleVisit = PatientVisit::create([
+            'patient_id' => $patient->id,
+            'doctor_id'  => $doctor->id,
+            'visit_date' => '2026-06-01',
+            'visit_time' => '16:00:00',
+            'status'     => PatientVisit::STATUS_IN_CONSULTATION,
+            'queued_by'  => $doctor->id,
+        ]);
+
+        $todayVisit = PatientVisit::create([
+            'patient_id' => $patient->id,
+            'doctor_id'  => $doctor->id,
+            'visit_date' => '2026-06-02',
+            'visit_time' => '09:00:00',
+            'status'     => PatientVisit::STATUS_PENDING,
+            'queued_by'  => $doctor->id,
+        ]);
+
+        $this->artisan('patient-queue:cancel-stale')->assertSuccessful();
+
+        $this->assertDatabaseHas('patient_visits', [
+            'id'     => $staleVisit->id,
+            'status' => PatientVisit::STATUS_CANCELLED,
+        ]);
+
+        $this->assertDatabaseHas('patient_visits', [
+            'id'     => $todayVisit->id,
+            'status' => PatientVisit::STATUS_PENDING,
+        ]);
+
+        Carbon::setTestNow();
+    }
+
     protected function makeUser(string $role): User
     {
         $user = User::factory()->create();

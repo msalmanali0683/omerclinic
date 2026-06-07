@@ -29,7 +29,7 @@
         <div class="flex flex-wrap gap-1">
           <BaseButton v-if="canShowVisits" size="sm" variant="secondary" @click="$emit('show-visits', row)">Show Visits</BaseButton>
           <BaseButton
-            v-if="canAddToQueue"
+            v-if="canAddToQueue && !row.in_queue_today"
             size="sm"
             :loading="queueLoadingId === row.id"
             @click="$emit('add-to-queue', row)"
@@ -62,7 +62,7 @@
         <div class="flex flex-wrap gap-2 mt-3">
           <BaseButton v-if="canShowVisits" size="sm" variant="secondary" @click="$emit('show-visits', patient)">Show Visits</BaseButton>
           <BaseButton
-            v-if="canAddToQueue"
+            v-if="canAddToQueue && !patient.in_queue_today"
             size="sm"
             :loading="queueLoadingId === patient.id"
             @click="$emit('add-to-queue', patient)"

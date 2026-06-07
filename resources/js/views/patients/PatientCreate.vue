@@ -7,7 +7,7 @@
       <p class="text-sm font-medium text-amber-900 dark:text-amber-200">{{ duplicateInfo.message }}</p>
       <p v-if="duplicateInfo.patient" class="mt-1 font-mono text-sm text-amber-800 dark:text-amber-300">MR: {{ duplicateInfo.patient.mr_number }}</p>
       <div class="mt-3 flex flex-wrap gap-2">
-        <BaseButton v-if="authStore.can('add patient to queue')" size="sm" @click="openAddExistingToQueueModal">Add to Queue</BaseButton>
+        <BaseButton v-if="authStore.can('add patient to queue') && !duplicateInfo.patient?.in_queue_today" size="sm" @click="openAddExistingToQueueModal">Add to Queue</BaseButton>
         <BaseButton v-if="duplicateInfo.code === 'possible_duplicate'" variant="secondary" size="sm" @click="forceCreate">Create Anyway</BaseButton>
         <BaseButton variant="ghost" size="sm" @click="duplicateInfo = null">Dismiss</BaseButton>
       </div>

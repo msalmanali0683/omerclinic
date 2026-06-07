@@ -256,4 +256,27 @@ class PatientQueueController extends Controller
             'visit'   => new PatientVisitResource($visit->fresh(['patient', 'doctor', 'queuedBy'])),
         ]);
     }
+
+    public function cancelStale(Request $request)
+    {
+        $this->authorize('cancelStale', PatientVisit::class);
+
+        $count = $this->queueService->countStaleQueueVisits();
+
+        if ($count === 0) {
+            return response()->json([
+                'message' => 'No old queue entries to cancel.',
+                'cancelled_count' => 0,
+            ]);
+        }
+
+        $cancelled = $this->queueService->cancelStaleQueueVisits($request->user());
+
+        return response()->json([
+            'message' => $cancelled === 1
+                ? 'Cancelled 1 old queue entry.'
+                : "Cancelled {$cancelled} old queue entries.",
+            'cancelled_count' => $cancelled,
+        ]);
+    }
 }

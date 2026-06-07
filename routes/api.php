@@ -101,6 +101,8 @@ Route::middleware('auth:sanctum')->group(function () {
     // Patient queue
     Route::get('patient-queue', [PatientQueueController::class, 'index'])
         ->middleware('permission:view patient queue');
+    Route::post('patient-queue/cancel-stale', [PatientQueueController::class, 'cancelStale'])
+        ->middleware('permission:cancel patient queue');
     Route::post('patients/{patient}/add-to-queue', [PatientQueueController::class, 'addToQueue'])
         ->middleware('permission:add patient to queue');
 

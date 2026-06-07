@@ -5,7 +5,15 @@
         <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Patient Queue</h2>
         <p class="text-gray-500 dark:text-gray-400 text-sm mt-1">Patients pending for prescription</p>
       </div>
-      <div class="flex gap-2">
+      <div class="flex flex-wrap gap-2">
+        <BaseButton
+          v-if="authStore.can('cancel patient queue')"
+          variant="secondary"
+          :loading="cancellingStale"
+          @click="cancelOldQueue"
+        >
+          Cancel Old Queue
+        </BaseButton>
         <BaseButton
           v-if="authStore.can('add patient to queue')"
           @click="openAddToQueueModal()"
@@ -103,6 +111,7 @@ const pagination = reactive({ current_page: 1, last_page: 1 });
 const addToQueueModalOpen = ref(false);
 const showTokenPrintModal = ref(false);
 const tokenPrintData = ref({});
+const cancellingStale = ref(false);
 
 const statusOptions = [
   { value: 'pending_prescription,in_consultation', label: 'Active (Pending + In Consultation)' },
@@ -166,6 +175,23 @@ async function cancelVisit(row) {
     fetchQueue(pagination.current_page);
   } catch (e) {
     toastStore.error(e.response?.data?.message ?? 'Failed to cancel.');
+  }
+}
+
+async function cancelOldQueue() {
+  if (!confirm('Cancel all active queue entries from previous days? Today\'s queue will not be affected.')) {
+    return;
+  }
+
+  cancellingStale.value = true;
+  try {
+    const { data } = await patientQueueService.cancelStaleQueue();
+    toastStore.success(data.message ?? 'Old queue entries cancelled.');
+    fetchQueue(pagination.current_page);
+  } catch (e) {
+    toastStore.error(e.response?.data?.message ?? 'Failed to cancel old queue entries.');
+  } finally {
+    cancellingStale.value = false;
   }
 }
 

@@ -49,7 +49,7 @@ export function getPrescriptionPrintSampleData() {
     medicines: [
       {
         id: 'sample-med-1',
-        mdcn_type: 'Tab',
+        mdcn_type: 'Tab.',
         mdcn_name: 'Panadol',
         mdcn_size: '500mg',
         dose_time_text: '1+0+1',
@@ -58,7 +58,7 @@ export function getPrescriptionPrintSampleData() {
       },
       {
         id: 'sample-med-2',
-        mdcn_type: 'Syp',
+        mdcn_type: 'Syp.',
         mdcn_name: 'Sample Syrup',
         mdcn_size: '120ml',
         dose_time_text: '1+1+1',
@@ -67,9 +67,9 @@ export function getPrescriptionPrintSampleData() {
       },
       {
         id: 'sample-med-3',
-        mdcn_type: 'Inj',
-        mdcn_name: 'Sample Injection',
-        mdcn_size: '1 amp',
+        mdcn_type: 'Mix.',
+        mdcn_name: 'Sample Mixture',
+        mdcn_size: '1 bottle',
         show_in_treatment_given: true,
       },
     ],

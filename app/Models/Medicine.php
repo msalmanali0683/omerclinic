@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Support\MedicineTypes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -50,7 +51,7 @@ class Medicine extends Model
     public function displayLabel(): string
     {
         $parts = array_filter([
-            $this->mdcn_type,
+            MedicineTypes::normalize($this->mdcn_type),
             $this->mdcn_name,
             $this->mdcn_size,
         ]);

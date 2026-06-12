@@ -23,7 +23,6 @@ const DEFAULT_FIELD_PATTERNS = [
     'reason_for_visit',
     'notes',
     'impression',
-    'mdcn_type',
     'mdcn_name',
     'mdcn_size',
     'dose_time',

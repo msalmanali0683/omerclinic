@@ -509,6 +509,23 @@ class ClinicalScanTest extends TestCase
             ->assertJsonCount(0, 'data');
     }
 
+    public function test_queue_search_works_when_search_permission_name_is_missing_from_database(): void
+    {
+        $admin = $this->makeUser('hospital-admin');
+        $visit = $this->createVisit();
+
+        \Spatie\Permission\Models\Permission::where('name', 'search queue patients for scan')->delete();
+        app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
+
+        $this->actingAs($admin)->getJson('/api/clinical-scans/queue-patients/search', [
+            'search'     => $visit->patient->mr_number,
+            'status'     => 'pending_prescription,in_consultation',
+            'today_only' => false,
+            'limit'      => 100,
+        ])->assertOk()
+            ->assertJsonPath('data.0.visit.id', $visit->id);
+    }
+
     public function test_clinical_scan_list_still_shows_scan_after_visit_is_prescribed(): void
     {
         $operator = $this->makeUser('scan-operator');
@@ -628,6 +645,67 @@ class ClinicalScanTest extends TestCase
             ->assertJsonPath('print_data.prescription', null)
             ->assertJsonPath('print_data.medicines', [])
             ->assertJsonPath('print_data.clinical_scans.0.values.0.field_label', 'Liver');
+    }
+
+    public function test_template_print_in_box_is_stored_and_included_in_scan_print_data(): void
+    {
+        $admin = $this->makeUser('hospital-admin');
+        $operator = $this->makeUser('scan-operator');
+        $visit = $this->createVisit();
+
+        $templateResponse = $this->actingAs($admin)->postJson('/api/clinical-scan-templates', [
+            'template_name' => 'Boxed Scan',
+            'is_active'     => true,
+            'fields'        => [
+                [
+                    'field_label'  => 'Liver',
+                    'field_type'   => 'text',
+                    'sort_order'   => 1,
+                    'print_in_box' => true,
+                ],
+                [
+                    'field_label'  => 'Spleen',
+                    'field_type'   => 'text',
+                    'sort_order'   => 2,
+                    'print_in_box' => false,
+                ],
+            ],
+        ]);
+
+        $templateResponse->assertCreated()
+            ->assertJsonPath('data.fields.0.print_in_box', true);
+
+        $this->assertDatabaseHas('clinical_scan_template_fields', [
+            'field_label'  => 'Liver',
+            'print_in_box' => 1,
+        ]);
+
+        $template = ClinicalScanTemplate::with('fields')->findOrFail($templateResponse->json('data.id'));
+
+        $create = $this->actingAs($operator)->postJson('/api/clinical-scans', [
+            'patient_id'                => $visit->patient_id,
+            'patient_visit_id'          => $visit->id,
+            'clinical_scan_template_id' => $template->id,
+            'status'                    => 'completed',
+            'values'                    => $template->fields->map(fn (ClinicalScanTemplateField $field) => [
+                'clinical_scan_template_field_id' => $field->id,
+                'field_value'                     => $field->field_label === 'Liver' ? 'Normal' : 'Unremarkable',
+            ])->all(),
+        ]);
+
+        $create->assertCreated();
+        $scanId = $create->json('data.id');
+
+        $this->assertDatabaseHas('clinical_scan_values', [
+            'clinical_scan_id' => $scanId,
+            'field_label'      => 'Liver',
+            'print_in_box'     => 1,
+        ]);
+
+        $this->actingAs($operator)->getJson("/api/clinical-scans/{$scanId}/print-data")
+            ->assertOk()
+            ->assertJsonPath('print_data.clinical_scans.0.values.0.print_in_box', true)
+            ->assertJsonPath('print_data.clinical_scans.0.values.1.print_in_box', false);
     }
 
     public function test_clinical_scan_print_data_includes_prescription_when_visit_has_one(): void

@@ -17,6 +17,7 @@ class ClinicalScanValueResource extends JsonResource
             'field_key'                       => $this->field_key,
             'field_type'                      => $this->field_type,
             'field_value'                     => $this->field_value,
+            'print_in_box'                    => $this->print_in_box,
             'sort_order'                      => $this->sort_order,
         ];
     }

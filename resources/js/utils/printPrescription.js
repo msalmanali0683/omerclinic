@@ -99,16 +99,17 @@ function buildPrintStyles(options, baseUrl = '') {
 
         .patient-info-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
+            grid-template-columns: 4.35in 1.35in 2.85in;
             column-gap: 18px;
             row-gap: 2px;
-            width: 100%;
+            width: 8.55in;
+            max-width: 100%;
             align-items: baseline;
         }
 
-        .header-field-right {
-            justify-self: end;
-            text-align: right;
+        .header-field-col3 {
+            justify-self: start;
+            text-align: left;
         }
 
         .header-field-address {
@@ -179,6 +180,7 @@ function buildPrintStyles(options, baseUrl = '') {
         }
 
         .prescription-right {
+            --rx-mark-end: calc(2.4rem + 0.55rem);
             padding: 6px 8px;
             min-height: 100%;
             height: 100%;
@@ -219,10 +221,10 @@ function buildPrintStyles(options, baseUrl = '') {
         }
 
         .treatment-given-print-section .section-title {
-            font-weight: normal;
+            font-weight: 700 !important;
             text-decoration: underline;
             margin-bottom: 3px;
-            font-size: 13px;
+            font-size: calc(13px + 2pt);
         }
 
         .treatment-given-list {
@@ -331,12 +333,14 @@ function buildPrintStyles(options, baseUrl = '') {
             font-size: ${fontSizeMedicines}pt;
             line-height: 1.2;
             margin-bottom: 2px;
+            padding-left: var(--rx-mark-end, calc(2.4rem + 0.55rem));
         }
 
         .medicine-dose-line {
             font-size: ${fontSizeMedicineDose}pt;
             line-height: 1.2;
             margin-top: 2px;
+            padding-left: 0;
         }
 
         .dose-separator {

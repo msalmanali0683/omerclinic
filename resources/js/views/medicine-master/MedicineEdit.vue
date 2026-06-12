@@ -24,7 +24,7 @@
 </template>
 
 <script setup>
-import { computed, onMounted, reactive, ref } from 'vue';
+import { onMounted, reactive, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useToastStore } from '@/stores/toast';
 import { medicineService } from '@/services/medicineService';
@@ -34,10 +34,10 @@ import { useFormErrors } from '@/composables/useFormErrors';
 import BaseInput from '@/components/ui/BaseInput.vue';
 import BaseSelect from '@/components/ui/BaseSelect.vue';
 import BaseButton from '@/components/ui/BaseButton.vue';
-import { medicineTypeOptionsFor } from '@/constants/medicineTypes';
+import { MEDICINE_TYPE_OPTIONS } from '@/constants/medicineTypes';
 
 const route = useRoute();
-const medicineTypeOptions = computed(() => medicineTypeOptionsFor(form.mdcn_type));
+const medicineTypeOptions = MEDICINE_TYPE_OPTIONS;
 const router = useRouter();
 const toastStore = useToastStore();
 const { errors, setErrors, clearErrors } = useFormErrors();

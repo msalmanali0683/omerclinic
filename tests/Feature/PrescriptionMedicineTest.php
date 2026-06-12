@@ -112,7 +112,12 @@ class PrescriptionMedicineTest extends TestCase
         $doctor = $this->makeUser('doctor');
         $visit = $this->createVisit($doctor, PatientVisit::STATUS_IN_CONSULTATION);
         $this->addVisitDiagnosis($visit);
-        $injection = Medicine::where('mdcn_type', 'Inj')->firstOrFail();
+        $admin = $this->makeUser('hospital-admin');
+        $injection = Medicine::create([
+            'mdcn_type' => 'Inj.',
+            'mdcn_name' => 'Legacy Injection Med',
+            'mdcn_size' => '1ml',
+        ]);
 
         $this->actingAs($doctor)->postJson('/api/prescriptions', $this->prescriptionPayload($visit, [
             'medicines' => [[
@@ -190,14 +195,14 @@ class PrescriptionMedicineTest extends TestCase
         $doseFromMeal = MedicineDoseFromMeal::first();
 
         $this->assertDatabaseMissing('medicines', [
-            'mdcn_type' => 'Tab',
+            'mdcn_type' => 'Tab.',
             'mdcn_name' => 'Brand New Rx Med',
             'mdcn_size' => '250mg',
         ]);
 
         $response = $this->actingAs($doctor)->postJson('/api/prescriptions', $this->prescriptionPayload($visit, [
             'medicines' => [[
-                'mdcn_type'              => 'Tab',
+                'mdcn_type'              => 'Tab.',
                 'mdcn_name'              => 'Brand New Rx Med',
                 'mdcn_size'              => '250mg',
                 'mdcn_time_id'           => $doseTime->id,
@@ -222,7 +227,7 @@ class PrescriptionMedicineTest extends TestCase
         $doseTime = MedicineDoseTime::first();
 
         $response = $this->actingAs($doctor)->postJson('/api/medicines/find-or-create', [
-            'mdcn_type'    => 'Syp',
+            'mdcn_type'    => 'Syp.',
             'mdcn_name'    => 'Quick Add Syrup',
             'mdcn_size'    => '120ml',
             'mdcn_time_id' => $doseTime->id,
@@ -233,7 +238,7 @@ class PrescriptionMedicineTest extends TestCase
             ->assertJsonPath('created', true);
 
         $this->assertDatabaseHas('medicines', [
-            'mdcn_type' => 'Syp',
+            'mdcn_type' => 'Syp.',
             'mdcn_name' => 'Quick Add Syrup',
             'mdcn_size' => '120ml',
         ]);
@@ -258,7 +263,7 @@ class PrescriptionMedicineTest extends TestCase
         $item = PrescriptionMedicine::first();
 
         $this->actingAs($admin)->putJson("/api/medicines/{$medicine->id}", [
-            'mdcn_type'              => $medicine->mdcn_type,
+            'mdcn_type'              => 'Tab.',
             'mdcn_name'              => 'Panadol Renamed',
             'mdcn_size'              => '999mg',
             'mdcn_time_id'           => $medicine->mdcn_time_id,

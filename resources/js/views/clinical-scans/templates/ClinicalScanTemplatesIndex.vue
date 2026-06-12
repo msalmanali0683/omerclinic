@@ -36,6 +36,14 @@
       <template #cell-actions="{ row }">
         <div class="flex gap-1">
           <BaseButton
+            v-if="authStore.can('view clinical scan templates')"
+            variant="ghost"
+            size="sm"
+            @click="openPreview(row)"
+          >
+            Preview
+          </BaseButton>
+          <BaseButton
             v-if="authStore.can('edit clinical scan templates')"
             variant="ghost"
             size="sm"
@@ -55,6 +63,12 @@
       </template>
     </BaseTable>
 
+    <ClinicalScanTemplatePreviewModal
+      v-model="previewModal.open"
+      :template-id="previewModal.templateId"
+      :template-name="previewModal.templateName"
+    />
+
     <div v-if="pagination.last_page > 1" class="flex justify-between mt-4 text-sm">
       <span>Page {{ pagination.current_page }} of {{ pagination.last_page }}</span>
       <div class="flex gap-2">
@@ -70,7 +84,7 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue';
+import { onMounted, reactive, ref } from 'vue';
 import { useAuthStore } from '@/stores/auth';
 import { useToastStore } from '@/stores/toast';
 import { clinicalScanTemplateService } from '@/services/clinicalScanTemplateService';
@@ -78,6 +92,7 @@ import BaseButton from '@/components/ui/BaseButton.vue';
 import BaseInput from '@/components/ui/BaseInput.vue';
 import { useAutoSearch } from '@/composables/useAutoSearch';
 import BaseTable from '@/components/ui/BaseTable.vue';
+import ClinicalScanTemplatePreviewModal from '@/components/clinical-scans/ClinicalScanTemplatePreviewModal.vue';
 
 const authStore = useAuthStore();
 const toastStore = useToastStore();
@@ -86,6 +101,11 @@ const { flush: flushSearch } = useAutoSearch(search, () => fetch(1));
 const rows = ref([]);
 const loading = ref(true);
 const pagination = ref({ current_page: 1, last_page: 1 });
+const previewModal = reactive({
+  open: false,
+  templateId: null,
+  templateName: '',
+});
 
 const columns = [
   { key: 'template_name', label: 'Name' },
@@ -115,6 +135,12 @@ async function fetch(page = 1) {
 
 function goPage(page) {
   fetch(page);
+}
+
+function openPreview(row) {
+  previewModal.templateId = row.id;
+  previewModal.templateName = row.template_name || '';
+  previewModal.open = true;
 }
 
 async function remove(row) {

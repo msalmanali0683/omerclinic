@@ -76,6 +76,7 @@ class ClinicalScanTemplateService
                 'default_values'=> $defaults['default_values'],
                 'placeholder'   => $row['placeholder'] ?? null,
                 'is_required'   => (bool) ($row['is_required'] ?? false),
+                'print_in_box'  => (bool) ($row['print_in_box'] ?? false),
                 'sort_order'    => $row['sort_order'] ?? ($index + 1),
                 'updated_by'    => $user->id,
             ];

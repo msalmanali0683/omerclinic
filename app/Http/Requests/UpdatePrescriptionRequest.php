@@ -5,6 +5,7 @@ namespace App\Http\Requests;
 use App\Models\PatientVisit;
 use App\Models\Prescription;
 use App\Models\PrescriptionMedicine;
+use App\Support\MedicineTypes;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Validator;
 
@@ -67,6 +68,18 @@ class UpdatePrescriptionRequest extends FormRequest
             if ($visit && $visit->status === PatientVisit::STATUS_CANCELLED) {
                 if (! $this->user()->hasAnyRole(['super-admin', 'hospital-admin'])) {
                     $validator->errors()->add('medicines', 'Cannot update prescription for a cancelled visit.');
+                }
+            }
+
+            foreach ($this->input('medicines', []) as $index => $medicine) {
+                $message = MedicineTypes::validateNewMasterRow(
+                    isset($medicine['medicine_id']) ? (string) $medicine['medicine_id'] : null,
+                    $medicine['mdcn_name'] ?? null,
+                    $medicine['mdcn_type'] ?? null,
+                );
+
+                if ($message !== null) {
+                    $validator->errors()->add("medicines.{$index}.mdcn_type", $message);
                 }
             }
         });

@@ -7,6 +7,7 @@ use App\Http\Resources\PatientResource;
 use App\Http\Resources\PatientVisitResource;
 use App\Models\ClinicalScan;
 use App\Models\PatientVisit;
+use App\Support\PermissionCheck;
 use Illuminate\Http\Request;
 
 class ClinicalScanQueueSearchController extends Controller
@@ -14,8 +15,11 @@ class ClinicalScanQueueSearchController extends Controller
     public function search(Request $request)
     {
         abort_unless(
-            $request->user()->can('search queue patients for scan')
-            || $request->user()->can('create clinical scans'),
+            PermissionCheck::canAny($request->user(), [
+                'create clinical scans',
+                'select patient for scan',
+                'search queue patients for scan',
+            ]),
             403
         );
 
@@ -71,13 +75,16 @@ class ClinicalScanQueueSearchController extends Controller
             ->limit($request->get('limit', 100))
             ->get();
 
-        $data = $visits->map(fn (PatientVisit $visit) => [
-            'patient'                    => (new PatientResource($visit->patient))->resolve(),
-            'visit'                      => (new PatientVisitResource($visit))->resolve(),
-            'has_prescription'           => false,
-            'has_completed_scan_on_visit'  => ($visit->completed_scans_count ?? 0) > 0,
-            'completed_scans_count'      => (int) ($visit->completed_scans_count ?? 0),
-        ])->values();
+        $data = $visits
+            ->filter(fn (PatientVisit $visit) => $visit->patient !== null)
+            ->map(fn (PatientVisit $visit) => [
+                'patient'                     => (new PatientResource($visit->patient))->resolve(),
+                'visit'                       => (new PatientVisitResource($visit))->resolve(),
+                'has_prescription'            => false,
+                'has_completed_scan_on_visit' => ($visit->completed_scans_count ?? 0) > 0,
+                'completed_scans_count'       => (int) ($visit->completed_scans_count ?? 0),
+            ])
+            ->values();
 
         return response()->json(['data' => $data]);
     }

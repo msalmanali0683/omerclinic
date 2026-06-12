@@ -41,6 +41,7 @@ class UpdateClinicalScanTemplateRequest extends FormRequest
             'fields.*.default_values.*'=> 'nullable|string|max:2000',
             'fields.*.placeholder'     => 'nullable|string|max:255',
             'fields.*.is_required'    => 'boolean',
+            'fields.*.print_in_box'   => 'boolean',
             'fields.*.sort_order'     => 'nullable|integer|min:0',
         ];
     }

@@ -19,9 +19,14 @@ class ClinicalScanValue extends Model
         'field_key',
         'field_type',
         'field_value',
+        'print_in_box',
         'sort_order',
         'created_by',
         'updated_by',
+    ];
+
+    protected $casts = [
+        'print_in_box' => 'boolean',
     ];
 
     public function scan(): BelongsTo

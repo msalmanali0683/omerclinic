@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Models\PatientVisit;
+use App\Support\MedicineTypes;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Validator;
 
@@ -55,6 +56,18 @@ class StorePrescriptionRequest extends FormRequest
             if ($this->user()->hasRole('doctor') && (int) $visit->doctor_id !== (int) $this->user()->id) {
                 if (! $this->user()->can('view all patient queue')) {
                     $validator->errors()->add('patient_visit_id', 'You are not assigned to this patient visit.');
+                }
+            }
+
+            foreach ($this->input('medicines', []) as $index => $medicine) {
+                $message = MedicineTypes::validateNewMasterRow(
+                    isset($medicine['medicine_id']) ? (string) $medicine['medicine_id'] : null,
+                    $medicine['mdcn_name'] ?? null,
+                    $medicine['mdcn_type'] ?? null,
+                );
+
+                if ($message !== null) {
+                    $validator->errors()->add("medicines.{$index}.mdcn_type", $message);
                 }
             }
         });

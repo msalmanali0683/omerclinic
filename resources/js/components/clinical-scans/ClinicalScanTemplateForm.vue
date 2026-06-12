@@ -111,6 +111,7 @@
                 <th class="px-3 py-2 text-left font-semibold text-gray-500">Placeholder</th>
                 <th class="px-3 py-2 text-left font-semibold text-gray-500">Default Values</th>
                 <th class="px-3 py-2 text-left font-semibold text-gray-500">Req.</th>
+                <th class="px-3 py-2 text-left font-semibold text-gray-500" title="Draw a box around this label and value on print">Box</th>
                 <th v-if="group.is_multi_value && group.slots.length > 1" class="px-3 py-2 text-left font-semibold text-gray-500">Order</th>
                 <th class="px-3 py-2 text-left font-semibold text-gray-500">Actions</th>
               </tr>
@@ -162,6 +163,14 @@
                 </td>
                 <td class="px-3 py-2 align-top">
                   <input v-model="slot.is_required" type="checkbox" class="rounded border-gray-300 text-teal-600 focus:ring-teal-500" />
+                </td>
+                <td class="px-3 py-2 align-top">
+                  <input
+                    v-model="slot.print_in_box"
+                    type="checkbox"
+                    class="rounded border-gray-300 text-teal-600 focus:ring-teal-500"
+                    title="Print this label and value inside a box"
+                  />
                 </td>
                 <td v-if="group.is_multi_value && group.slots.length > 1" class="px-3 py-2 align-top whitespace-nowrap">
                   <div class="flex gap-1">

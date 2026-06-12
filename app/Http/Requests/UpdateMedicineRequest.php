@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Models\Medicine;
+use App\Support\MedicineTypes;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Validator;
 
@@ -16,7 +17,7 @@ class UpdateMedicineRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'mdcn_type'              => 'required|string|max:100',
+            'mdcn_type'              => ['required', 'string', 'max:100', MedicineTypes::validationRule()],
             'mdcn_name'              => 'required|string|max:255',
             'mdcn_size'              => 'nullable|string|max:100',
             'mdcn_time_id'           => 'nullable|integer|exists:medicine_dose_times,id',

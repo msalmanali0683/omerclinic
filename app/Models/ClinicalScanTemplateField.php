@@ -24,6 +24,7 @@ class ClinicalScanTemplateField extends Model
         'default_values',
         'placeholder',
         'is_required',
+        'print_in_box',
         'sort_order',
         'created_by',
         'updated_by',
@@ -33,6 +34,7 @@ class ClinicalScanTemplateField extends Model
         'options'         => 'array',
         'default_values'  => 'array',
         'is_required'     => 'boolean',
+        'print_in_box'    => 'boolean',
     ];
 
     /**

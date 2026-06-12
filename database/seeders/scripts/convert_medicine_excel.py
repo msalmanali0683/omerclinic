@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Convert medicine.xlsx + inj_list.xlsx -> database/seeders/data/medicines.json"""
+"""Convert medicine.xlsx -> database/seeders/data/medicines.json (no injections)."""
 
 import json
 import sys
@@ -12,18 +12,33 @@ except ImportError:
     subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'openpyxl', '-q'])
     import openpyxl
 
-TYPE_MAP = {
-    'Tab.': 'Tablet',
-    'Cap.': 'Capsule',
-    'Syp.': 'Syrup',
-    'mix': 'Mix',
-    'Inj.': 'Inj',
-}
-
 ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_MEDICINE_XLSX = Path(r'c:\Users\Errors\Documents\medicine.xlsx')
-DEFAULT_INJ_XLSX = Path(r'c:\Users\Errors\Documents\inj_list.xlsx')
 OUT_FILE = ROOT / 'seeders' / 'data' / 'medicines.json'
+
+
+def is_injection_type(raw_type):
+    key = str(raw_type or '').strip().rstrip('.').lower()
+    return key.startswith('inj') or key in ('injection', 'injections')
+
+
+def normalize_type(raw_type):
+    if is_injection_type(raw_type):
+        return None
+
+    value = str(raw_type or '').strip()
+    key = value.rstrip('.').lower()
+
+    if key in ('tab', 'tablet', 'tablets'):
+        return 'Tab.'
+    if key in ('cap', 'capsule', 'capsules'):
+        return 'Cap.'
+    if key in ('syp', 'syrup', 'syrups'):
+        return 'Syp.'
+    if key == 'mix':
+        return 'Mix.'
+
+    return 'Mix.'
 
 
 def normalize_size(gm):
@@ -53,41 +68,17 @@ def parse_medicine_xlsx(path: Path):
             continue
 
         _, typ, name, gm, *_rest = row[:7]
-        raw_type = str(typ).strip() if typ else ''
-        mdcn_type = TYPE_MAP.get(raw_type, raw_type or 'Tablet')
+        mdcn_type = normalize_type(typ)
         mdcn_name = str(name).strip() if name else ''
         mdcn_size = normalize_size(gm)
 
-        if not mdcn_name:
+        if not mdcn_name or mdcn_type is None:
             continue
 
         rows.append({
             'mdcn_type': mdcn_type,
             'mdcn_name': mdcn_name,
             'mdcn_size': mdcn_size,
-        })
-
-    wb.close()
-    return rows
-
-
-def parse_inj_list_xlsx(path: Path):
-    wb = openpyxl.load_workbook(path, read_only=True, data_only=True)
-    ws = wb[wb.sheetnames[0]]
-    rows = []
-
-    for i, row in enumerate(ws.iter_rows(values_only=True)):
-        if i == 0:
-            continue
-
-        name = str(row[1]).strip() if len(row) > 1 and row[1] else ''
-        if not name:
-            continue
-
-        rows.append({
-            'mdcn_type': 'Inj',
-            'mdcn_name': name,
-            'mdcn_size': None,
         })
 
     wb.close()
@@ -120,35 +111,17 @@ def write_json(rows):
 
 def main():
     medicine_path = Path(sys.argv[1]) if len(sys.argv) > 1 else DEFAULT_MEDICINE_XLSX
-    inj_path = Path(sys.argv[2]) if len(sys.argv) > 2 else DEFAULT_INJ_XLSX
 
-    sources = []
-    counts = {}
-
-    if medicine_path.exists():
-        medicine_rows = parse_medicine_xlsx(medicine_path)
-        sources.append(medicine_rows)
-        counts['medicine.xlsx'] = len(medicine_rows)
-    else:
-        print(f'Warning: medicine file not found: {medicine_path}')
-
-    if inj_path.exists():
-        inj_rows = parse_inj_list_xlsx(inj_path)
-        sources.append(inj_rows)
-        counts['inj_list.xlsx'] = len(inj_rows)
-    else:
-        print(f'Warning: injection file not found: {inj_path}')
-
-    if not sources:
-        print('No Excel files found to convert.')
+    if not medicine_path.exists():
+        print(f'Medicine file not found: {medicine_path}')
         sys.exit(1)
 
-    merged, skipped = merge_rows(*sources)
+    medicine_rows = parse_medicine_xlsx(medicine_path)
+    merged, skipped = merge_rows(medicine_rows)
     write_json(merged)
 
-    print(f'Wrote {len(merged)} total medicines to {OUT_FILE}')
-    for label, count in counts.items():
-        print(f'  from {label}: {count}')
+    print(f'Wrote {len(merged)} medicines to {OUT_FILE}')
+    print(f'  from medicine.xlsx: {len(medicine_rows)}')
     print(f'Skipped duplicate rows: {skipped}')
 
 

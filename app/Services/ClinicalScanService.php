@@ -86,6 +86,7 @@ class ClinicalScanService
                 'field_key'                       => $templateField->field_key,
                 'field_type'                      => $templateField->field_type,
                 'field_value'                     => $row['field_value'] ?? null,
+                'print_in_box'                    => (bool) $templateField->print_in_box,
                 'sort_order'                      => $templateField->sort_order,
                 'updated_by'                      => $user->id,
             ];

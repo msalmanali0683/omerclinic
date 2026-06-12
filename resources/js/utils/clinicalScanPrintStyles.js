@@ -7,7 +7,7 @@ export function buildClinicalScanPrintCss(fontSizeClinicalScans = 12) {
         .clinical-scan-print-section {
             margin-top: 8px;
             font-size: ${fontSizeClinicalScans}pt;
-            line-height: 1.2;
+            line-height: 1.4;
         }
 
         .clinical-scan-grid {
@@ -42,9 +42,10 @@ export function buildClinicalScanPrintCss(fontSizeClinicalScans = 12) {
         }
 
         .clinical-scan-print-section .section-title {
-            font-weight: normal;
+            font-weight: 700 !important;
             text-decoration: underline;
             margin-bottom: 0;
+            font-size: ${fontSizeClinicalScans + 2}pt;
         }
 
         .scan-block {
@@ -68,7 +69,7 @@ export function buildClinicalScanPrintCss(fontSizeClinicalScans = 12) {
         .clinical-scan-print-section strong.scan-template-name {
             font-weight: 700 !important;
             margin-bottom: 2px;
-            line-height: 1.2;
+            line-height: 1.4;
             text-decoration: none;
         }
 
@@ -76,13 +77,38 @@ export function buildClinicalScanPrintCss(fontSizeClinicalScans = 12) {
             display: block;
         }
 
+        .scan-values-row {
+            display: block;
+            width: 100%;
+            margin-bottom: calc(4px + 0.2em);
+            break-inside: avoid;
+            page-break-inside: avoid;
+        }
+
+        .scan-values-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .scan-values-row--pair {
+            display: flex;
+            flex-wrap: nowrap;
+            align-items: flex-start;
+            gap: 2ch;
+        }
+
+        .scan-values-row--pair .scan-value-item {
+            flex: 1 1 50%;
+            min-width: 0;
+            margin-bottom: 0;
+        }
+
         .scan-value-item {
             display: block;
             width: 100%;
             max-width: 100%;
-            margin: 0 0 4px;
+            margin: 0 0 calc(4px + 0.2em);
             font-size: ${fontSizeClinicalScans}pt;
-            line-height: 1.25;
+            line-height: 1.45;
             break-inside: avoid;
             page-break-inside: avoid;
         }
@@ -91,53 +117,105 @@ export function buildClinicalScanPrintCss(fontSizeClinicalScans = 12) {
             margin-bottom: 0;
         }
 
+        .scan-value-item__inline {
+            display: block;
+        }
+
+        .scan-value-item__inline .scan-field-label {
+            white-space: nowrap;
+        }
+
+        .scan-value-item__inline .scan-field-value {
+            white-space: normal;
+            overflow-wrap: anywhere;
+        }
+
+        .scan-values-row--pair .scan-value-item__inline {
+            white-space: nowrap;
+        }
+
+        .scan-values-row--pair .scan-value-item__inline .scan-field-value {
+            white-space: nowrap;
+            overflow-wrap: normal;
+            word-break: normal;
+        }
+
+        .scan-value-item--boxed {
+            border: 1px solid #000;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .scan-value-item__table {
+            display: grid;
+            grid-template-columns: max-content 1fr;
+            width: 100%;
+            align-items: stretch;
+        }
+
+        .scan-value-item--boxed .scan-field-label {
+            border-right: 1px solid #000;
+            padding: 2px 4px;
+            white-space: nowrap;
+        }
+
+        .scan-value-item--boxed .scan-field-value {
+            padding: 2px 4px;
+            white-space: pre-wrap;
+            overflow-wrap: break-word;
+            word-break: break-word;
+        }
+
         .scan-field-label,
         .prescription-slip .scan-field-label,
         .visit-print-preview .scan-field-label,
         #prescription-print-area .scan-field-label,
         .clinical-scan-print-section .scan-field-label {
             font-weight: 700 !important;
-            white-space: nowrap;
         }
 
         .scan-field-value {
             margin-left: 0;
-            white-space: pre-wrap;
-            overflow-wrap: break-word;
-            word-break: break-word;
         }
 
         .scan-impression,
         .scan-value-impression {
             display: block;
             width: 100%;
-            margin-top: 4px;
-            margin-bottom: 4px;
+            margin-top: calc(4px + 0.2em);
+            margin-bottom: calc(4px + 0.2em);
             font-size: ${fontSizeClinicalScans}pt;
-            line-height: 1.25;
-            white-space: pre-wrap;
-            overflow-wrap: break-word;
-            word-break: break-word;
+            line-height: 1.45;
             break-inside: avoid;
             page-break-inside: avoid;
+        }
+
+        .scan-impression.scan-value-item--boxed,
+        .scan-value-impression.scan-value-item--boxed {
+            border: 1px solid #000;
+            padding: 0;
+            box-sizing: border-box;
         }
     `;
 }
 
 export function ensureClinicalScanPrintStyles() {
-  if (previewStylesInjected || typeof document === 'undefined') {
+  if (typeof document === 'undefined') {
     return;
   }
 
+  const css = buildClinicalScanPrintCss();
   const existing = document.getElementById('clinical-scan-print-styles');
+
   if (existing) {
+    existing.textContent = css;
     previewStylesInjected = true;
     return;
   }
 
   const style = document.createElement('style');
   style.id = 'clinical-scan-print-styles';
-  style.textContent = buildClinicalScanPrintCss();
+  style.textContent = css;
   document.head.appendChild(style);
   previewStylesInjected = true;
 }

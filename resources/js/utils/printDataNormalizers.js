@@ -93,6 +93,7 @@ export function normalizePrintClinicalScans(scans = []) {
           .map((line) => line.replace(/[^\S\r\n]+/g, ' ').trim())
           .join('\n')
           .trim(),
+      print_in_box: !!value.print_in_box,
     })),
   }));
 }

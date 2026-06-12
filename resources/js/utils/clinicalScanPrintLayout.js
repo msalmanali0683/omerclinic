@@ -58,6 +58,7 @@ export function groupScanValuesForPrint(values = []) {
 
             if (existing) {
                 existing.values.push(value);
+                existing.print_in_box = existing.print_in_box || !!value.print_in_box;
                 continue;
             }
 
@@ -66,6 +67,7 @@ export function groupScanValuesForPrint(values = []) {
                 group_label: value.group_label,
                 label: value.group_label,
                 is_multi_value: true,
+                print_in_box: !!value.print_in_box,
                 values: [value],
             });
             continue;
@@ -76,6 +78,7 @@ export function groupScanValuesForPrint(values = []) {
             group_label: null,
             label: value.field_label,
             is_multi_value: false,
+            print_in_box: !!value.print_in_box,
             values: [value],
         });
     }
@@ -150,6 +153,75 @@ export function isLongScanValue(value) {
     return fieldValue.length > 48;
 }
 
+export const SCAN_PRINT_PAIR_MAX_CHARS = 26;
+
+export function estimateScanPrintGroupLength(group) {
+    const label = formatScanGroupLabel(group);
+    const value = formatScanGroupValue(group);
+
+    return label.length + value.length + 2;
+}
+
+export function fitsScanPrintPairColumn(group) {
+    if (!group) {
+        return false;
+    }
+
+    const value = formatScanGroupValue(group);
+
+    if (!value || value.includes('\n')) {
+        return false;
+    }
+
+    return estimateScanPrintGroupLength(group) <= SCAN_PRINT_PAIR_MAX_CHARS;
+}
+
+export function isCompactScanPrintGroup(group) {
+    if (group?.print_in_box) {
+        return false;
+    }
+
+    if (isLongScanGroupValue(group)) {
+        return false;
+    }
+
+    const value = formatScanGroupValue(group);
+
+    if (!value) {
+        return false;
+    }
+
+    return fitsScanPrintPairColumn(group);
+}
+
+export function canPairScanPrintGroups(current, next) {
+    return isCompactScanPrintGroup(current)
+        && isCompactScanPrintGroup(next)
+        && fitsScanPrintPairColumn(current)
+        && fitsScanPrintPairColumn(next);
+}
+
+export function layoutScanPrintRows(groups = []) {
+    const rows = [];
+    let index = 0;
+
+    while (index < groups.length) {
+        const current = groups[index];
+        const next = groups[index + 1];
+
+        if (next && canPairScanPrintGroups(current, next)) {
+            rows.push({ layout: 'pair', groups: [current, next] });
+            index += 2;
+            continue;
+        }
+
+        rows.push({ layout: 'single', groups: [current] });
+        index += 1;
+    }
+
+    return rows;
+}
+
 export function partitionScanValues(values = []) {
     const normalValues = [];
     const impressionValues = [];
@@ -177,7 +249,9 @@ export function withScanValueLayout(scans = []) {
             values: printableValues,
             groupedValues,
             normalGroupedValues,
+            normalPrintRows: layoutScanPrintRows(normalGroupedValues),
             impressionGroupedValues,
+            impressionPrintRows: layoutScanPrintRows(impressionGroupedValues),
             ...partitionScanValues(printableValues),
         };
     });

@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Medicine;
+use App\Support\MedicineTypes;
 use App\Support\TextCase;
 use Illuminate\Database\Seeder;
 use RuntimeException;
@@ -38,9 +39,11 @@ class MedicineFromExcelSeeder extends Seeder
                 continue;
             }
 
+            $mdcnType = MedicineTypes::normalize($row['mdcn_type'] ?? '');
+
             Medicine::updateOrCreate(
                 [
-                    'mdcn_type' => $row['mdcn_type'],
+                    'mdcn_type' => $mdcnType,
                     'mdcn_name' => $mdcnName,
                     'mdcn_size' => $row['mdcn_size'] ?? null,
                 ],

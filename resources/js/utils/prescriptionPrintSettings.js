@@ -186,7 +186,4 @@ export function applyPrescriptionPrintPageStyle(settings = getDefaultResolvedSet
 
 export { formatPrescriptionDateTime };
 
-export function formatMedicineLine(medicine) {
-  const parts = [medicine?.mdcn_type, medicine?.mdcn_name, medicine?.mdcn_size].filter(Boolean);
-  return parts.join(' ').trim() || '—';
-}
+export { formatMedicineLineForPrint as formatMedicineLine } from '@/utils/prescriptionPrintMedicines';

@@ -31,13 +31,12 @@ class TextCaseTest extends TestCase
         $patterns = [
             'patient_name',
             'medicines.*.mdcn_name',
-            'medicines.*.mdcn_type',
         ];
         $result = TextCase::capitalizeInputArray($input, $patterns);
 
         $this->assertSame('Ali Raza', $result['patient_name']);
         $this->assertSame('Panadol', $result['medicines'][0]['mdcn_name']);
-        $this->assertSame('Tablet', $result['medicines'][0]['mdcn_type']);
+        $this->assertSame('tablet', $result['medicines'][0]['mdcn_type']);
         $this->assertSame('dr@example.com', $result['email']);
     }
 }

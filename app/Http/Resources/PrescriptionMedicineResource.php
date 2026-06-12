@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Support\MedicineTypes;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -13,7 +14,7 @@ class PrescriptionMedicineResource extends JsonResource
             'id'                     => $this->id,
             'prescription_id'        => $this->prescription_id,
             'medicine_id'            => $this->medicine_id,
-            'mdcn_type'              => $this->mdcn_type,
+            'mdcn_type'              => MedicineTypes::normalize($this->mdcn_type),
             'mdcn_name'              => $this->mdcn_name,
             'mdcn_size'              => $this->mdcn_size,
             'mdcn_time_id'           => $this->mdcn_time_id,

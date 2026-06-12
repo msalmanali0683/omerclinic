@@ -165,7 +165,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Clinical scans
     Route::get('clinical-scans/queue-patients/search', [ClinicalScanQueueSearchController::class, 'search'])
-        ->middleware('permission:search queue patients for scan');
+        ->middleware('role_or_permission:create clinical scans|select patient for scan|search queue patients for scan');
     Route::get('clinical-scan-templates/options', [ClinicalScanTemplateController::class, 'options'])
         ->middleware('permission:view clinical scan templates');
     Route::apiResource('clinical-scan-templates', ClinicalScanTemplateController::class);

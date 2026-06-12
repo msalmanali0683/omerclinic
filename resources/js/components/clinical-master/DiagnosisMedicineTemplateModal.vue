@@ -100,7 +100,7 @@
           </thead>
           <tbody class="divide-y divide-gray-100 dark:divide-gray-700">
             <tr v-for="row in templates" :key="row.id">
-              <td class="px-3 py-2">{{ row.mdcn_type || '—' }}</td>
+              <td class="px-3 py-2">{{ formatMedicineType(row.mdcn_type) || '—' }}</td>
               <td class="px-3 py-2">{{ row.mdcn_name }}</td>
               <td class="px-3 py-2">{{ row.mdcn_size || '—' }}</td>
               <td class="px-3 py-2">{{ row.dose_time_text || '—' }}</td>
@@ -145,7 +145,7 @@ import { SEARCH_DEBOUNCE_MS } from '@/composables/useAutoSearch';
 import { medicineDoseTimeService } from '@/services/medicineDoseTimeService';
 import { medicineDoseFromMealService } from '@/services/medicineDoseFromMealService';
 import { useFormErrors } from '@/composables/useFormErrors';
-import { MEDICINE_TYPE_OPTIONS } from '@/constants/medicineTypes';
+import { MEDICINE_TYPE_OPTIONS, normalizeMedicineType } from '@/constants/medicineTypes';
 import BaseButton from '@/components/ui/BaseButton.vue';
 import BaseInput from '@/components/ui/BaseInput.vue';
 import BaseSelect from '@/components/ui/BaseSelect.vue';
@@ -163,6 +163,7 @@ const toastStore = useToastStore();
 const { errors: formErrors, setErrors, clearErrors } = useFormErrors();
 
 const medicineTypeOptions = MEDICINE_TYPE_OPTIONS;
+const formatMedicineType = normalizeMedicineType;
 const templates = ref([]);
 const loading = ref(false);
 const medicineOptions = ref([]);

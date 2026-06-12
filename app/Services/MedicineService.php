@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Medicine;
+use App\Support\MedicineTypes;
 use App\Models\User;
 use InvalidArgumentException;
 
@@ -20,6 +21,10 @@ class MedicineService
 
         if ($type === '') {
             throw new InvalidArgumentException('Medicine type is required.');
+        }
+
+        if (! in_array($type, MedicineTypes::allowed(), true)) {
+            throw new InvalidArgumentException('Invalid medicine type.');
         }
 
         $existing = Medicine::query()

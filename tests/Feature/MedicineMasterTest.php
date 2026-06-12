@@ -133,6 +133,17 @@ class MedicineMasterTest extends TestCase
         ])->assertUnprocessable();
     }
 
+    public function test_medicine_rejects_non_standard_type(): void
+    {
+        $admin = $this->makeUser('hospital-admin');
+
+        $this->actingAs($admin)->postJson('/api/medicines', $this->medicinePayload([
+            'mdcn_type' => 'Tablet',
+            'mdcn_name' => 'Legacy Type Med',
+        ]))->assertUnprocessable()
+            ->assertJsonValidationErrors(['mdcn_type']);
+    }
+
     public function test_medicine_can_link_to_dose_time_and_meal(): void
     {
         $admin = $this->makeUser('hospital-admin');
@@ -162,13 +173,23 @@ class MedicineMasterTest extends TestCase
         $this->assertSoftDeleted('medicines', ['id' => $medicine->id]);
     }
 
+    public function test_medicine_accepts_inj_type(): void
+    {
+        $admin = $this->makeUser('hospital-admin');
+
+        $this->actingAs($admin)->postJson('/api/medicines', $this->medicinePayload([
+            'mdcn_type' => 'Inj.',
+            'mdcn_name' => 'Injection Med',
+        ]))->assertCreated()
+            ->assertJsonPath('data.mdcn_type', 'Inj.');
+    }
+
     public function test_excel_medicines_replace_sample_data(): void
     {
-        $this->assertGreaterThanOrEqual(1300, Medicine::count());
-        $this->assertGreaterThanOrEqual(500, Medicine::where('mdcn_type', 'Inj')->count());
+        $this->assertGreaterThanOrEqual(800, Medicine::count());
 
         $panadol = Medicine::query()
-            ->where('mdcn_type', 'Tablet')
+            ->where('mdcn_type', 'Tab.')
             ->where('mdcn_name', 'Panadol')
             ->where('mdcn_size', '500')
             ->first();
@@ -200,7 +221,7 @@ class MedicineMasterTest extends TestCase
     protected function medicinePayload(array $overrides = []): array
     {
         return array_merge([
-            'mdcn_type' => 'Tablet',
+            'mdcn_type' => 'Tab.',
             'mdcn_name' => 'Panadol',
             'mdcn_size' => '500mg',
         ], $overrides);

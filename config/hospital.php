@@ -37,7 +37,6 @@ return [
         'reason_for_visit',
         'notes',
         'impression',
-        'mdcn_type',
         'mdcn_name',
         'mdcn_size',
         'dose_time',
@@ -54,7 +53,6 @@ return [
         'reference_range',
         'unit',
         'bill_notes',
-        'medicines.*.mdcn_type',
         'medicines.*.mdcn_name',
         'medicines.*.mdcn_size',
         'values.*.field_value',
@@ -63,7 +61,6 @@ return [
         'fields.*.reference_range',
         'fields.*.unit',
         'lines.*.mdcn_name',
-        'lines.*.mdcn_type',
         'lines.*.mdcn_size',
     ],
 

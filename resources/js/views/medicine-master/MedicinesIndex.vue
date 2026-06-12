@@ -18,6 +18,7 @@
       <BaseButton variant="secondary" @click="fetch">Search</BaseButton>
     </div>
     <BaseTable :columns="columns" :rows="rows" :loading="loading">
+      <template #cell-mdcn_type="{ row }">{{ formatMedicineType(row.mdcn_type) }}</template>
       <template #cell-dose_time="{ row }">{{ row.dose_time || '—' }}</template>
       <template #cell-dose_from_meal="{ row }">{{ row.dose_from_meal || '—' }}</template>
       <template #cell-created_at="{ row }">{{ formatDate(row.created_at) }}</template>
@@ -48,11 +49,12 @@ import BaseInput from '@/components/ui/BaseInput.vue';
 import BaseTable from '@/components/ui/BaseTable.vue';
 import BaseSelect from '@/components/ui/BaseSelect.vue';
 import { useAutoSearch } from '@/composables/useAutoSearch';
-import { MEDICINE_TYPE_OPTIONS } from '@/constants/medicineTypes';
+import { MEDICINE_TYPE_FILTER_OPTIONS, normalizeMedicineType } from '@/constants/medicineTypes';
 import { formatDate } from '@/utils/formatters';
 
 const authStore = useAuthStore();
-const medicineTypeFilterOptions = [{ value: '', label: 'All types' }, ...MEDICINE_TYPE_OPTIONS];
+const medicineTypeFilterOptions = MEDICINE_TYPE_FILTER_OPTIONS;
+const formatMedicineType = normalizeMedicineType;
 const toastStore = useToastStore();
 const filters = reactive({ search: '', mdcn_type: '' });
 const { flush: flushSearch } = useAutoSearch(() => filters.search, () => fetch(1));

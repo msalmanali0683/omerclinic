@@ -20,6 +20,7 @@ class ClinicalScanTemplateFieldResource extends JsonResource
             'default_values' => $this->resolvedDefaultValues(),
             'placeholder'    => $this->placeholder,
             'is_required'    => $this->is_required,
+            'print_in_box'   => $this->print_in_box,
             'sort_order'     => $this->sort_order,
         ];
     }

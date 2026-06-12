@@ -8,6 +8,7 @@ use App\Http\Requests\StoreMedicineRequest;
 use App\Http\Requests\UpdateMedicineRequest;
 use App\Http\Resources\MedicineResource;
 use App\Models\Medicine;
+use App\Support\MedicineTypes;
 use App\Services\MedicineService;
 use Illuminate\Http\Request;
 
@@ -29,7 +30,7 @@ class MedicineController extends Controller
             });
         }
 
-        if ($request->filled('mdcn_type')) {
+        if ($request->filled('mdcn_type') && in_array($request->mdcn_type, MedicineTypes::allowed(), true)) {
             $query->where('mdcn_type', $request->mdcn_type);
         }
 
@@ -115,7 +116,7 @@ class MedicineController extends Controller
                     'id'                     => $medicine->id,
                     'label'                  => $medicine->displayLabel(),
                     'value'                  => $medicine->id,
-                    'mdcn_type'              => $medicine->mdcn_type,
+                    'mdcn_type'              => MedicineTypes::normalize($medicine->mdcn_type),
                     'mdcn_name'              => $medicine->mdcn_name,
                     'mdcn_size'              => $medicine->mdcn_size,
                     'mdcn_time_id'           => $medicine->mdcn_time_id,

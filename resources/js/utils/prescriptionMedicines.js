@@ -1,7 +1,7 @@
 import { isInjectionMedicine } from '@/utils/prescriptionPrintMedicines';
 import { medicineService } from '@/services/medicineService';
 
-export const DEFAULT_PRESCRIPTION_MEDICINE_ROW_COUNT = 4;
+export const DEFAULT_PRESCRIPTION_MEDICINE_ROW_COUNT = 0;
 
 export function isPrescriptionMedicineRowEmpty(row) {
   if (row?.medicine_id) {
@@ -12,9 +12,7 @@ export function isPrescriptionMedicineRowEmpty(row) {
 }
 
 export function preparePrescriptionMedicineRowsForSave(rows) {
-  const filledRows = stripEmptyPrescriptionMedicineRows(rows);
-
-  return filledRows.length ? filledRows : createDefaultPrescriptionMedicineRows();
+  return stripEmptyPrescriptionMedicineRows(rows);
 }
 
 export function createDefaultPrescriptionMedicineRows(count = DEFAULT_PRESCRIPTION_MEDICINE_ROW_COUNT) {
@@ -126,25 +124,24 @@ function normalizeMedicineKey(value) {
   return String(value ?? '').trim().toLowerCase();
 }
 
-export function isDuplicatePrescriptionMedicineRow(rows, template) {
+export function isDuplicatePrescriptionMedicineRow(rows, candidate) {
   return rows.some((row) => {
     if (!row.mdcn_name?.trim()) {
       return false;
     }
 
-    if (template.medicine_id && row.medicine_id) {
-      return Number(row.medicine_id) === Number(template.medicine_id);
+    if (candidate.medicine_id && row.medicine_id) {
+      return Number(row.medicine_id) === Number(candidate.medicine_id);
     }
 
-    return normalizeMedicineKey(row.mdcn_type) === normalizeMedicineKey(template.mdcn_type)
-      && normalizeMedicineKey(row.mdcn_name) === normalizeMedicineKey(template.mdcn_name)
-      && normalizeMedicineKey(row.mdcn_size) === normalizeMedicineKey(template.mdcn_size);
+    return normalizeMedicineKey(row.mdcn_type) === normalizeMedicineKey(candidate.mdcn_type)
+      && normalizeMedicineKey(row.mdcn_name) === normalizeMedicineKey(candidate.mdcn_name)
+      && normalizeMedicineKey(row.mdcn_size) === normalizeMedicineKey(candidate.mdcn_size);
   });
 }
 
 export function appendDiagnosisTemplateMedicines(rows, templates) {
-  const filledRows = rows.filter((row) => row.mdcn_name?.trim());
-  const nextRows = [...filledRows];
+  const nextRows = [...stripEmptyPrescriptionMedicineRows(rows)];
   let added = 0;
   let skipped = 0;
 
@@ -156,10 +153,6 @@ export function appendDiagnosisTemplateMedicines(rows, templates) {
 
     nextRows.push(mapPrescriptionMedicineToRow(template));
     added += 1;
-  }
-
-  if (!nextRows.length) {
-    nextRows.push(...createDefaultPrescriptionMedicineRows());
   }
 
   return { rows: nextRows, added, skipped };

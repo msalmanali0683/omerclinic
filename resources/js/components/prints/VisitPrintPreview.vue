@@ -10,15 +10,15 @@
       <div class="patient-info-grid">
         <span class="header-field"><strong>Name:</strong> {{ patient.patient_name }}</span>
         <span class="header-field"><strong>Age:</strong> {{ patient.patient_age_display }}</span>
-        <span class="header-field header-field-right"><strong>Date &amp; Time:</strong> {{ dateTimeLabel }}</span>
+        <span class="header-field header-field-col3"><strong>Date &amp; Time:</strong> {{ dateTimeLabel }}</span>
 
         <span class="header-field"><strong>S/o, W/o, D/o:</strong> {{ patient.patient_father_name }}</span>
         <span class="header-field"><strong>Gender:</strong> {{ patient.patient_gender_label }}</span>
-        <span class="header-field header-field-right"><strong>Cell:</strong> {{ patient.patient_cell }}</span>
+        <span class="header-field header-field-col3"><strong>Cell:</strong> {{ patient.patient_cell }}</span>
 
         <span class="header-field header-field-address"><strong>Address:</strong> {{ patient.patient_address }}</span>
         <span class="header-field"><strong>MR#:</strong> {{ patient.mr_number }}</span>
-        <span class="header-field header-field-right"><strong>CNIC:</strong> {{ patient.patient_cnic }}</span>
+        <span class="header-field header-field-col3"><strong>CNIC:</strong> {{ patient.patient_cnic }}</span>
       </div>
     </div>
 
@@ -66,35 +66,59 @@
                 class="scan-block clinical-scan-grid__values"
                 :class="{ 'scan-block--follow-up': scanIndex > 0 }"
               >
-                <div v-if="scan.normalGroupedValues?.length" class="scan-values-grid">
+                <div v-if="scan.normalPrintRows?.length" class="scan-values-grid">
                   <div
-                    v-for="group in scan.normalGroupedValues"
-                    :key="group.id"
-                    class="scan-value-item bidi-text"
+                    v-for="(row, rowIndex) in scan.normalPrintRows"
+                    :key="`scan-row-${scan.id}-${rowIndex}`"
+                    class="scan-values-row"
+                    :class="{ 'scan-values-row--pair': row.layout === 'pair' }"
                   >
-                    <span class="scan-field-label">{{ formatScanGroupLabel(group) }}:</span>
-                    <span class="scan-field-value">{{ formatScanGroupValue(group) }}</span>
+                    <div
+                      v-for="group in row.groups"
+                      :key="group.id"
+                      class="scan-value-item bidi-text"
+                      :class="{ 'scan-value-item--boxed': group.print_in_box }"
+                    >
+                      <div :class="group.print_in_box ? 'scan-value-item__table' : 'scan-value-item__inline'">
+                        <span class="scan-field-label">{{ formatScanGroupLabel(group) }}:</span>
+                        <span class="scan-field-value">{{ formatScanGroupValue(group) }}</span>
+                      </div>
+                    </div>
                   </div>
                 </div>
 
                 <div
-                  v-for="group in scan.impressionGroupedValues"
-                  v-show="formatScanGroupValue(group)"
-                  :key="`impression-group-${group.id}`"
-                  class="scan-impression scan-value-impression bidi-text"
+                  v-for="(row, rowIndex) in scan.impressionPrintRows"
+                  v-show="row.groups.some((group) => formatScanGroupValue(group))"
+                  :key="`impression-row-${scan.id}-${rowIndex}`"
+                  class="scan-values-row"
+                  :class="{ 'scan-values-row--pair': row.layout === 'pair' }"
                 >
-                  <span class="scan-field-label">{{ formatScanGroupLabel(group) }}:</span>
-                  <span class="scan-field-value">{{ formatScanGroupValue(group) }}</span>
+                  <div
+                    v-for="group in row.groups"
+                    v-show="formatScanGroupValue(group)"
+                    :key="`impression-group-${group.id}`"
+                    class="scan-impression scan-value-impression bidi-text"
+                    :class="{ 'scan-value-item--boxed': group.print_in_box }"
+                  >
+                    <div :class="group.print_in_box ? 'scan-value-item__table' : 'scan-value-item__inline'">
+                      <span class="scan-field-label">{{ formatScanGroupLabel(group) }}:</span>
+                      <span class="scan-field-value">{{ formatScanGroupValue(group) }}</span>
+                    </div>
+                  </div>
                 </div>
 
                 <div
                   v-for="value in scan.impressionValues"
-                  v-show="!scan.impressionGroupedValues?.length && !isEmptyScanFieldValue(value)"
+                  v-show="!scan.impressionPrintRows?.length && !isEmptyScanFieldValue(value)"
                   :key="`impression-${value.id || value.field_key}`"
                   class="scan-impression scan-value-impression bidi-text"
+                  :class="{ 'scan-value-item--boxed': value.print_in_box }"
                 >
-                  <span class="scan-field-label">{{ formatScanFieldLabel(value) }}:</span>
-                  <span class="scan-field-value">{{ formatScanFieldValue(value) }}</span>
+                  <div :class="value.print_in_box ? 'scan-value-item__table' : 'scan-value-item__inline'">
+                    <span class="scan-field-label">{{ formatScanFieldLabel(value) }}:</span>
+                    <span class="scan-field-value">{{ formatScanFieldValue(value) }}</span>
+                  </div>
                 </div>
 
                 <div v-if="scan.impression" class="scan-impression bidi-text">
@@ -115,7 +139,7 @@
                 :key="medicine.id"
                 class="treatment-given-item bidi-text"
               >
-                <span v-if="medicine.mdcn_type">{{ medicine.mdcn_type }}</span>
+                <span v-if="printMedicineTypeLabel(medicine.mdcn_type)">{{ printMedicineTypeLabel(medicine.mdcn_type) }}</span>
                 <span>{{ medicine.mdcn_name }}</span>
                 <span v-if="medicine.mdcn_size">{{ medicine.mdcn_size }}</span>
               </div>
@@ -179,7 +203,7 @@ import {
   withScanValueLayout,
 } from '@/utils/clinicalScanPrintLayout';
 import { ensureClinicalScanPrintStyles } from '@/utils/clinicalScanPrintStyles';
-import { splitPrintMedicines } from '@/utils/prescriptionPrintMedicines';
+import { printMedicineTypeLabel, splitPrintMedicines } from '@/utils/prescriptionPrintMedicines';
 import {
   buildSlipStyleVars,
   formatMedicineLine,
@@ -267,16 +291,17 @@ onMounted(() => {
 
 .patient-info-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 4.35in 1.35in 2.85in;
   column-gap: 18px;
   row-gap: 2px;
-  width: 100%;
+  width: 8.55in;
+  max-width: 100%;
   align-items: baseline;
 }
 
-.header-field-right {
-  justify-self: end;
-  text-align: right;
+.header-field-col3 {
+  justify-self: start;
+  text-align: left;
 }
 
 .header-field-address {
@@ -340,6 +365,7 @@ onMounted(() => {
 }
 
 .prescription-right {
+  --rx-mark-end: calc(2.4rem + 0.55rem);
   padding: 6px 8px;
   min-height: 100%;
   height: 100%;
@@ -361,6 +387,7 @@ onMounted(() => {
 .clinical-scan-print-section .scan-impression,
 .clinical-scan-print-section .scan-value-impression {
   font-size: var(--print-font-clinical-scans, 12pt);
+  line-height: 1.45;
 }
 
 .treatment-given-print-section {
@@ -375,10 +402,16 @@ onMounted(() => {
 }
 
 .treatment-given-print-section .section-title {
-  font-weight: normal;
+  font-weight: 700 !important;
   text-decoration: underline;
   margin-bottom: 3px;
-  font-size: 13px;
+  font-size: calc(13px + 2pt);
+}
+
+.clinical-scan-print-section .section-title {
+  font-weight: 700 !important;
+  text-decoration: underline;
+  font-size: calc(var(--print-font-clinical-scans, 12pt) + 2pt);
 }
 
 .treatment-given-list {
@@ -479,12 +512,14 @@ onMounted(() => {
   font-size: var(--print-font-medicines, 13pt);
   line-height: 1.2;
   margin-bottom: 2px;
+  padding-left: var(--rx-mark-end, calc(2.4rem + 0.55rem));
 }
 
 .medicine-dose-line {
   font-size: var(--print-font-medicine-dose, 12pt);
   line-height: 1.2;
   margin-top: 2px;
+  padding-left: 0;
 }
 
 .dose-separator {

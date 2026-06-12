@@ -194,6 +194,7 @@ class VisitPrintDataService
                     'group_label' => $value->group_label,
                     'field_key'   => $value->field_key,
                     'field_value' => $value->field_value,
+                    'print_in_box'=> (bool) $value->print_in_box,
                     'sort_order'  => $value->sort_order,
                 ])
                 ->values()

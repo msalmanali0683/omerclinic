@@ -232,7 +232,7 @@ import VitalsHistory from '@/components/vitals/VitalsHistory.vue';
 import ClinicalScanHistory from '@/components/clinical-scans/ClinicalScanHistory.vue';
 import LaboratoryHistory from '@/components/laboratory/LaboratoryHistory.vue';
 import PrescriptionMedicineRows from '@/components/prescription/PrescriptionMedicineRows.vue';
-import { createDefaultPrescriptionMedicineRows, mapPrescriptionMedicineToRow, persistNewMedicineRows, preparePrescriptionMedicineRowsForSave, serializePrescriptionMedicineRows, stripEmptyPrescriptionMedicineRows, appendDiagnosisTemplateMedicines } from '@/utils/prescriptionMedicines';
+import { mapPrescriptionMedicineToRow, persistNewMedicineRows, preparePrescriptionMedicineRowsForSave, serializePrescriptionMedicineRows, stripEmptyPrescriptionMedicineRows, appendDiagnosisTemplateMedicines } from '@/utils/prescriptionMedicines';
 import { diagnosisMedicineTemplateService } from '@/services/diagnosisMedicineTemplateService';
 import { medicineDoseTimeService } from '@/services/medicineDoseTimeService';
 import { medicineDoseFromMealService } from '@/services/medicineDoseFromMealService';
@@ -269,7 +269,7 @@ const assignDoctorId = ref('');
 const assigning = ref(false);
 const doctorOptions = ref([]);
 const existingPrescription = ref(null);
-const prescriptionMedicineRows = ref(createDefaultPrescriptionMedicineRows());
+const prescriptionMedicineRows = ref([]);
 const doseTimeOptions = ref([]);
 const doseFromMealOptions = ref([]);
 const rx = reactive({ next_visit_days: '' });
@@ -343,7 +343,7 @@ const canShowPrescriptionForm = computed(() => {
 
 function resetPrescriptionForm() {
   existingPrescription.value = null;
-  prescriptionMedicineRows.value = createDefaultPrescriptionMedicineRows();
+  prescriptionMedicineRows.value = [];
   rx.next_visit_days = '';
 }
 
@@ -362,7 +362,7 @@ function applyPrescriptionToForm(prescription) {
   const items = prescription?.medicines ?? [];
   prescriptionMedicineRows.value = items.length
     ? items.map(mapPrescriptionMedicineToRow)
-    : createDefaultPrescriptionMedicineRows();
+    : [];
 }
 
 async function loadExistingPrescription(prescriptionId = null) {
@@ -753,7 +753,6 @@ async function savePrescription() {
 
   const medicines = serializePrescriptionMedicineRows(prescriptionMedicineRows.value);
   if (!medicines.length) {
-    prescriptionMedicineRows.value = createDefaultPrescriptionMedicineRows();
     rxErrors.medicines = 'Add at least one medicine with a name.';
     toastStore.error(rxErrors.medicines);
     return;

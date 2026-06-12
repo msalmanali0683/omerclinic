@@ -141,6 +141,7 @@ import { useAuthStore } from '@/stores/auth';
 import { useToastStore } from '@/stores/toast';
 import { diagnosisMedicineTemplateService } from '@/services/diagnosisMedicineTemplateService';
 import { medicineService } from '@/services/medicineService';
+import { SEARCH_DEBOUNCE_MS } from '@/composables/useAutoSearch';
 import { medicineDoseTimeService } from '@/services/medicineDoseTimeService';
 import { medicineDoseFromMealService } from '@/services/medicineDoseFromMealService';
 import { useFormErrors } from '@/composables/useFormErrors';
@@ -253,7 +254,7 @@ function onMedicineSearch() {
 
     const { data } = await medicineService.getMedicineOptions({ search: form.medicine_search.trim() });
     medicineOptions.value = data.data ?? [];
-  }, 250);
+  }, SEARCH_DEBOUNCE_MS);
 }
 
 function closeMedicineDropdown() {

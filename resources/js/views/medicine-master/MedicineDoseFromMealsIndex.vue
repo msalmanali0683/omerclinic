@@ -8,7 +8,7 @@
       <BaseButton v-if="authStore.can('create medicine dose from meals')" @click="$router.push('/medicine-master/dose-from-meals/create')">+ Add</BaseButton>
     </div>
     <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4 mb-4 shadow-sm flex gap-3">
-      <BaseInput v-model="search" placeholder="Search dose from meal..." class="flex-1" @keyup.enter="fetch" />
+      <BaseInput v-model="search" placeholder="Search dose from meal..." class="flex-1" @keyup.enter="flushSearch" />
       <BaseButton variant="secondary" @click="fetch">Search</BaseButton>
     </div>
     <BaseTable :columns="columns" :rows="rows" :loading="loading">
@@ -38,11 +38,13 @@ import { medicineDoseFromMealService } from '@/services/medicineDoseFromMealServ
 import BaseButton from '@/components/ui/BaseButton.vue';
 import BaseInput from '@/components/ui/BaseInput.vue';
 import BaseTable from '@/components/ui/BaseTable.vue';
+import { useAutoSearch } from '@/composables/useAutoSearch';
 import { formatDate } from '@/utils/formatters';
 
 const authStore = useAuthStore();
 const toastStore = useToastStore();
 const search = ref('');
+const { flush: flushSearch } = useAutoSearch(search, () => fetch(1));
 const rows = ref([]);
 const loading = ref(true);
 const pagination = ref({ current_page: 1, last_page: 1 });

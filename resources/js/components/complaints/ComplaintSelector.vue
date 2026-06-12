@@ -45,6 +45,8 @@
 <script setup>
 import { computed, ref } from 'vue';
 import { useToastStore } from '@/stores/toast';
+import { SEARCH_DEBOUNCE_MS } from '@/composables/useAutoSearch';
+import { useDebouncedCallback } from '@/composables/useDebouncedCallback';
 import { complaintMasterService } from '@/services/complaintMasterService';
 import { patientVisitComplaintService } from '@/services/patientVisitComplaintService';
 import BaseButton from '@/components/ui/BaseButton.vue';
@@ -67,7 +69,7 @@ const addingComplaint = ref(false);
 const error = ref('');
 const fieldError = ref('');
 const showDropdown = ref(false);
-let searchTimer = null;
+const { debounced: debouncedFetchOptions } = useDebouncedCallback(fetchOptions, SEARCH_DEBOUNCE_MS);
 
 const exactMatch = computed(() =>
   options.value.some((o) => o.label.toLowerCase() === query.value.trim().toLowerCase())
@@ -77,8 +79,7 @@ function onInput() {
   selectedMaster.value = null;
   error.value = '';
   fieldError.value = '';
-  clearTimeout(searchTimer);
-  searchTimer = setTimeout(fetchOptions, 250);
+  debouncedFetchOptions();
 }
 
 async function fetchOptions() {

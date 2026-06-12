@@ -25,7 +25,7 @@
             v-model="filters.search"
             placeholder="MR, name, cell, CNIC..."
             class="sm:col-span-2"
-            @keyup.enter="searchPatients"
+            @keyup.enter="flushSearch"
           />
           <BaseSelect
             v-model="filters.status"
@@ -388,6 +388,7 @@ import { clinicalScanService } from '@/services/clinicalScanService';
 
 import { clinicalScanTemplateService } from '@/services/clinicalScanTemplateService';
 
+import { useAutoSearch } from '@/composables/useAutoSearch';
 import { useFormErrors } from '@/composables/useFormErrors';
 
 import { buildScanValuesFromTemplate, serializeScanValues } from '@/utils/clinicalScans';
@@ -417,6 +418,7 @@ const filters = reactive({
   status: 'pending_prescription,in_consultation',
   visit_date: '',
 });
+const { flush: flushSearch } = useAutoSearch(() => filters.search, searchPatients, { minLength: 1 });
 
 const statusOptions = [
   { value: 'pending_prescription,in_consultation', label: 'All Active' },

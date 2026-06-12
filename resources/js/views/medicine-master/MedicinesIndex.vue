@@ -8,7 +8,7 @@
       <BaseButton v-if="authStore.can('create medicines')" @click="$router.push('/medicine-master/medicines/create')">+ Add Medicine</BaseButton>
     </div>
     <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4 mb-4 shadow-sm grid grid-cols-1 sm:grid-cols-3 gap-3">
-      <BaseInput v-model="filters.search" placeholder="Search name, type, size..." @keyup.enter="fetch" />
+      <BaseInput v-model="filters.search" placeholder="Search name, type, size..." @keyup.enter="flushSearch" />
       <BaseSelect
         v-model="filters.mdcn_type"
         placeholder="All types"
@@ -47,6 +47,7 @@ import BaseButton from '@/components/ui/BaseButton.vue';
 import BaseInput from '@/components/ui/BaseInput.vue';
 import BaseTable from '@/components/ui/BaseTable.vue';
 import BaseSelect from '@/components/ui/BaseSelect.vue';
+import { useAutoSearch } from '@/composables/useAutoSearch';
 import { MEDICINE_TYPE_OPTIONS } from '@/constants/medicineTypes';
 import { formatDate } from '@/utils/formatters';
 
@@ -54,6 +55,7 @@ const authStore = useAuthStore();
 const medicineTypeFilterOptions = [{ value: '', label: 'All types' }, ...MEDICINE_TYPE_OPTIONS];
 const toastStore = useToastStore();
 const filters = reactive({ search: '', mdcn_type: '' });
+const { flush: flushSearch } = useAutoSearch(() => filters.search, () => fetch(1));
 const rows = ref([]);
 const loading = ref(true);
 const pagination = ref({ current_page: 1, last_page: 1 });

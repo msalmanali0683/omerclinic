@@ -9,7 +9,7 @@
     </div>
 
     <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4 mb-4 shadow-sm flex gap-3">
-      <BaseInput v-model="search" placeholder="Search complaint..." class="flex-1" @keyup.enter="fetch" />
+      <BaseInput v-model="search" placeholder="Search complaint..." class="flex-1" @keyup.enter="flushSearch" />
       <BaseButton variant="secondary" @click="fetch">Search</BaseButton>
     </div>
 
@@ -75,6 +75,7 @@ import { onMounted, reactive, ref } from 'vue';
 import { useAuthStore } from '@/stores/auth';
 import { useToastStore } from '@/stores/toast';
 import { complaintMasterService } from '@/services/complaintMasterService';
+import { useAutoSearch } from '@/composables/useAutoSearch';
 import { useFormErrors } from '@/composables/useFormErrors';
 import BaseButton from '@/components/ui/BaseButton.vue';
 import BaseInput from '@/components/ui/BaseInput.vue';
@@ -87,6 +88,7 @@ const toastStore = useToastStore();
 const { errors: formErrors, setErrors, clearErrors } = useFormErrors();
 
 const search = ref('');
+const { flush: flushSearch } = useAutoSearch(search, () => fetch(1));
 const rows = ref([]);
 const loading = ref(true);
 const pagination = ref({ current_page: 1, last_page: 1 });

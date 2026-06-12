@@ -17,7 +17,7 @@
     </div>
 
     <div v-if="!selectedPatientId" class="space-y-4">
-      <BaseInput v-model="search" placeholder="Search patients..." class="max-w-md" @keyup.enter="loadPatients" />
+      <BaseInput v-model="search" placeholder="Search patients..." class="max-w-md" @keyup.enter="flushSearch" />
       <BaseButton variant="secondary" class="ml-0 sm:ml-2" @click="loadPatients">Search</BaseButton>
 
       <BaseTable :columns="patientColumns" :rows="patients" :loading="loadingPatients">
@@ -145,6 +145,7 @@ import LaboratoryResultPrintModal from '@/components/laboratory/LaboratoryResult
 import LaboratoryBillPrintModal from '@/components/laboratory/LaboratoryBillPrintModal.vue';
 import BaseButton from '@/components/ui/BaseButton.vue';
 import BaseInput from '@/components/ui/BaseInput.vue';
+import { useAutoSearch } from '@/composables/useAutoSearch';
 import BaseTable from '@/components/ui/BaseTable.vue';
 
 const authStore = useAuthStore();
@@ -153,6 +154,7 @@ const route = useRoute();
 const router = useRouter();
 
 const search = ref('');
+const { flush: flushSearch } = useAutoSearch(search, loadPatients);
 const patients = ref([]);
 const loadingPatients = ref(false);
 const selectedPatientId = ref(null);

@@ -85,8 +85,10 @@ export function normalizePrintClinicalScans(scans = []) {
     values: (scan.values ?? []).map((value, index) => ({
       ...value,
       id: value.id ?? value.field_key ?? `value-${index}`,
-      field_label: value.field_label || '',
-      field_value: value.field_value ?? '',
+      field_label: String(value.field_label ?? '').replace(/\s+/g, ' ').trim(),
+      field_value: value.field_value == null
+        ? ''
+        : String(value.field_value).replace(/\s+/g, ' ').trim(),
     })),
   }));
 }

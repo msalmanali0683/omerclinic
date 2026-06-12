@@ -12,7 +12,7 @@
 
     <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4 mb-4 shadow-sm">
       <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-        <BaseInput v-model="filters.search" placeholder="Search by name or email..." @keyup.enter="fetchUsers" />
+        <BaseInput v-model="filters.search" placeholder="Search by name or email..." @keyup.enter="flushSearch" />
         <BaseSelect
           v-model="filters.role"
           placeholder="All roles"
@@ -137,6 +137,7 @@ import BaseButton from '@/components/ui/BaseButton.vue';
 import BaseInput from '@/components/ui/BaseInput.vue';
 import BaseSelect from '@/components/ui/BaseSelect.vue';
 import BaseTable from '@/components/ui/BaseTable.vue';
+import { useAutoSearch } from '@/composables/useAutoSearch';
 import BaseModal from '@/components/ui/BaseModal.vue';
 import PermissionPicker from '@/components/admin/PermissionPicker.vue';
 import { formatDate } from '@/utils/formatters';
@@ -160,6 +161,7 @@ const allPermissions = ref([]);
 const roleOptions = ref([{ value: '', label: 'All roles' }]);
 
 const filters = reactive({ search: '', role: '' });
+const { flush: flushSearch } = useAutoSearch(() => filters.search, () => fetchUsers(1));
 const pagination = reactive({ current_page: 1, last_page: 1 });
 
 const rolesModal = reactive({ open: false, user: null, selected: [], saving: false });

@@ -187,6 +187,8 @@
 <script setup>
 import { computed, watch } from 'vue';
 import { medicineService } from '@/services/medicineService';
+import { SEARCH_DEBOUNCE_MS } from '@/composables/useAutoSearch';
+import { useDebouncedCallback } from '@/composables/useDebouncedCallback';
 import { createPrescriptionMedicineRow } from '@/utils/prescriptionMedicines';
 import { isInjectionMedicine } from '@/utils/prescriptionPrintMedicines';
 import AppIcon from '@/components/ui/AppIcon.vue';
@@ -302,7 +304,7 @@ function isMedicineSelected(row) {
 
 function onMedicineSearch(row) {
   clearTimeout(searchTimers.get(row._key));
-  searchTimers.set(row._key, setTimeout(() => fetchMedicineOptions(row), 250));
+  searchTimers.set(row._key, setTimeout(() => fetchMedicineOptions(row), SEARCH_DEBOUNCE_MS));
 }
 
 async function fetchMedicineOptions(row) {

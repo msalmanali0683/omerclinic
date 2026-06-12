@@ -1,4 +1,5 @@
 import { getDefaultResolvedSettings, getPrintElementOptions, PRESCRIPTION_PRINT_FONT_FAMILY } from '@/utils/prescriptionPrintSettings';
+import { buildClinicalScanPrintCss } from '@/utils/clinicalScanPrintStyles';
 import {
     buildPrescriptionPrintFontFaceCss,
     ensurePrescriptionPrintFontLoaded,
@@ -227,99 +228,9 @@ function buildPrintStyles(options, baseUrl = '') {
 
         .clinical-scan-print-section {
             grid-column: 1 / -1;
-            margin-top: 8px;
-            font-size: ${fontSizeClinicalScans}pt;
-            line-height: 1.15;
         }
 
-        .clinical-scan-grid {
-            display: grid;
-            grid-template-columns: max-content 1fr;
-            column-gap: 2ch;
-            row-gap: 3px;
-            align-items: start;
-        }
-
-        .clinical-scan-grid__title {
-            grid-column: 1;
-        }
-
-        .clinical-scan-grid__name {
-            grid-column: 2;
-        }
-
-        .clinical-scan-grid__spacer {
-            grid-column: 1;
-        }
-
-        .clinical-scan-grid__values {
-            grid-column: 1 / -1;
-            width: 100%;
-            min-width: 0;
-        }
-
-        .clinical-scan-print-section .section-title {
-            font-weight: normal;
-            text-decoration: underline;
-            margin-bottom: 0;
-            font-size: 14px;
-        }
-
-        .scan-block {
-            margin-bottom: 6px;
-            break-inside: avoid;
-            page-break-inside: avoid;
-        }
-
-        .scan-template-name {
-            font-weight: bold !important;
-            margin-bottom: 3px;
-            line-height: 1.2;
-            text-decoration: none !important;
-        }
-
-        .scan-values-grid {
-            display: grid;
-            grid-template-columns: repeat(3, minmax(0, 1fr));
-            column-gap: 8px;
-            row-gap: 3px;
-            align-items: start;
-        }
-
-        .scan-value-item {
-            min-width: 0;
-            font-size: ${fontSizeClinicalScans}pt;
-            line-height: 1.15;
-            white-space: normal;
-            overflow-wrap: anywhere;
-            word-break: normal;
-            break-inside: avoid;
-            page-break-inside: avoid;
-        }
-
-        .scan-value-item--long {
-            grid-column: 1 / -1;
-        }
-
-        .scan-field-label {
-            font-weight: normal;
-        }
-
-        .scan-field-value {
-            margin-left: 2px;
-        }
-
-        .scan-impression,
-        .scan-value-impression {
-            grid-column: 1 / -1;
-            margin-top: 3px;
-            font-size: ${fontSizeClinicalScans}pt;
-            line-height: 1.15;
-            white-space: normal;
-            overflow-wrap: anywhere;
-            break-inside: avoid;
-            page-break-inside: avoid;
-        }
+        ${buildClinicalScanPrintCss(fontSizeClinicalScans)}
 
         .treatment-given-print-section {
             position: absolute;
@@ -499,7 +410,19 @@ function buildPrintStyles(options, baseUrl = '') {
 
         .scan-template-name,
         .clinical-scan-grid__name,
-        strong.scan-template-name {
+        .scan-field-label,
+        strong.scan-template-name,
+        .prescription-slip .scan-template-name,
+        .prescription-slip .clinical-scan-grid__name,
+        .prescription-slip strong.scan-template-name,
+        .visit-print-preview .scan-template-name,
+        .visit-print-preview .clinical-scan-grid__name,
+        .visit-print-preview strong.scan-template-name,
+        .visit-print-preview .scan-field-label,
+        #prescription-print-area .scan-template-name,
+        #prescription-print-area .clinical-scan-grid__name,
+        #prescription-print-area strong.scan-template-name,
+        #prescription-print-area .scan-field-label {
             font-weight: 700 !important;
         }
 

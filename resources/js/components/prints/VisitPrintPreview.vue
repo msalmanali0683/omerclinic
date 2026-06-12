@@ -77,8 +77,8 @@
                     class="scan-value-item bidi-text"
                     :class="{ 'scan-value-item--long': isLongScanValue(value) }"
                   >
-                    <span class="scan-field-label">{{ value.field_label }}:</span>
-                    <span class="scan-field-value">{{ value.field_value }}</span>
+                    <span class="scan-field-label">{{ formatScanFieldLabel(value) }}:</span>
+                    <span class="scan-field-value">{{ formatScanFieldValue(value) }}</span>
                   </div>
                 </div>
 
@@ -88,12 +88,12 @@
                   :key="`impression-${value.id || value.field_key}`"
                   class="scan-impression scan-value-impression bidi-text"
                 >
-                  <span class="scan-field-label">{{ value.field_label }}:</span>
-                  <span class="scan-field-value">{{ value.field_value }}</span>
+                  <span class="scan-field-label">{{ formatScanFieldLabel(value) }}:</span>
+                  <span class="scan-field-value">{{ formatScanFieldValue(value) }}</span>
                 </div>
 
                 <div v-if="scan.impression" class="scan-impression bidi-text">
-                  <strong>Impression:</strong> {{ scan.impression }}
+                  <strong>Impression:</strong> {{ formatScanFieldValue({ field_value: scan.impression }) }}
                 </div>
               </div>
             </template>
@@ -162,14 +162,17 @@
 </template>
 
 <script setup>
-import { computed } from 'vue';
+import { computed, onMounted } from 'vue';
 import { normalizeVisitPrintData, PRINT_NA } from '@/utils/printDataNormalizers';
 import {
   filterPrintableClinicalScans,
+  formatScanFieldLabel,
+  formatScanFieldValue,
   isEmptyScanFieldValue,
   isLongScanValue,
   withScanValueLayout,
 } from '@/utils/clinicalScanPrintLayout';
+import { ensureClinicalScanPrintStyles } from '@/utils/clinicalScanPrintStyles';
 import { splitPrintMedicines } from '@/utils/prescriptionPrintMedicines';
 import {
   buildSlipStyleVars,
@@ -221,6 +224,10 @@ const treatmentGivenReserveStyle = computed(() => {
 });
 
 const slipStyle = computed(() => buildSlipStyleVars(resolvedSettings.value));
+
+onMounted(() => {
+  ensureClinicalScanPrintStyles();
+});
 </script>
 
 <style scoped>
@@ -368,104 +375,11 @@ const slipStyle = computed(() => buildSlipStyleVars(resolvedSettings.value));
   min-width: 0;
 }
 
-.clinical-scan-print-section {
-  margin-top: 8px;
+.clinical-scan-print-section,
+.clinical-scan-print-section .scan-value-item,
+.clinical-scan-print-section .scan-impression,
+.clinical-scan-print-section .scan-value-impression {
   font-size: var(--print-font-clinical-scans, 12pt);
-  line-height: 1.15;
-}
-
-.clinical-scan-grid {
-  display: grid;
-  grid-template-columns: max-content 1fr;
-  column-gap: 2ch;
-  row-gap: 3px;
-  align-items: start;
-}
-
-.clinical-scan-grid__title {
-  grid-column: 1;
-}
-
-.clinical-scan-grid__name {
-  grid-column: 2;
-  font-weight: 700 !important;
-}
-
-.clinical-scan-grid__spacer {
-  grid-column: 1;
-}
-
-.clinical-scan-grid__values {
-  grid-column: 1 / -1;
-  width: 100%;
-  min-width: 0;
-}
-
-.clinical-scan-print-section .section-title {
-  font-weight: normal;
-  text-decoration: underline;
-  margin-bottom: 0;
-  font-size: 14px;
-}
-
-.scan-block {
-  margin-bottom: 5px;
-  break-inside: avoid;
-  page-break-inside: avoid;
-}
-
-.scan-block--follow-up {
-  margin-top: 0;
-}
-
-.scan-template-name {
-  font-weight: 700 !important;
-  margin-bottom: 2px;
-  line-height: 1.2;
-  text-decoration: none;
-}
-
-.scan-values-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  column-gap: 8px;
-  row-gap: 3px;
-  align-items: start;
-}
-
-.scan-value-item {
-  min-width: 0;
-  font-size: var(--print-font-clinical-scans, 12pt);
-  line-height: 1.15;
-  white-space: normal;
-  overflow-wrap: anywhere;
-  word-break: normal;
-  break-inside: avoid;
-  page-break-inside: avoid;
-}
-
-.scan-value-item--long {
-  grid-column: 1 / -1;
-}
-
-.scan-field-label {
-  font-weight: normal;
-}
-
-.scan-field-value {
-  margin-left: 2px;
-}
-
-.scan-impression,
-.scan-value-impression {
-  grid-column: 1 / -1;
-  margin-top: 3px;
-  font-size: var(--print-font-clinical-scans, 12pt);
-  line-height: 1.15;
-  white-space: normal;
-  overflow-wrap: anywhere;
-  break-inside: avoid;
-  page-break-inside: avoid;
 }
 
 .treatment-given-print-section {

@@ -50,12 +50,6 @@
           <BaseButton type="submit" class="w-full" :loading="verifying">
             Find My Reports
           </BaseButton>
-
-          <p class="text-center text-sm">
-            <router-link to="/login" class="text-teal-600 hover:text-teal-700 dark:text-teal-400">
-              Staff login
-            </router-link>
-          </p>
         </form>
       </div>
 

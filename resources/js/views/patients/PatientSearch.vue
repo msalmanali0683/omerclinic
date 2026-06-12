@@ -22,6 +22,7 @@
             v-model="query"
             label="Search"
             placeholder="MR number, name, cell, or CNIC"
+            @keyup.enter="flushSearch"
           />
         </div>
         <div class="flex gap-2">
@@ -160,6 +161,7 @@ import PatientTokenPrintModal from '@/components/tokens/PatientTokenPrintModal.v
 import { buildTokenPrintDataFromResponse, shouldOpenTokenPrintModal } from '@/utils/patientQueueToken';
 import BaseButton from '@/components/ui/BaseButton.vue';
 import BaseInput from '@/components/ui/BaseInput.vue';
+import { useAutoSearch } from '@/composables/useAutoSearch';
 import BaseTable from '@/components/ui/BaseTable.vue';
 
 const authStore = useAuthStore();
@@ -177,6 +179,7 @@ const columns = [
 
 const query = ref('');
 const activeQuery = ref('');
+const { flush: flushSearch } = useAutoSearch(query, applySearch);
 const visits = ref([]);
 const loading = ref(false);
 const error = ref('');

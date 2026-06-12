@@ -5,7 +5,7 @@
     <section class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5 shadow-sm space-y-4 mb-6">
       <h3 class="font-semibold">1. Select Patient</h3>
       <div class="flex flex-wrap gap-3 items-end">
-        <BaseInput v-model="patientSearch" placeholder="Search MR, name, cell..." class="flex-1 min-w-[200px]" @keyup.enter="searchPatients" />
+        <BaseInput v-model="patientSearch" placeholder="Search MR, name, cell..." class="flex-1 min-w-[200px]" @keyup.enter="flushSearch" />
         <BaseSelect v-model="visitFilter" label="Visit Filter" :options="visitFilterOptions" class="w-40" />
         <BaseButton variant="secondary" :loading="searchLoading" @click="searchPatients">Search</BaseButton>
       </div>
@@ -142,6 +142,7 @@ import { formatCurrency } from '@/utils/formatters';
 import LaboratoryBillPrintModal from '@/components/laboratory/LaboratoryBillPrintModal.vue';
 import BaseButton from '@/components/ui/BaseButton.vue';
 import BaseInput from '@/components/ui/BaseInput.vue';
+import { useAutoSearch } from '@/composables/useAutoSearch';
 import BaseSelect from '@/components/ui/BaseSelect.vue';
 
 const router = useRouter();
@@ -149,6 +150,7 @@ const authStore = useAuthStore();
 const toastStore = useToastStore();
 
 const patientSearch = ref('');
+const { flush: flushSearch } = useAutoSearch(patientSearch, searchPatients, { minLength: 1 });
 const visitFilter = ref('latest');
 const searchLoading = ref(false);
 const searchedOnce = ref(false);

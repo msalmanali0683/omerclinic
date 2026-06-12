@@ -15,7 +15,7 @@
 
     <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4 mb-4 shadow-sm">
       <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-3">
-        <BaseInput v-model="filters.search" placeholder="Search MR, name, cell..." @keyup.enter="fetch" />
+        <BaseInput v-model="filters.search" placeholder="Search MR, name, cell..." @keyup.enter="flushSearch" />
         <BaseSelect
           v-model="filters.status"
           label="Status"
@@ -98,6 +98,7 @@ import { formatDate } from '@/utils/formatters';
 import BaseButton from '@/components/ui/BaseButton.vue';
 import BaseInput from '@/components/ui/BaseInput.vue';
 import BaseSelect from '@/components/ui/BaseSelect.vue';
+import { useAutoSearch } from '@/composables/useAutoSearch';
 import BaseTable from '@/components/ui/BaseTable.vue';
 
 const authStore = useAuthStore();
@@ -109,6 +110,7 @@ const filters = reactive({
   scan_date: '',
   template_id: '',
 });
+const { flush: flushSearch } = useAutoSearch(() => filters.search, () => fetch(1));
 
 const statusOptions = [
   { value: 'draft', label: 'Draft' },

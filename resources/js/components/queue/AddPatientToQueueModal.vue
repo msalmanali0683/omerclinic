@@ -9,11 +9,12 @@
         Search by MR number, patient name, cell, or CNIC, then select a patient to continue.
       </p>
 
-      <form class="flex flex-col sm:flex-row gap-3" @submit.prevent="searchPatients">
+      <form class="flex flex-col sm:flex-row gap-3" @submit.prevent="flushSearch">
         <BaseInput
           v-model="searchQuery"
           placeholder="Search patient..."
           class="flex-1"
+          @keyup.enter="flushSearch"
         />
         <BaseButton type="submit" variant="secondary" :loading="searchLoading">Search</BaseButton>
       </form>
@@ -111,6 +112,7 @@ import { userService } from '@/services/userService';
 import BaseModal from '@/components/ui/BaseModal.vue';
 import BaseButton from '@/components/ui/BaseButton.vue';
 import BaseInput from '@/components/ui/BaseInput.vue';
+import { useAutoSearch } from '@/composables/useAutoSearch';
 import BaseSelect from '@/components/ui/BaseSelect.vue';
 
 const props = defineProps({
@@ -128,6 +130,7 @@ const searchQuery = ref('');
 const searchResults = ref([]);
 const searchLoading = ref(false);
 const searchedOnce = ref(false);
+const { flush: flushSearch } = useAutoSearch(searchQuery, searchPatients, { minLength: 1 });
 const selectedPatient = ref(null);
 const doctorId = ref('');
 const doctorOptions = ref([]);
@@ -207,7 +210,8 @@ async function searchPatients() {
   const query = searchQuery.value.trim();
 
   if (!query) {
-    toastStore.error('Enter MR number, name, cell, or CNIC to search.');
+    searchResults.value = [];
+    searchedOnce.value = false;
     return;
   }
 

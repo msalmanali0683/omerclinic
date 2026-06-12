@@ -139,6 +139,7 @@ import PatientTokenPrintModal from '@/components/tokens/PatientTokenPrintModal.v
 import AddPatientToQueueModal from '@/components/queue/AddPatientToQueueModal.vue';
 import RegisterPatientVitalsModal from '@/components/vitals/RegisterPatientVitalsModal.vue';
 import { buildTokenPrintDataFromResponse, shouldOpenTokenPrintModal } from '@/utils/patientQueueToken';
+import { useAutoSearch } from '@/composables/useAutoSearch';
 import AppIcon from '@/components/ui/AppIcon.vue';
 import BaseButton from '@/components/ui/BaseButton.vue';
 import BaseModal from '@/components/ui/BaseModal.vue';
@@ -183,6 +184,7 @@ const patients = ref([]);
 const patientsLoading = ref(false);
 const patientsError = ref('');
 const searchQuery = ref('');
+useAutoSearch(searchQuery, () => loadPatients(1));
 const pagination = reactive({ current_page: 1, last_page: 1 });
 const visitsOpen = ref(false);
 const selectedPatient = ref(null);

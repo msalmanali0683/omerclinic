@@ -12,7 +12,7 @@
 
     <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4 mb-4 shadow-sm">
       <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-        <BaseInput v-model="filters.search" placeholder="Search MR, name, cell, or CNIC..." @keyup.enter="fetchPatients" />
+        <BaseInput v-model="filters.search" placeholder="Search MR, name, cell, or CNIC..." @keyup.enter="flushSearch" />
         <div class="sm:col-span-2 flex gap-2">
           <BaseButton variant="secondary" @click="fetchPatients">Search</BaseButton>
           <BaseButton v-if="filters.search" variant="ghost" @click="clearSearch">Clear</BaseButton>
@@ -91,6 +91,7 @@ import { displayPatientAge, formatDate, formatGender } from '@/utils/formatters'
 import BaseButton from '@/components/ui/BaseButton.vue';
 import BaseInput from '@/components/ui/BaseInput.vue';
 import BaseTable from '@/components/ui/BaseTable.vue';
+import { useAutoSearch } from '@/composables/useAutoSearch';
 import BaseModal from '@/components/ui/BaseModal.vue';
 
 const authStore = useAuthStore();
@@ -112,6 +113,7 @@ const columns = [
 const patients = ref([]);
 const loading = ref(true);
 const filters = reactive({ search: '' });
+const { flush: flushSearch } = useAutoSearch(() => filters.search, () => fetchPatients(1));
 const pagination = reactive({ current_page: 1, last_page: 1 });
 const deleteModal = reactive({ open: false, patient: null, deleting: false });
 

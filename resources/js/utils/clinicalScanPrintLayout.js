@@ -1,11 +1,21 @@
 export function isEmptyScanFieldValue(value) {
-    const fieldValue = value?.field_value;
+    const fieldValue = formatScanFieldValue(value);
 
-    if (fieldValue == null) {
-        return true;
+    return fieldValue === '';
+}
+
+export function formatScanFieldLabel(value) {
+    return String(value?.field_label ?? '').replace(/\s+/g, ' ').trim();
+}
+
+export function formatScanFieldValue(value) {
+    const raw = value?.field_value;
+
+    if (raw == null) {
+        return '';
     }
 
-    return String(fieldValue).trim() === '';
+    return String(raw).replace(/\s+/g, ' ').trim();
 }
 
 export function scanHasPrintableContent(scan) {
@@ -22,7 +32,7 @@ export function filterPrintableClinicalScans(scans = []) {
         .map((scan) => ({
             ...scan,
             impression: scan.impression && String(scan.impression).trim() !== ''
-                ? scan.impression
+                ? String(scan.impression).replace(/\s+/g, ' ').trim()
                 : null,
             values: (scan.values ?? []).filter((value) => !isEmptyScanFieldValue(value)),
         }));
@@ -34,14 +44,17 @@ export function isImpressionField(value) {
 }
 
 export function isLongScanValue(value) {
-    const label = value?.field_label || '';
-    const fieldValue = value?.field_value ?? '';
+    const fieldValue = formatScanFieldValue(value);
 
-    if (String(fieldValue).includes('\n')) {
+    if (!fieldValue) {
+        return false;
+    }
+
+    if (fieldValue.includes('\n')) {
         return true;
     }
 
-    return `${label}: ${fieldValue}`.length > 28;
+    return fieldValue.length > 48;
 }
 
 export function partitionScanValues(values = []) {

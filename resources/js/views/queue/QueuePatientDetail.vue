@@ -741,10 +741,14 @@ async function savePrescription() {
 
   try {
     prescriptionMedicineRows.value = await persistNewMedicineRows(prescriptionMedicineRows.value);
-  } catch {
-    toastStore.error('Failed to save new medicine to master list.');
-    prescriptionMedicineRows.value = preparePrescriptionMedicineRowsForSave(prescriptionMedicineRows.value);
-    return;
+  } catch (error) {
+    // Backend PrescriptionService also find-or-creates on save; do not block prescription.
+    if (error.response?.status !== 405 && error.response?.status !== 404) {
+      toastStore.warning(
+        error.response?.data?.message
+          ?? 'Could not save new medicine to master list before prescription; saving prescription anyway.'
+      );
+    }
   }
 
   const medicines = serializePrescriptionMedicineRows(prescriptionMedicineRows.value);

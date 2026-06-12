@@ -236,17 +236,19 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('medicine-dose-times', MedicineDoseTimeController::class);
     Route::get('medicines/options', [MedicineController::class, 'options']);
     Route::post('medicines/find-or-create', [MedicineController::class, 'findOrCreate']);
-    Route::apiResource('medicines', MedicineController::class);
+    Route::apiResource('medicines', MedicineController::class)->whereNumber('medicine');
 
     // Clinical master — complaints & diagnosis
     Route::get('complaint-masters/options', [ComplaintMasterController::class, 'options']);
     Route::post('complaint-masters/find-or-create', [ComplaintMasterController::class, 'findOrCreate']);
-    Route::apiResource('complaint-masters', ComplaintMasterController::class);
+    Route::apiResource('complaint-masters', ComplaintMasterController::class)->whereNumber('complaint_master');
     Route::get('diagnosis-masters/options', [DiagnosisMasterController::class, 'options']);
     Route::post('diagnosis-masters/find-or-create', [DiagnosisMasterController::class, 'findOrCreate']);
-    Route::get('diagnosis-masters/{diagnosisMaster}/medicine-templates', [DiagnosisMedicineTemplateController::class, 'byDiagnosis']);
-    Route::apiResource('diagnosis-medicine-templates', DiagnosisMedicineTemplateController::class);
-    Route::apiResource('diagnosis-masters', DiagnosisMasterController::class);
+    Route::get('diagnosis-masters/{diagnosisMaster}/medicine-templates', [DiagnosisMedicineTemplateController::class, 'byDiagnosis'])
+        ->whereNumber('diagnosisMaster');
+    Route::apiResource('diagnosis-medicine-templates', DiagnosisMedicineTemplateController::class)
+        ->whereNumber('diagnosis_medicine_template');
+    Route::apiResource('diagnosis-masters', DiagnosisMasterController::class)->whereNumber('diagnosis_master');
     Route::apiResource('patient-visit-complaints', PatientVisitComplaintController::class);
     Route::apiResource('patient-visit-diagnoses', PatientVisitDiagnosisController::class);
 

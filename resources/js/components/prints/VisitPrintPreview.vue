@@ -7,21 +7,18 @@
     <div class="letterhead-space" :style="{ minHeight: resolvedSettings.letterhead_height }" />
 
     <div class="patient-header border-b border-black pb-1 mb-1">
-      <div class="header-row header-row-top">
-        <span class="header-field header-field-name"><strong>Name:</strong> {{ patient.patient_name }}</span>
-        <span class="header-field-group header-field-center">
-          <span class="header-field"><strong>Age:</strong> {{ patient.patient_age_display }}</span>
-          <span class="header-field"><strong>Gender:</strong> {{ patient.patient_gender_label }}</span>
-        </span>
-        <span class="header-field header-field-date-time"><strong>Date &amp; Time:</strong> {{ dateTimeLabel }}</span>
-      </div>
-      <div class="header-row header-row-bottom">
-        <span class="header-field header-field-relation"><strong>S/o, W/o, D/o:</strong> {{ patient.patient_father_name }}</span>
-        <span class="header-field-group header-field-center">
-          <span class="header-field header-field-cell"><strong>Cell:</strong> {{ patient.patient_cell }}</span>
-          <span class="header-field"><strong>Address:</strong> {{ patient.patient_address }}</span>
-        </span>
-        <span class="header-field header-field-mr"><strong>MR#:</strong> {{ patient.mr_number }}</span>
+      <div class="patient-info-grid">
+        <span class="header-field"><strong>Name:</strong> {{ patient.patient_name }}</span>
+        <span class="header-field"><strong>Age:</strong> {{ patient.patient_age_display }}</span>
+        <span class="header-field header-field-right"><strong>Date &amp; Time:</strong> {{ dateTimeLabel }}</span>
+
+        <span class="header-field"><strong>S/o, W/o, D/o:</strong> {{ patient.patient_father_name }}</span>
+        <span class="header-field"><strong>Gender:</strong> {{ patient.patient_gender_label }}</span>
+        <span class="header-field header-field-right"><strong>Cell:</strong> {{ patient.patient_cell }}</span>
+
+        <span class="header-field header-field-address"><strong>Address:</strong> {{ patient.patient_address }}</span>
+        <span class="header-field"><strong>MR#:</strong> {{ patient.mr_number }}</span>
+        <span class="header-field header-field-right"><strong>CNIC:</strong> {{ patient.patient_cnic }}</span>
       </div>
     </div>
 
@@ -268,33 +265,23 @@ onMounted(() => {
   margin-bottom: 4px;
 }
 
-.header-row {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 0 18px;
-  margin-bottom: 2px;
-}
-
-.header-row-top,
-.header-row-bottom {
+.patient-info-grid {
   display: grid;
-  grid-template-columns: 1fr auto 1fr;
-  align-items: baseline;
+  grid-template-columns: 1fr 1fr 1fr;
   column-gap: 18px;
+  row-gap: 2px;
   width: 100%;
+  align-items: baseline;
 }
 
-.header-field-name,
-.header-field-relation {
-  justify-self: start;
-}
-
-.header-field-date-time,
-.header-field-mr {
+.header-field-right {
   justify-self: end;
   text-align: right;
-  white-space: nowrap;
+}
+
+.header-field-address {
+  white-space: normal;
+  overflow-wrap: anywhere;
 }
 
 .header-vco-line {
@@ -313,24 +300,9 @@ onMounted(() => {
   flex-shrink: 0;
 }
 
-.header-field-center {
-  justify-self: center;
-  display: flex;
-  align-items: baseline;
-  gap: 0;
-  white-space: nowrap;
-}
-
-.header-row-top .header-field-center {
-  gap: 24px;
-}
-
-.header-field-cell {
-  padding-right: 12ch;
-}
-
 .header-field {
   white-space: nowrap;
+  min-width: 0;
 }
 
 .header-field-wide {

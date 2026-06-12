@@ -13,6 +13,7 @@ use App\Models\ClinicalScan;
 use App\Models\PatientVisit;
 use App\Models\Prescription;
 use App\Models\User;
+use App\Support\PatientContactMask;
 
 class VisitPrintDataService
 {
@@ -116,7 +117,9 @@ class VisitPrintDataService
 
         return [
             'prescription'     => $prescriptionData,
-            'patient'          => $patient ? (new PatientResource($patient))->resolve() : null,
+            'patient'          => $patient
+                ? PatientContactMask::apply((new PatientResource($patient))->resolve(), $user)
+                : null,
             'visit'            => $visit ? (new PatientVisitResource($visit))->resolve() : null,
             'doctor'           => $doctor ? [
                 'id'   => $doctor->id,

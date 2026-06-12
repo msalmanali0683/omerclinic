@@ -15,6 +15,7 @@ class ClinicalScanValue extends Model
         'clinical_scan_id',
         'clinical_scan_template_field_id',
         'field_label',
+        'group_label',
         'field_key',
         'field_type',
         'field_value',

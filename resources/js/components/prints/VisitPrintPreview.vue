@@ -69,22 +69,31 @@
                 class="scan-block clinical-scan-grid__values"
                 :class="{ 'scan-block--follow-up': scanIndex > 0 }"
               >
-                <div v-if="scan.normalValues?.length" class="scan-values-grid">
+                <div v-if="scan.normalGroupedValues?.length" class="scan-values-grid">
                   <div
-                    v-for="value in scan.normalValues"
-                    v-show="!isEmptyScanFieldValue(value)"
-                    :key="value.id || value.field_key"
+                    v-for="group in scan.normalGroupedValues"
+                    :key="group.id"
                     class="scan-value-item bidi-text"
-                    :class="{ 'scan-value-item--long': isLongScanValue(value) }"
+                    :class="{ 'scan-value-item--long': isLongScanGroupValue(group) }"
                   >
-                    <span class="scan-field-label">{{ formatScanFieldLabel(value) }}:</span>
-                    <span class="scan-field-value">{{ formatScanFieldValue(value) }}</span>
+                    <span class="scan-field-label">{{ formatScanGroupLabel(group) }}:</span>
+                    <span class="scan-field-value">{{ formatScanGroupValue(group) }}</span>
                   </div>
                 </div>
 
                 <div
+                  v-for="group in scan.impressionGroupedValues"
+                  v-show="formatScanGroupValue(group)"
+                  :key="`impression-group-${group.id}`"
+                  class="scan-impression scan-value-impression bidi-text"
+                >
+                  <span class="scan-field-label">{{ formatScanGroupLabel(group) }}:</span>
+                  <span class="scan-field-value">{{ formatScanGroupValue(group) }}</span>
+                </div>
+
+                <div
                   v-for="value in scan.impressionValues"
-                  v-show="!isEmptyScanFieldValue(value)"
+                  v-show="!scan.impressionGroupedValues?.length && !isEmptyScanFieldValue(value)"
                   :key="`impression-${value.id || value.field_key}`"
                   class="scan-impression scan-value-impression bidi-text"
                 >
@@ -168,7 +177,10 @@ import {
   filterPrintableClinicalScans,
   formatScanFieldLabel,
   formatScanFieldValue,
+  formatScanGroupLabel,
+  formatScanGroupValue,
   isEmptyScanFieldValue,
+  isLongScanGroupValue,
   isLongScanValue,
   withScanValueLayout,
 } from '@/utils/clinicalScanPrintLayout';

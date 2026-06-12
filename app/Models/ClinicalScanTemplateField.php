@@ -16,10 +16,12 @@ class ClinicalScanTemplateField extends Model
     protected $fillable = [
         'clinical_scan_template_id',
         'field_label',
+        'group_label',
         'field_key',
         'field_type',
         'options',
         'default_value',
+        'default_values',
         'placeholder',
         'is_required',
         'sort_order',
@@ -28,9 +30,29 @@ class ClinicalScanTemplateField extends Model
     ];
 
     protected $casts = [
-        'options'     => 'array',
-        'is_required' => 'boolean',
+        'options'         => 'array',
+        'default_values'  => 'array',
+        'is_required'     => 'boolean',
     ];
+
+    /**
+     * @return list<string>
+     */
+    public function resolvedDefaultValues(): array
+    {
+        if (is_array($this->default_values) && $this->default_values !== []) {
+            return array_values(array_filter(
+                array_map(static fn ($value) => trim((string) $value), $this->default_values),
+                static fn ($value) => $value !== ''
+            ));
+        }
+
+        if ($this->default_value !== null && trim($this->default_value) !== '') {
+            return [trim($this->default_value)];
+        }
+
+        return [];
+    }
 
     public function template(): BelongsTo
     {

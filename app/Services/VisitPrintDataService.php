@@ -188,6 +188,7 @@ class VisitPrintDataService
                 ->map(fn ($value) => [
                     'id'          => $value->id,
                     'field_label' => $value->field_label,
+                    'group_label' => $value->group_label,
                     'field_key'   => $value->field_key,
                     'field_value' => $value->field_value,
                     'sort_order'  => $value->sort_order,

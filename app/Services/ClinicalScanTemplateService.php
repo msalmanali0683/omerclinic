@@ -49,7 +49,11 @@ class ClinicalScanTemplateService
         $usedKeys = [];
 
         foreach ($rows as $index => $row) {
-            $fieldKey = $row['field_key'] ?? ClinicalScanFieldKeyGenerator::fromLabel($row['field_label'], 'field_'.$index);
+            $keySource = ! empty($row['group_label'])
+                ? trim($row['group_label'].' '.($row['field_label'] ?? ''))
+                : ($row['field_label'] ?? '');
+
+            $fieldKey = $row['field_key'] ?? ClinicalScanFieldKeyGenerator::fromLabel($keySource, 'field_'.$index);
             $baseKey = $fieldKey;
             $suffix = 1;
 
@@ -60,16 +64,20 @@ class ClinicalScanTemplateService
 
             $usedKeys[] = $fieldKey;
 
+            $defaults = $this->normalizeDefaultValues($row);
+
             $payload = [
-                'field_label'  => $row['field_label'],
-                'field_key'    => $fieldKey,
-                'field_type'   => $row['field_type'] ?? 'textarea',
-                'options'      => $row['options'] ?? null,
-                'default_value'=> $row['default_value'] ?? null,
-                'placeholder'  => $row['placeholder'] ?? null,
-                'is_required'  => (bool) ($row['is_required'] ?? false),
-                'sort_order'   => $row['sort_order'] ?? ($index + 1),
-                'updated_by'   => $user->id,
+                'field_label'   => $row['field_label'],
+                'group_label'   => $row['group_label'] ?? null,
+                'field_key'     => $fieldKey,
+                'field_type'    => $row['field_type'] ?? 'textarea',
+                'options'       => $row['options'] ?? null,
+                'default_value' => $defaults['default_value'],
+                'default_values'=> $defaults['default_values'],
+                'placeholder'   => $row['placeholder'] ?? null,
+                'is_required'   => (bool) ($row['is_required'] ?? false),
+                'sort_order'    => $row['sort_order'] ?? ($index + 1),
+                'updated_by'    => $user->id,
             ];
 
             if (! empty($row['id'])) {
@@ -96,5 +104,44 @@ class ClinicalScanTemplateService
             ->where('clinical_scan_template_id', $template->id)
             ->whereNotIn('id', $keptIds)
             ->each(fn (ClinicalScanTemplateField $field) => $field->delete());
+    }
+
+    /**
+     * @param  array<string, mixed>  $row
+     * @return array{default_value: ?string, default_values: ?array<int, string>}
+     */
+    protected function normalizeDefaultValues(array $row): array
+    {
+        $values = [];
+
+        if (! empty($row['default_values']) && is_array($row['default_values'])) {
+            foreach ($row['default_values'] as $value) {
+                $trimmed = trim((string) $value);
+
+                if ($trimmed !== '') {
+                    $values[] = $trimmed;
+                }
+            }
+        }
+
+        if ($values === [] && ! empty($row['default_value'])) {
+            $trimmed = trim((string) $row['default_value']);
+
+            if ($trimmed !== '') {
+                $values[] = $trimmed;
+            }
+        }
+
+        if ($values === []) {
+            return [
+                'default_value'  => null,
+                'default_values' => null,
+            ];
+        }
+
+        return [
+            'default_value'  => $values[0],
+            'default_values' => $values,
+        ];
     }
 }

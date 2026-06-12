@@ -12,10 +12,12 @@ class ClinicalScanTemplateFieldResource extends JsonResource
         return [
             'id'             => $this->id,
             'field_label'    => $this->field_label,
+            'group_label'    => $this->group_label,
             'field_key'      => $this->field_key,
             'field_type'     => $this->field_type,
             'options'        => $this->options,
             'default_value'  => $this->default_value,
+            'default_values' => $this->resolvedDefaultValues(),
             'placeholder'    => $this->placeholder,
             'is_required'    => $this->is_required,
             'sort_order'     => $this->sort_order,

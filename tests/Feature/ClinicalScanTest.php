@@ -47,6 +47,105 @@ class ClinicalScanTest extends TestCase
         ]);
     }
 
+    public function test_template_field_can_store_multiple_default_values(): void
+    {
+        $admin = $this->makeUser('hospital-admin');
+
+        $response = $this->actingAs($admin)->postJson('/api/clinical-scan-templates', [
+            'template_name' => 'Liver Scan',
+            'is_active'     => true,
+            'fields'        => [
+                [
+                    'field_label'    => 'Liver',
+                    'field_type'     => 'textarea',
+                    'sort_order'     => 1,
+                    'default_values' => [
+                        'Normal size and echotexture',
+                        'Mildly enlarged',
+                        'Fatty infiltration',
+                    ],
+                ],
+            ],
+        ]);
+
+        $response->assertCreated()
+            ->assertJsonPath('data.fields.0.default_value', 'Normal size and echotexture')
+            ->assertJsonCount(3, 'data.fields.0.default_values');
+
+        $this->assertDatabaseHas('clinical_scan_template_fields', [
+            'field_label'   => 'Liver',
+            'default_value' => 'Normal size and echotexture',
+        ]);
+
+        $field = ClinicalScanTemplateField::query()->where('field_label', 'Liver')->firstOrFail();
+        $this->assertSame(
+            ['Normal size and echotexture', 'Mildly enlarged', 'Fatty infiltration'],
+            $field->default_values
+        );
+    }
+
+    public function test_legacy_single_default_value_is_exposed_as_default_values_array(): void
+    {
+        $admin = $this->makeUser('hospital-admin');
+
+        $response = $this->actingAs($admin)->postJson('/api/clinical-scan-templates', [
+            'template_name' => 'Legacy Scan',
+            'is_active'     => true,
+            'fields'        => [
+                [
+                    'field_label'   => 'Kidney',
+                    'field_type'    => 'textarea',
+                    'sort_order'    => 1,
+                    'default_value' => 'Both kidneys normal',
+                ],
+            ],
+        ]);
+
+        $response->assertCreated()
+            ->assertJsonPath('data.fields.0.default_value', 'Both kidneys normal')
+            ->assertJsonPath('data.fields.0.default_values.0', 'Both kidneys normal');
+    }
+
+    public function test_template_can_store_multiple_value_fields_under_one_label(): void
+    {
+        $admin = $this->makeUser('hospital-admin');
+
+        $response = $this->actingAs($admin)->postJson('/api/clinical-scan-templates', [
+            'template_name' => 'Kidney Scan',
+            'is_active'     => true,
+            'fields'        => [
+                [
+                    'field_label'    => 'Right',
+                    'group_label'    => 'Kidney',
+                    'field_type'     => 'textarea',
+                    'sort_order'     => 1,
+                    'default_values' => ['Normal size', 'Mildly enlarged'],
+                ],
+                [
+                    'field_label'    => 'Left',
+                    'group_label'    => 'Kidney',
+                    'field_type'     => 'textarea',
+                    'sort_order'     => 2,
+                    'default_values' => ['Normal size', 'Small'],
+                ],
+            ],
+        ]);
+
+        $response->assertCreated()
+            ->assertJsonPath('data.fields.0.group_label', 'Kidney')
+            ->assertJsonPath('data.fields.1.group_label', 'Kidney');
+
+        $this->assertDatabaseHas('clinical_scan_template_fields', [
+            'field_label' => 'Right',
+            'group_label' => 'Kidney',
+        ]);
+
+        $this->assertDatabaseHas('clinical_scan_template_fields', [
+            'field_label' => 'Left',
+            'group_label' => 'Kidney',
+        ]);
+    }
+
     public function test_unauthorized_user_cannot_create_scan_template(): void
     {
         $receptionist = $this->makeUser('receptionist');

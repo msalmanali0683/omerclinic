@@ -82,6 +82,7 @@ class ClinicalScanService
             $payload = [
                 'clinical_scan_template_field_id' => $templateField->id,
                 'field_label'                     => $templateField->field_label,
+                'group_label'                     => $templateField->group_label,
                 'field_key'                       => $templateField->field_key,
                 'field_type'                      => $templateField->field_type,
                 'field_value'                     => $row['field_value'] ?? null,

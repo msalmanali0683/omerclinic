@@ -61,9 +61,27 @@
       <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5 shadow-sm space-y-4 mb-6">
         <h3 class="font-semibold text-lg">Findings</h3>
         <dl class="space-y-3">
-          <div v-for="value in sortedValues" :key="value.id || value.field_key" class="border-b border-gray-100 dark:border-gray-700 pb-3 last:border-0">
-            <dt class="text-sm font-medium text-gray-900 dark:text-white">{{ value.field_label }}</dt>
-            <dd class="text-sm text-gray-600 dark:text-gray-400 mt-1 whitespace-pre-wrap">{{ value.field_value || '—' }}</dd>
+          <div
+            v-for="group in groupedFindings"
+            :key="group.group_label || group.fields[0]?.id || group.label"
+            class="border-b border-gray-100 dark:border-gray-700 pb-3 last:border-0"
+          >
+            <dt class="text-sm font-medium text-gray-900 dark:text-white">{{ group.label }}</dt>
+            <dd class="text-sm text-gray-600 dark:text-gray-400 mt-1 whitespace-pre-wrap">
+              <template v-if="group.is_multi_value">
+                <div
+                  v-for="field in group.fields"
+                  :key="field.id || field.field_key"
+                  class="mt-1"
+                >
+                  <span v-if="slotLabel(field)" class="font-medium">{{ slotLabel(field) }}: </span>
+                  {{ field.field_value || '—' }}
+                </div>
+              </template>
+              <template v-else>
+                {{ group.fields[0]?.field_value || '—' }}
+              </template>
+            </dd>
           </div>
         </dl>
       </div>
@@ -96,6 +114,7 @@ import { useAuthStore } from '@/stores/auth';
 import { useToastStore } from '@/stores/toast';
 import { clinicalScanService } from '@/services/clinicalScanService';
 import { displayPatientAge, formatDate, formatGender } from '@/utils/formatters';
+import { groupScanFieldsForEntry } from '@/utils/clinicalScans';
 import BaseButton from '@/components/ui/BaseButton.vue';
 import PrescriptionPrintSettingsModal from '@/components/prescription/PrescriptionPrintSettingsModal.vue';
 
@@ -111,9 +130,19 @@ const canPrint = ref(false);
 const showPrintModal = ref(false);
 const printLoading = ref(false);
 
-const sortedValues = computed(() =>
-  [...(scan.value?.values ?? [])].sort((a, b) => (a.sort_order || 0) - (b.sort_order || 0))
-);
+const groupedFindings = computed(() => groupScanFieldsForEntry(scan.value?.values ?? []));
+
+function slotLabel(field) {
+  if (!field?.group_label) return '';
+
+  const label = String(field.field_label ?? '').trim();
+
+  if (!label || label.toLowerCase() === String(field.group_label).toLowerCase()) {
+    return '';
+  }
+
+  return label;
+}
 
 function statusClass(status) {
   if (status === 'completed') return 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300';

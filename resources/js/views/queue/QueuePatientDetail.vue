@@ -158,7 +158,7 @@
           </div>
         </div>
 
-        <form class="space-y-5 p-5 sm:p-6" @submit.prevent="savePrescription">
+        <form class="space-y-5 p-5 sm:p-6" novalidate @submit.prevent="savePrescription">
           <PrescriptionMedicineRows
             v-if="authStore.can('select medicines in prescription')"
             v-model="prescriptionMedicineRows"
@@ -232,7 +232,7 @@ import VitalsHistory from '@/components/vitals/VitalsHistory.vue';
 import ClinicalScanHistory from '@/components/clinical-scans/ClinicalScanHistory.vue';
 import LaboratoryHistory from '@/components/laboratory/LaboratoryHistory.vue';
 import PrescriptionMedicineRows from '@/components/prescription/PrescriptionMedicineRows.vue';
-import { createDefaultPrescriptionMedicineRows, mapPrescriptionMedicineToRow, persistNewMedicineRows, serializePrescriptionMedicineRows, stripEmptyPrescriptionMedicineRows, appendDiagnosisTemplateMedicines } from '@/utils/prescriptionMedicines';
+import { createDefaultPrescriptionMedicineRows, mapPrescriptionMedicineToRow, persistNewMedicineRows, preparePrescriptionMedicineRowsForSave, serializePrescriptionMedicineRows, stripEmptyPrescriptionMedicineRows, appendDiagnosisTemplateMedicines } from '@/utils/prescriptionMedicines';
 import { diagnosisMedicineTemplateService } from '@/services/diagnosisMedicineTemplateService';
 import { medicineDoseTimeService } from '@/services/medicineDoseTimeService';
 import { medicineDoseFromMealService } from '@/services/medicineDoseFromMealService';
@@ -422,7 +422,7 @@ async function handleSaveSuccess(data, redirect = true) {
   if (data.data?.id || data.prescription?.id) {
     applyPrescriptionToForm(data.data ?? data.prescription);
   } else {
-    prescriptionMedicineRows.value = stripEmptyPrescriptionMedicineRows(prescriptionMedicineRows.value);
+    prescriptionMedicineRows.value = preparePrescriptionMedicineRowsForSave(prescriptionMedicineRows.value);
   }
 
   if (printData.value?.visit) {
@@ -737,15 +737,19 @@ async function cancelVisit() {
 async function savePrescription() {
   Object.keys(rxErrors).forEach((key) => delete rxErrors[key]);
 
+  prescriptionMedicineRows.value = stripEmptyPrescriptionMedicineRows(prescriptionMedicineRows.value);
+
   try {
     prescriptionMedicineRows.value = await persistNewMedicineRows(prescriptionMedicineRows.value);
   } catch {
     toastStore.error('Failed to save new medicine to master list.');
+    prescriptionMedicineRows.value = preparePrescriptionMedicineRowsForSave(prescriptionMedicineRows.value);
     return;
   }
 
   const medicines = serializePrescriptionMedicineRows(prescriptionMedicineRows.value);
   if (!medicines.length) {
+    prescriptionMedicineRows.value = createDefaultPrescriptionMedicineRows();
     rxErrors.medicines = 'Add at least one medicine with a name.';
     toastStore.error(rxErrors.medicines);
     return;

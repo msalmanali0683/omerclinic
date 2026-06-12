@@ -4,10 +4,17 @@ import { medicineService } from '@/services/medicineService';
 export const DEFAULT_PRESCRIPTION_MEDICINE_ROW_COUNT = 4;
 
 export function isPrescriptionMedicineRowEmpty(row) {
-  return !row?.mdcn_name?.trim()
-    && !row?.mdcn_type?.trim()
-    && !row?.mdcn_size?.trim()
-    && !row?.medicine_id;
+  if (row?.medicine_id) {
+    return false;
+  }
+
+  return !row?.mdcn_name?.trim();
+}
+
+export function preparePrescriptionMedicineRowsForSave(rows) {
+  const filledRows = stripEmptyPrescriptionMedicineRows(rows);
+
+  return filledRows.length ? filledRows : createDefaultPrescriptionMedicineRows();
 }
 
 export function createDefaultPrescriptionMedicineRows(count = DEFAULT_PRESCRIPTION_MEDICINE_ROW_COUNT) {

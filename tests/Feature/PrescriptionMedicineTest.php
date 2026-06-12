@@ -292,6 +292,27 @@ class PrescriptionMedicineTest extends TestCase
         ]))->assertUnprocessable();
     }
 
+    public function test_prescription_saves_only_filled_medicine_rows(): void
+    {
+        $doctor = $this->makeUser('doctor');
+        $visit = $this->createVisit($doctor, PatientVisit::STATUS_IN_CONSULTATION);
+        $medicine = Medicine::where('mdcn_name', 'Panadol')->first();
+
+        $response = $this->actingAs($doctor)->postJson('/api/prescriptions', $this->prescriptionPayload($visit, [
+            'medicines' => [[
+                'medicine_id' => $medicine->id,
+                'mdcn_type'   => $medicine->mdcn_type,
+                'mdcn_name'   => $medicine->mdcn_name,
+                'mdcn_size'   => $medicine->mdcn_size,
+            ]],
+        ]));
+
+        $response->assertCreated()
+            ->assertJsonCount(1, 'data.medicines');
+
+        $this->assertDatabaseCount('prescription_medicines', 1);
+    }
+
     public function test_doctor_cannot_prescribe_unassigned_patient(): void
     {
         $doctor = $this->makeUser('doctor');

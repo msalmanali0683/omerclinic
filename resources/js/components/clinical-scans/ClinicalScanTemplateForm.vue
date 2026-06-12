@@ -37,6 +37,7 @@
           <h3 class="font-semibold text-gray-900 dark:text-white">Template Fields</h3>
           <p class="text-sm text-gray-500 dark:text-gray-400">
             Add one label with multiple value fields when a scan finding needs more than one entry (for example Kidney Right / Left).
+            Use the arrows to set label order and sub-field order on save and print.
           </p>
         </div>
         <div class="flex flex-wrap gap-2">
@@ -53,6 +54,28 @@
         class="rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden"
       >
         <div class="flex flex-col sm:flex-row sm:items-center gap-3 bg-gray-50 dark:bg-gray-900/50 px-4 py-3 border-b border-gray-200 dark:border-gray-700">
+          <div class="flex items-center gap-1 shrink-0">
+            <BaseButton
+              type="button"
+              variant="ghost"
+              size="sm"
+              :disabled="groupIndex === 0"
+              title="Move label up"
+              @click="moveGroup(groupIndex, -1)"
+            >
+              ↑
+            </BaseButton>
+            <BaseButton
+              type="button"
+              variant="ghost"
+              size="sm"
+              :disabled="groupIndex === fieldGroups.length - 1"
+              title="Move label down"
+              @click="moveGroup(groupIndex, 1)"
+            >
+              ↓
+            </BaseButton>
+          </div>
           <div class="flex-1 min-w-[180px]">
             <label class="block text-xs font-semibold uppercase tracking-wide text-gray-500 mb-1">Label</label>
             <input
@@ -88,6 +111,7 @@
                 <th class="px-3 py-2 text-left font-semibold text-gray-500">Placeholder</th>
                 <th class="px-3 py-2 text-left font-semibold text-gray-500">Default Values</th>
                 <th class="px-3 py-2 text-left font-semibold text-gray-500">Req.</th>
+                <th v-if="group.is_multi_value && group.slots.length > 1" class="px-3 py-2 text-left font-semibold text-gray-500">Order</th>
                 <th class="px-3 py-2 text-left font-semibold text-gray-500">Actions</th>
               </tr>
             </thead>
@@ -138,6 +162,30 @@
                 </td>
                 <td class="px-3 py-2 align-top">
                   <input v-model="slot.is_required" type="checkbox" class="rounded border-gray-300 text-teal-600 focus:ring-teal-500" />
+                </td>
+                <td v-if="group.is_multi_value && group.slots.length > 1" class="px-3 py-2 align-top whitespace-nowrap">
+                  <div class="flex gap-1">
+                    <BaseButton
+                      type="button"
+                      variant="ghost"
+                      size="sm"
+                      :disabled="slotIndex === 0"
+                      title="Move sub-field up"
+                      @click="moveValueSlot(groupIndex, slotIndex, -1)"
+                    >
+                      ↑
+                    </BaseButton>
+                    <BaseButton
+                      type="button"
+                      variant="ghost"
+                      size="sm"
+                      :disabled="slotIndex === group.slots.length - 1"
+                      title="Move sub-field down"
+                      @click="moveValueSlot(groupIndex, slotIndex, 1)"
+                    >
+                      ↓
+                    </BaseButton>
+                  </div>
                 </td>
                 <td class="px-3 py-2 align-top">
                   <BaseButton
@@ -250,6 +298,27 @@ function removeValueSlot(groupIndex, slotIndex) {
 function removeGroup(groupIndex) {
   if (fieldGroups.value.length <= 1) return;
   fieldGroups.value.splice(groupIndex, 1);
+}
+
+function moveGroup(groupIndex, direction) {
+  const target = groupIndex + direction;
+  if (target < 0 || target >= fieldGroups.value.length) return;
+
+  const groups = [...fieldGroups.value];
+  [groups[groupIndex], groups[target]] = [groups[target], groups[groupIndex]];
+  fieldGroups.value = groups;
+}
+
+function moveValueSlot(groupIndex, slotIndex, direction) {
+  const group = fieldGroups.value[groupIndex];
+  if (!group?.is_multi_value || group.slots.length <= 1) return;
+
+  const target = slotIndex + direction;
+  if (target < 0 || target >= group.slots.length) return;
+
+  const slots = [...group.slots];
+  [slots[slotIndex], slots[target]] = [slots[target], slots[slotIndex]];
+  group.slots = slots;
 }
 
 function handleSubmit() {

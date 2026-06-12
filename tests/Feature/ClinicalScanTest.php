@@ -146,6 +146,112 @@ class ClinicalScanTest extends TestCase
         ]);
     }
 
+    public function test_template_field_sort_order_is_persisted_when_reordered(): void
+    {
+        $admin = $this->makeUser('hospital-admin');
+
+        $createResponse = $this->actingAs($admin)->postJson('/api/clinical-scan-templates', [
+            'template_name' => 'Reorder Scan',
+            'is_active'     => true,
+            'fields'        => [
+                ['field_label' => 'Liver', 'field_type' => 'textarea', 'sort_order' => 1],
+                ['field_label' => 'Spleen', 'field_type' => 'textarea', 'sort_order' => 2],
+                ['field_label' => 'Impression', 'field_type' => 'textarea', 'sort_order' => 3],
+            ],
+        ]);
+
+        $createResponse->assertCreated();
+        $templateId = $createResponse->json('data.id');
+        $fields = ClinicalScanTemplateField::query()
+            ->where('clinical_scan_template_id', $templateId)
+            ->orderBy('sort_order')
+            ->get();
+
+        $reordered = [
+            ['id' => $fields[2]->id, 'field_label' => 'Impression', 'field_type' => 'textarea', 'sort_order' => 1],
+            ['id' => $fields[0]->id, 'field_label' => 'Liver', 'field_type' => 'textarea', 'sort_order' => 2],
+            ['id' => $fields[1]->id, 'field_label' => 'Spleen', 'field_type' => 'textarea', 'sort_order' => 3],
+        ];
+
+        $this->actingAs($admin)->patchJson("/api/clinical-scan-templates/{$templateId}", [
+            'template_name' => 'Reorder Scan',
+            'is_active'     => true,
+            'fields'        => $reordered,
+        ])->assertOk();
+
+        $this->assertDatabaseHas('clinical_scan_template_fields', [
+            'id'         => $fields[2]->id,
+            'sort_order' => 1,
+        ]);
+        $this->assertDatabaseHas('clinical_scan_template_fields', [
+            'id'         => $fields[0]->id,
+            'sort_order' => 2,
+        ]);
+        $this->assertDatabaseHas('clinical_scan_template_fields', [
+            'id'         => $fields[1]->id,
+            'sort_order' => 3,
+        ]);
+    }
+
+    public function test_template_sub_field_sort_order_is_persisted_when_reordered(): void
+    {
+        $admin = $this->makeUser('hospital-admin');
+
+        $createResponse = $this->actingAs($admin)->postJson('/api/clinical-scan-templates', [
+            'template_name' => 'Kidney Reorder Scan',
+            'is_active'     => true,
+            'fields'        => [
+                [
+                    'field_label' => 'Right',
+                    'group_label' => 'Kidney',
+                    'field_type'  => 'textarea',
+                    'sort_order'  => 1,
+                ],
+                [
+                    'field_label' => 'Left',
+                    'group_label' => 'Kidney',
+                    'field_type'  => 'textarea',
+                    'sort_order'  => 2,
+                ],
+            ],
+        ]);
+
+        $createResponse->assertCreated();
+        $templateId = $createResponse->json('data.id');
+        $right = ClinicalScanTemplateField::query()->where('field_label', 'Right')->firstOrFail();
+        $left = ClinicalScanTemplateField::query()->where('field_label', 'Left')->firstOrFail();
+
+        $this->actingAs($admin)->patchJson("/api/clinical-scan-templates/{$templateId}", [
+            'template_name' => 'Kidney Reorder Scan',
+            'is_active'     => true,
+            'fields'        => [
+                [
+                    'id'          => $left->id,
+                    'field_label' => 'Left',
+                    'group_label' => 'Kidney',
+                    'field_type'  => 'textarea',
+                    'sort_order'  => 1,
+                ],
+                [
+                    'id'          => $right->id,
+                    'field_label' => 'Right',
+                    'group_label' => 'Kidney',
+                    'field_type'  => 'textarea',
+                    'sort_order'  => 2,
+                ],
+            ],
+        ])->assertOk();
+
+        $this->assertDatabaseHas('clinical_scan_template_fields', [
+            'id'         => $left->id,
+            'sort_order' => 1,
+        ]);
+        $this->assertDatabaseHas('clinical_scan_template_fields', [
+            'id'         => $right->id,
+            'sort_order' => 2,
+        ]);
+    }
+
     public function test_unauthorized_user_cannot_create_scan_template(): void
     {
         $receptionist = $this->makeUser('receptionist');

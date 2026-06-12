@@ -72,6 +72,7 @@
               :class="fieldClasses.emerald"
               placeholder="Search medicine..."
               autocomplete="off"
+              @keydown.enter.prevent
               @input="onMedicineSearch(row)"
               @focus="openDropdown(row)"
               @blur="closeDropdown(row)"
@@ -97,7 +98,7 @@
               <AppIcon name="template" class-name="w-3.5 h-3.5" />
               Type
             </label>
-            <input v-model="row.mdcn_type" type="text" :class="fieldClasses.sky" placeholder="Type" />
+            <input v-model="row.mdcn_type" type="text" :class="fieldClasses.sky" placeholder="Type" @keydown.enter.prevent />
             <p v-if="fieldError(index, 'mdcn_type')" class="mt-1 text-xs text-red-600">{{ fieldError(index, 'mdcn_type') }}</p>
           </div>
 
@@ -106,13 +107,20 @@
               <AppIcon name="pill" class-name="w-3.5 h-3.5" />
               Name
             </label>
-            <input v-model="row.mdcn_name" type="text" :class="fieldClasses.violet" placeholder="Medicine name" required />
+            <input
+              v-model="row.mdcn_name"
+              type="text"
+              :class="fieldClasses.violet"
+              placeholder="Medicine name"
+              autocomplete="off"
+              @keydown.enter.prevent
+            />
             <p v-if="fieldError(index, 'mdcn_name')" class="mt-1 text-xs text-red-600">{{ fieldError(index, 'mdcn_name') }}</p>
           </div>
 
           <div class="lg:col-span-1">
             <label class="mb-1 text-xs font-medium text-fuchsia-700 dark:text-fuchsia-300 lg:sr-only">Size</label>
-            <input v-model="row.mdcn_size" type="text" :class="fieldClasses.fuchsia" placeholder="Size" />
+            <input v-model="row.mdcn_size" type="text" :class="fieldClasses.fuchsia" placeholder="Size" @keydown.enter.prevent />
           </div>
 
           <div class="lg:col-span-2">

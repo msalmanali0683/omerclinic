@@ -128,8 +128,6 @@
       </div>
     </div>
 
-    <LaboratoryResultPrintModal v-model="showPrintModal" :print-data="printData" />
-    <LaboratoryBillPrintModal v-model="showBillPrintModal" :print-data="billPrintData" />
   </div>
 </template>
 
@@ -140,9 +138,8 @@ import { useAuthStore } from '@/stores/auth';
 import { useToastStore } from '@/stores/toast';
 import { laboratoryResultService } from '@/services/laboratoryResultService';
 import { laboratoryBillService } from '@/services/laboratoryBillService';
+import { directPrintLaboratoryBill, directPrintLaboratoryReport } from '@/utils/directPrint';
 import { formatCurrency } from '@/utils/formatters';
-import LaboratoryResultPrintModal from '@/components/laboratory/LaboratoryResultPrintModal.vue';
-import LaboratoryBillPrintModal from '@/components/laboratory/LaboratoryBillPrintModal.vue';
 import BaseButton from '@/components/ui/BaseButton.vue';
 import BaseInput from '@/components/ui/BaseInput.vue';
 import { useAutoSearch } from '@/composables/useAutoSearch';
@@ -163,11 +160,7 @@ const loadingVisits = ref(false);
 const testsContext = ref(null);
 const selectedVisitId = ref(null);
 const loadingTests = ref(false);
-const showPrintModal = ref(false);
-const printData = ref(null);
 const printingId = ref(null);
-const showBillPrintModal = ref(false);
-const billPrintData = ref(null);
 const reprintingBillId = ref(null);
 
 const canPrintReports = computed(() => authStore.can('print laboratory results'));
@@ -284,8 +277,7 @@ async function printResult(row) {
   printingId.value = row.id;
   try {
     const { data } = await laboratoryResultService.getPrintData(row.id);
-    printData.value = data.print_data;
-    showPrintModal.value = true;
+    await directPrintLaboratoryReport(data.print_data);
   } catch (e) {
     toastStore.error(e.response?.data?.message ?? 'Print failed.');
   } finally {
@@ -299,14 +291,14 @@ async function printAllReports() {
   printingId.value = 'all';
   try {
     const { data } = await laboratoryResultService.getVisitPrintData(selectedVisitId.value);
-    printData.value = data.print_data ?? null;
+    const printPayload = data.print_data ?? null;
 
-    if (!printData.value?.laboratory_results?.length) {
+    if (!printPayload?.laboratory_results?.length) {
       toastStore.error('No completed laboratory reports to print for this visit.');
       return;
     }
 
-    showPrintModal.value = true;
+    await directPrintLaboratoryReport(printPayload);
   } catch (e) {
     toastStore.error(e.response?.data?.message ?? 'Print failed.');
   } finally {
@@ -318,8 +310,7 @@ async function reprintBill(billId) {
   reprintingBillId.value = billId;
   try {
     const { data } = await laboratoryBillService.getPrintData(billId);
-    billPrintData.value = data.print_data;
-    showBillPrintModal.value = true;
+    await directPrintLaboratoryBill(data.print_data);
   } catch (e) {
     toastStore.error(e.response?.data?.message ?? 'Unable to load bill for printing.');
   } finally {

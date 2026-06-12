@@ -14,6 +14,8 @@ use Illuminate\Support\Facades\DB;
 
 class PrescriptionService
 {
+    public function __construct(protected MedicineService $medicineService) {}
+
     public function create(array $data, User $user): Prescription
     {
         return DB::transaction(function () use ($data, $user) {
@@ -113,7 +115,7 @@ class PrescriptionService
         $keptIds = [];
 
         foreach ($rows as $row) {
-            $snapshot = $this->resolveSnapshot($row);
+            $snapshot = $this->resolveSnapshot($row, $user);
 
             if (! empty($row['id'])) {
                 $item = PrescriptionMedicine::query()
@@ -149,7 +151,7 @@ class PrescriptionService
         }
     }
 
-    protected function resolveSnapshot(array $row): array
+    protected function resolveSnapshot(array $row, User $user): array
     {
         $doseTimeText = null;
         $doseFromMealText = null;
@@ -162,8 +164,21 @@ class PrescriptionService
             $doseFromMealText = MedicineDoseFromMeal::find($row['mdcn_dose_from_meal_id'])?->dose_from_meal;
         }
 
+        $medicineId = $row['medicine_id'] ?? null;
+
+        if (empty($medicineId) && ! empty($row['mdcn_name']) && ! empty($row['mdcn_type'])) {
+            $medicine = $this->medicineService->findOrCreate([
+                'mdcn_type'              => $row['mdcn_type'],
+                'mdcn_name'              => $row['mdcn_name'],
+                'mdcn_size'              => $row['mdcn_size'] ?? null,
+                'mdcn_time_id'           => $row['mdcn_time_id'] ?? null,
+                'mdcn_dose_from_meal_id' => $row['mdcn_dose_from_meal_id'] ?? null,
+            ], $user);
+            $medicineId = $medicine->id;
+        }
+
         return [
-            'medicine_id'            => $row['medicine_id'] ?? null,
+            'medicine_id'            => $medicineId,
             'mdcn_type'              => $row['mdcn_type'] ?? null,
             'mdcn_name'              => $row['mdcn_name'],
             'mdcn_size'              => $row['mdcn_size'] ?? null,

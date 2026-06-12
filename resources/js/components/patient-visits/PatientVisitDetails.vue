@@ -137,21 +137,6 @@
     </div>
 
     <div v-else class="text-sm text-gray-500 py-8 text-center">Select a visit to view details.</div>
-
-    <PrescriptionPrintSettingsModal
-      v-model="showPrintModal"
-      :print-data="printData"
-      title="Prescription Print Preview"
-      :redirect-after-close="false"
-    />
-
-    <PrescriptionPrintSettingsModal
-      v-model="showScanPrintModal"
-      :print-data="scanPrintData"
-      title="Clinical Scan Print Preview"
-      :show-empty-clinical-scans-as-na="false"
-      :redirect-after-close="false"
-    />
   </div>
 </template>
 
@@ -162,7 +147,7 @@ import { useAuthStore } from '@/stores/auth';
 import { useToastStore } from '@/stores/toast';
 import { prescriptionService } from '@/services/prescriptionService';
 import { clinicalScanService } from '@/services/clinicalScanService';
-import PrescriptionPrintSettingsModal from '@/components/prescription/PrescriptionPrintSettingsModal.vue';
+import { directPrintClinicalScan, directPrintPrescription } from '@/utils/directPrint';
 import BaseButton from '@/components/ui/BaseButton.vue';
 import { displayPatientAge, formatGender } from '@/utils/formatters';
 
@@ -175,11 +160,7 @@ const props = defineProps({
 const authStore = useAuthStore();
 const router = useRouter();
 const toastStore = useToastStore();
-const showPrintModal = ref(false);
-const printData = ref(null);
 const reprintLoading = ref(false);
-const showScanPrintModal = ref(false);
-const scanPrintData = ref(null);
 const scanPrintLoading = ref(null);
 
 const canShowVitals = computed(() => authStore.can('view patient vitals'));
@@ -239,8 +220,7 @@ async function openReprint() {
   reprintLoading.value = true;
   try {
     const { data } = await prescriptionService.getPrintData(prescriptionId);
-    printData.value = data.print_data;
-    showPrintModal.value = true;
+    await directPrintPrescription(data.print_data);
   } catch (e) {
     toastStore.error(e.response?.data?.message ?? 'Unable to load prescription for printing.');
   } finally {
@@ -260,8 +240,7 @@ async function printScan(scanId) {
   scanPrintLoading.value = scanId;
   try {
     const { data } = await clinicalScanService.getPrintData(scanId);
-    scanPrintData.value = data.print_data;
-    showScanPrintModal.value = true;
+    await directPrintClinicalScan(data.print_data);
   } catch (e) {
     toastStore.error(e.response?.data?.message ?? 'Unable to load scan for printing.');
   } finally {

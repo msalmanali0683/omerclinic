@@ -212,23 +212,6 @@
         <BaseButton :loading="assigning" @click="assignDoctor">Assign</BaseButton>
       </template>
     </BaseModal>
-    <PrescriptionPrintSettingsModal
-      v-model="showPrintModal"
-      :print-data="printData"
-      :redirect-after-close="redirectAfterPrint"
-      :redirect-to="printRedirectTo"
-    />
-    <PrescriptionPrintSettingsModal
-      v-model="showScanPrintModal"
-      :print-data="scanPrintData"
-      title="Clinical Scan Print Preview"
-      :show-empty-clinical-scans-as-na="false"
-      :redirect-after-close="false"
-    />
-    <LaboratoryResultPrintModal
-      v-model="showLaboratoryPrintModal"
-      :print-data="laboratoryPrintData"
-    />
   </div>
 </template>
 
@@ -249,7 +232,7 @@ import VitalsHistory from '@/components/vitals/VitalsHistory.vue';
 import ClinicalScanHistory from '@/components/clinical-scans/ClinicalScanHistory.vue';
 import LaboratoryHistory from '@/components/laboratory/LaboratoryHistory.vue';
 import PrescriptionMedicineRows from '@/components/prescription/PrescriptionMedicineRows.vue';
-import { createPrescriptionMedicineRow, mapPrescriptionMedicineToRow, serializePrescriptionMedicineRows, appendDiagnosisTemplateMedicines } from '@/utils/prescriptionMedicines';
+import { createDefaultPrescriptionMedicineRows, mapPrescriptionMedicineToRow, persistNewMedicineRows, serializePrescriptionMedicineRows, stripEmptyPrescriptionMedicineRows, appendDiagnosisTemplateMedicines } from '@/utils/prescriptionMedicines';
 import { diagnosisMedicineTemplateService } from '@/services/diagnosisMedicineTemplateService';
 import { medicineDoseTimeService } from '@/services/medicineDoseTimeService';
 import { medicineDoseFromMealService } from '@/services/medicineDoseFromMealService';
@@ -258,8 +241,7 @@ import ComplaintSelector from '@/components/complaints/ComplaintSelector.vue';
 import VisitComplaintsTable from '@/components/complaints/VisitComplaintsTable.vue';
 import DiagnosisSelector from '@/components/diagnosis/DiagnosisSelector.vue';
 import VisitDiagnosisTable from '@/components/diagnosis/VisitDiagnosisTable.vue';
-import LaboratoryResultPrintModal from '@/components/laboratory/LaboratoryResultPrintModal.vue';
-import PrescriptionPrintSettingsModal from '@/components/prescription/PrescriptionPrintSettingsModal.vue';
+import { directPrintClinicalScan, directPrintLaboratoryReport, directPrintPrescription } from '@/utils/directPrint';
 import { NEXT_VISIT_DAY_OPTIONS } from '@/utils/prescriptionPrintSettings';
 import { displayPatientAge, formatGender } from '@/utils/formatters';
 import AppIcon from '@/components/ui/AppIcon.vue';
@@ -287,20 +269,15 @@ const assignDoctorId = ref('');
 const assigning = ref(false);
 const doctorOptions = ref([]);
 const existingPrescription = ref(null);
-const prescriptionMedicineRows = ref([createPrescriptionMedicineRow()]);
+const prescriptionMedicineRows = ref(createDefaultPrescriptionMedicineRows());
 const doseTimeOptions = ref([]);
 const doseFromMealOptions = ref([]);
 const rx = reactive({ next_visit_days: '' });
 const nextVisitDayOptions = NEXT_VISIT_DAY_OPTIONS;
 const rxErrors = reactive({});
 const rxSaving = ref(false);
-const showPrintModal = ref(false);
-const showScanPrintModal = ref(false);
 const printData = ref(null);
-const scanPrintData = ref(null);
 const scanPrintLoading = ref(false);
-const showLaboratoryPrintModal = ref(false);
-const laboratoryPrintData = ref(null);
 const laboratoryPrintLoading = ref(false);
 const redirectAfterPrint = ref(false);
 const loadedDiagnosisTemplateIds = ref(new Set());
@@ -366,7 +343,7 @@ const canShowPrescriptionForm = computed(() => {
 
 function resetPrescriptionForm() {
   existingPrescription.value = null;
-  prescriptionMedicineRows.value = [createPrescriptionMedicineRow()];
+  prescriptionMedicineRows.value = createDefaultPrescriptionMedicineRows();
   rx.next_visit_days = '';
 }
 
@@ -385,7 +362,7 @@ function applyPrescriptionToForm(prescription) {
   const items = prescription?.medicines ?? [];
   prescriptionMedicineRows.value = items.length
     ? items.map(mapPrescriptionMedicineToRow)
-    : [createPrescriptionMedicineRow()];
+    : createDefaultPrescriptionMedicineRows();
 }
 
 async function loadExistingPrescription(prescriptionId = null) {
@@ -409,7 +386,7 @@ async function loadExistingPrescription(prescriptionId = null) {
   }
 }
 
-async function openPrintPreview(data) {
+async function loadPrescriptionPrintData(data) {
   if (data.print_data) {
     printData.value = data.print_data;
     return;
@@ -430,7 +407,7 @@ async function openPrintPreview(data) {
     const printResponse = await prescriptionService.getPrintData(prescriptionId);
     printData.value = printResponse.data.print_data;
   } catch (e) {
-    toastStore.warning(e.response?.data?.message || 'Prescription saved, but print preview is not available.');
+    toastStore.warning(e.response?.data?.message || 'Prescription saved, but print is not available.');
     printData.value = null;
   }
 }
@@ -440,10 +417,12 @@ async function handleSaveSuccess(data, redirect = true) {
     ? 'Prescription updated successfully.'
     : 'Prescription saved successfully.'));
 
-  await openPrintPreview(data);
+  await loadPrescriptionPrintData(data);
 
   if (data.data?.id || data.prescription?.id) {
     applyPrescriptionToForm(data.data ?? data.prescription);
+  } else {
+    prescriptionMedicineRows.value = stripEmptyPrescriptionMedicineRows(prescriptionMedicineRows.value);
   }
 
   if (printData.value?.visit) {
@@ -467,7 +446,17 @@ async function handleSaveSuccess(data, redirect = true) {
 
   if (printData.value) {
     redirectAfterPrint.value = redirect;
-    showPrintModal.value = true;
+    try {
+      await directPrintPrescription(printData.value, {
+        onAfterPrint: () => {
+          if (redirectAfterPrint.value) {
+            router.push(printRedirectTo.value);
+          }
+        },
+      });
+    } catch (e) {
+      toastStore.error(e.message ?? 'Unable to print prescription.');
+    }
   } else if (data.can_print === false) {
     toastStore.warning('Prescription saved, but print is not available for this user.');
   }
@@ -504,8 +493,7 @@ async function openScanPrintPreview(scanId) {
   scanPrintLoading.value = scanId;
   try {
     const { data } = await clinicalScanService.getPrintData(scanId);
-    scanPrintData.value = data.print_data ?? null;
-    showScanPrintModal.value = true;
+    await directPrintClinicalScan(data.print_data ?? null);
   } catch (e) {
     toastStore.error(e.response?.data?.message ?? 'Unable to load scan for printing.');
   } finally {
@@ -517,8 +505,7 @@ async function openLaboratoryPrintPreview(resultId) {
   laboratoryPrintLoading.value = resultId;
   try {
     const { data } = await laboratoryResultService.getPrintData(resultId);
-    laboratoryPrintData.value = data.print_data ?? null;
-    showLaboratoryPrintModal.value = true;
+    await directPrintLaboratoryReport(data.print_data ?? null);
   } catch (e) {
     toastStore.error(e.response?.data?.message ?? 'Unable to load result for printing.');
   } finally {
@@ -750,9 +737,10 @@ async function cancelVisit() {
 async function savePrescription() {
   Object.keys(rxErrors).forEach((key) => delete rxErrors[key]);
 
-  const diagnosis = prescriptionDiagnosisSummary();
-  if (!diagnosis) {
-    toastStore.error('Add at least one diagnosis to this visit before saving the prescription.');
+  try {
+    prescriptionMedicineRows.value = await persistNewMedicineRows(prescriptionMedicineRows.value);
+  } catch {
+    toastStore.error('Failed to save new medicine to master list.');
     return;
   }
 

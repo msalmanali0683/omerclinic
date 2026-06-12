@@ -47,7 +47,6 @@
       </div>
     </div>
 
-    <LaboratoryReportPrintModal v-model="showPrintModal" :print-data="printData" />
   </div>
 </template>
 
@@ -57,10 +56,10 @@ import { useAuthStore } from '@/stores/auth';
 import { useToastStore } from '@/stores/toast';
 import { reportService } from '@/services/reportService';
 import { userService } from '@/services/userService';
+import { directPrintLaboratoryBillingReport } from '@/utils/directPrint';
 import { formatCurrency } from '@/utils/formatters';
 import LaboratoryReportFilters from '@/components/reports/LaboratoryReportFilters.vue';
 import LaboratoryReportTable from '@/components/reports/LaboratoryReportTable.vue';
-import LaboratoryReportPrintModal from '@/components/reports/LaboratoryReportPrintModal.vue';
 import BaseButton from '@/components/ui/BaseButton.vue';
 
 const authStore = useAuthStore();
@@ -86,8 +85,6 @@ const summary = ref({});
 const loading = ref(false);
 const printing = ref(false);
 const exporting = ref(false);
-const showPrintModal = ref(false);
-const printData = ref(null);
 const doctorOptions = ref([]);
 const pagination = reactive({
   current_page: 1,
@@ -160,8 +157,7 @@ async function openPrint() {
 
   try {
     const { data } = await reportService.getLaboratoryReportPrintData(buildExportParams());
-    printData.value = data.print_data ?? null;
-    showPrintModal.value = true;
+    await directPrintLaboratoryBillingReport(data.print_data ?? null);
   } catch (e) {
     toastStore.error(e.response?.data?.message ?? 'Unable to load report for printing.');
   } finally {

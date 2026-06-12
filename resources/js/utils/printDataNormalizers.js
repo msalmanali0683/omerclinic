@@ -88,7 +88,11 @@ export function normalizePrintClinicalScans(scans = []) {
       field_label: String(value.field_label ?? '').replace(/\s+/g, ' ').trim(),
       field_value: value.field_value == null
         ? ''
-        : String(value.field_value).replace(/\s+/g, ' ').trim(),
+        : String(value.field_value)
+          .split(/\r?\n/)
+          .map((line) => line.replace(/[^\S\r\n]+/g, ' ').trim())
+          .join('\n')
+          .trim(),
     })),
   }));
 }

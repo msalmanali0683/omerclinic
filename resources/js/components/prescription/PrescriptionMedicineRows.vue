@@ -188,11 +188,13 @@
 import { computed, watch } from 'vue';
 import { medicineService } from '@/services/medicineService';
 import { SEARCH_DEBOUNCE_MS } from '@/composables/useAutoSearch';
-import { useDebouncedCallback } from '@/composables/useDebouncedCallback';
-import { createPrescriptionMedicineRow } from '@/utils/prescriptionMedicines';
+import { createDefaultPrescriptionMedicineRows, createPrescriptionMedicineRow, persistNewMedicineRows } from '@/utils/prescriptionMedicines';
 import { isInjectionMedicine } from '@/utils/prescriptionPrintMedicines';
+import { useToastStore } from '@/stores/toast';
 import AppIcon from '@/components/ui/AppIcon.vue';
 import BaseButton from '@/components/ui/BaseButton.vue';
+
+const toastStore = useToastStore();
 
 const props = defineProps({
   modelValue: { type: Array, default: () => [] },
@@ -245,7 +247,7 @@ watch(
   () => props.modelValue,
   (value) => {
     if (!value?.length) {
-      emit('update:modelValue', [createPrescriptionMedicineRow()]);
+      emit('update:modelValue', createDefaultPrescriptionMedicineRows());
     }
   },
   { immediate: true }
@@ -346,8 +348,13 @@ function selectMedicine(row, opt) {
   row.show_dropdown = false;
 }
 
-function addRow() {
-  emit('update:modelValue', [...rows.value, createPrescriptionMedicineRow()]);
+async function addRow() {
+  try {
+    const persisted = await persistNewMedicineRows(rows.value);
+    emit('update:modelValue', [...persisted, createPrescriptionMedicineRow()]);
+  } catch {
+    toastStore.error('Failed to save new medicine to master list.');
+  }
 }
 
 function removeRow(index) {

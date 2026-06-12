@@ -3,14 +3,17 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\FindOrCreateMedicineRequest;
 use App\Http\Requests\StoreMedicineRequest;
 use App\Http\Requests\UpdateMedicineRequest;
 use App\Http\Resources\MedicineResource;
 use App\Models\Medicine;
+use App\Services\MedicineService;
 use Illuminate\Http\Request;
 
 class MedicineController extends Controller
 {
+    public function __construct(protected MedicineService $medicineService) {}
     public function index(Request $request)
     {
         $this->authorize('viewAny', Medicine::class);
@@ -123,5 +126,18 @@ class MedicineController extends Controller
             });
 
         return response()->json(['data' => $items]);
+    }
+
+    public function findOrCreate(FindOrCreateMedicineRequest $request)
+    {
+        $medicine = $this->medicineService->findOrCreate(
+            $request->validated(),
+            $request->user()
+        );
+
+        return response()->json([
+            'data'    => new MedicineResource($medicine->load(['doseTime', 'doseFromMeal'])),
+            'created' => $medicine->wasRecentlyCreated,
+        ]);
     }
 }

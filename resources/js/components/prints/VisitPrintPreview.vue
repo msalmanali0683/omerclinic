@@ -74,7 +74,6 @@
                     v-for="group in scan.normalGroupedValues"
                     :key="group.id"
                     class="scan-value-item bidi-text"
-                    :class="{ 'scan-value-item--long': isLongScanGroupValue(group) }"
                   >
                     <span class="scan-field-label">{{ formatScanGroupLabel(group) }}:</span>
                     <span class="scan-field-value">{{ formatScanGroupValue(group) }}</span>
@@ -180,8 +179,6 @@ import {
   formatScanGroupLabel,
   formatScanGroupValue,
   isEmptyScanFieldValue,
-  isLongScanGroupValue,
-  isLongScanValue,
   withScanValueLayout,
 } from '@/utils/clinicalScanPrintLayout';
 import { ensureClinicalScanPrintStyles } from '@/utils/clinicalScanPrintStyles';

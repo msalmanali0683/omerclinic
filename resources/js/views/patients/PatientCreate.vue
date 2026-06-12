@@ -90,8 +90,6 @@
 
     <PatientVisitsDrawer v-model="visitsOpen" :patient="selectedPatient" />
 
-    <PatientTokenPrintModal v-model="showTokenPrintModal" :print-data="tokenPrintData" />
-
     <AddPatientToQueueModal
       v-model="addToQueueModalOpen"
       :initial-patient="queueModalPatient"
@@ -135,10 +133,10 @@ import PatientFormFieldHeader from '@/components/patients/PatientFormFieldHeader
 import PatientFormFieldError from '@/components/patients/PatientFormFieldError.vue';
 import PatientListTable from '@/components/patients/PatientListTable.vue';
 import PatientVisitsDrawer from '@/components/patient-visits/PatientVisitsDrawer.vue';
-import PatientTokenPrintModal from '@/components/tokens/PatientTokenPrintModal.vue';
 import AddPatientToQueueModal from '@/components/queue/AddPatientToQueueModal.vue';
 import RegisterPatientVitalsModal from '@/components/vitals/RegisterPatientVitalsModal.vue';
 import { buildTokenPrintDataFromResponse, shouldOpenTokenPrintModal } from '@/utils/patientQueueToken';
+import { directPrintPatientToken } from '@/utils/directPrint';
 import { useAutoSearch } from '@/composables/useAutoSearch';
 import AppIcon from '@/components/ui/AppIcon.vue';
 import BaseButton from '@/components/ui/BaseButton.vue';
@@ -189,8 +187,6 @@ const pagination = reactive({ current_page: 1, last_page: 1 });
 const visitsOpen = ref(false);
 const selectedPatient = ref(null);
 const deleteModal = reactive({ open: false, patient: null, deleting: false });
-const showTokenPrintModal = ref(false);
-const tokenPrintData = ref({});
 const addToQueueModalOpen = ref(false);
 const queueModalPatient = ref(null);
 const showRegisterVitalsModal = ref(false);
@@ -207,13 +203,16 @@ const canRecordVitalsOnRegistration = computed(() =>
   && authStore.can('create patient vitals')
 );
 
-function maybeOpenTokenPrintModal(data) {
+async function maybeOpenTokenPrintModal(data) {
   if (!shouldOpenTokenPrintModal(data)) {
     return;
   }
 
-  tokenPrintData.value = buildTokenPrintDataFromResponse(data);
-  showTokenPrintModal.value = true;
+  try {
+    await directPrintPatientToken(buildTokenPrintDataFromResponse(data));
+  } catch (e) {
+    toastStore.error(e.message ?? 'Failed to print token.');
+  }
 }
 
 function shouldOpenRegisterVitalsModal(data) {

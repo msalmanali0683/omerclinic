@@ -22,7 +22,7 @@
             v-if="canPrint"
             variant="secondary"
             :loading="printLoading"
-            @click="openPrintPreview"
+            @click="printReport"
           >
             Print Report
           </BaseButton>
@@ -103,11 +103,6 @@
         <p class="text-sm text-gray-600 dark:text-gray-400 whitespace-pre-wrap">{{ result.remarks }}</p>
       </div>
     </template>
-
-    <LaboratoryResultPrintModal
-      v-model="showPrintModal"
-      :print-data="printData"
-    />
   </div>
 </template>
 
@@ -117,10 +112,10 @@ import { useRoute, useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
 import { useToastStore } from '@/stores/toast';
 import { laboratoryResultService } from '@/services/laboratoryResultService';
+import { directPrintLaboratoryReport } from '@/utils/directPrint';
 import { displayPatientAge, formatDate, formatGender, formatCurrency } from '@/utils/formatters';
 import { isImagingTestType } from '@/utils/laboratory';
 import BaseButton from '@/components/ui/BaseButton.vue';
-import LaboratoryResultPrintModal from '@/components/laboratory/LaboratoryResultPrintModal.vue';
 import LaboratoryXrayPreview from '@/components/laboratory/LaboratoryXrayPreview.vue';
 
 const route = useRoute();
@@ -131,9 +126,7 @@ const toastStore = useToastStore();
 const result = ref(null);
 const loading = ref(true);
 const verifyLoading = ref(false);
-const printData = ref(null);
 const canPrint = ref(false);
-const showPrintModal = ref(false);
 const printLoading = ref(false);
 
 const sortedValues = computed(() =>
@@ -179,12 +172,11 @@ async function verifyResult() {
   }
 }
 
-async function openPrintPreview() {
+async function printReport() {
   printLoading.value = true;
   try {
     const { data } = await laboratoryResultService.getPrintData(route.params.id);
-    printData.value = data.print_data ?? data.data?.print_data ?? null;
-    showPrintModal.value = true;
+    await directPrintLaboratoryReport(data.print_data ?? data.data?.print_data ?? null);
   } catch (e) {
     toastStore.error(e.response?.data?.message ?? 'Failed to load print data.');
   } finally {

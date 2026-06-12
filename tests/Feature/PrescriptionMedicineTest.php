@@ -171,6 +171,74 @@ class PrescriptionMedicineTest extends TestCase
             ->assertJsonPath('data.medicines.0.dose_time_text', $otherTime->dose_time);
     }
 
+    public function test_prescription_can_be_saved_without_diagnosis(): void
+    {
+        $doctor = $this->makeUser('doctor');
+        $visit = $this->createVisit($doctor, PatientVisit::STATUS_IN_CONSULTATION);
+        $medicine = Medicine::where('mdcn_name', 'Panadol')->first();
+
+        $this->actingAs($doctor)->postJson('/api/prescriptions', $this->prescriptionPayload($visit))
+            ->assertCreated()
+            ->assertJsonPath('data.diagnosis', null);
+    }
+
+    public function test_new_medicine_is_created_in_master_when_prescribing_without_medicine_id(): void
+    {
+        $doctor = $this->makeUser('doctor');
+        $visit = $this->createVisit($doctor, PatientVisit::STATUS_IN_CONSULTATION);
+        $doseTime = MedicineDoseTime::first();
+        $doseFromMeal = MedicineDoseFromMeal::first();
+
+        $this->assertDatabaseMissing('medicines', [
+            'mdcn_type' => 'Tab',
+            'mdcn_name' => 'Brand New Rx Med',
+            'mdcn_size' => '250mg',
+        ]);
+
+        $response = $this->actingAs($doctor)->postJson('/api/prescriptions', $this->prescriptionPayload($visit, [
+            'medicines' => [[
+                'mdcn_type'              => 'Tab',
+                'mdcn_name'              => 'Brand New Rx Med',
+                'mdcn_size'              => '250mg',
+                'mdcn_time_id'           => $doseTime->id,
+                'mdcn_dose_from_meal_id' => $doseFromMeal->id,
+            ]],
+        ]));
+
+        $response->assertCreated()
+            ->assertJsonPath('data.medicines.0.mdcn_name', 'Brand New Rx Med');
+
+        $master = Medicine::where('mdcn_name', 'Brand New Rx Med')->first();
+        $this->assertNotNull($master);
+        $this->assertDatabaseHas('prescription_medicines', [
+            'mdcn_name'   => 'Brand New Rx Med',
+            'medicine_id' => $master->id,
+        ]);
+    }
+
+    public function test_doctor_can_find_or_create_medicine_from_prescription_flow(): void
+    {
+        $doctor = $this->makeUser('doctor');
+        $doseTime = MedicineDoseTime::first();
+
+        $response = $this->actingAs($doctor)->postJson('/api/medicines/find-or-create', [
+            'mdcn_type'    => 'Syp',
+            'mdcn_name'    => 'Quick Add Syrup',
+            'mdcn_size'    => '120ml',
+            'mdcn_time_id' => $doseTime->id,
+        ]);
+
+        $response->assertOk()
+            ->assertJsonPath('data.mdcn_name', 'Quick Add Syrup')
+            ->assertJsonPath('created', true);
+
+        $this->assertDatabaseHas('medicines', [
+            'mdcn_type' => 'Syp',
+            'mdcn_name' => 'Quick Add Syrup',
+            'mdcn_size' => '120ml',
+        ]);
+    }
+
     public function test_old_prescription_unchanged_after_medicine_master_update(): void
     {
         $doctor = $this->makeUser('doctor');

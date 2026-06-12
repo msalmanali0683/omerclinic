@@ -123,11 +123,6 @@
       </BaseButton>
     </div>
 
-    <LaboratoryBillPrintModal
-      v-model="showPrintModal"
-      :print-data="printData"
-      @finished="goToLaboratoryResults"
-    />
   </div>
 </template>
 
@@ -138,8 +133,8 @@ import { useAuthStore } from '@/stores/auth';
 import { useToastStore } from '@/stores/toast';
 import { laboratoryBillService } from '@/services/laboratoryBillService';
 import { laboratoryTestTemplateService } from '@/services/laboratoryTestTemplateService';
+import { directPrintLaboratoryBill } from '@/utils/directPrint';
 import { formatCurrency } from '@/utils/formatters';
-import LaboratoryBillPrintModal from '@/components/laboratory/LaboratoryBillPrintModal.vue';
 import BaseButton from '@/components/ui/BaseButton.vue';
 import BaseInput from '@/components/ui/BaseInput.vue';
 import { useAutoSearch } from '@/composables/useAutoSearch';
@@ -163,8 +158,6 @@ const testToAdd = ref('');
 const selectedTests = ref([]);
 const saving = ref(false);
 const savedBillId = ref(null);
-const showPrintModal = ref(false);
-const printData = ref(null);
 
 const visitFilterOptions = [
   { value: 'latest', label: 'Latest Visit' },
@@ -289,9 +282,10 @@ async function saveBill() {
 
     const { data } = await laboratoryBillService.createBill(payload);
     savedBillId.value = data.data?.id;
-    printData.value = data.print_data;
     toastStore.success(data.message ?? 'Draft bill saved.');
-    showPrintModal.value = true;
+    await directPrintLaboratoryBill(data.print_data, {
+      onAfterPrint: goToLaboratoryResults,
+    });
   } catch (e) {
     const errs = e.response?.data?.errors;
     if (errs) {
@@ -309,8 +303,7 @@ async function openPrint() {
   if (!savedBillId.value) return;
   try {
     const { data } = await laboratoryBillService.getPrintData(savedBillId.value);
-    printData.value = data.print_data;
-    showPrintModal.value = true;
+    await directPrintLaboratoryBill(data.print_data);
   } catch (e) {
     toastStore.error(e.response?.data?.message ?? 'Unable to load bill for printing.');
   }

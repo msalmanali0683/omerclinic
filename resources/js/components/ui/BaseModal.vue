@@ -3,13 +3,14 @@
     <Transition name="modal">
       <div
         v-if="modelValue"
-        class="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-4"
+        class="fixed inset-0 z-50 flex"
+        :class="isFull ? '' : 'items-end sm:items-center justify-center p-4'"
         @click.self="close"
       >
         <div class="fixed inset-0 bg-black/50 backdrop-blur-sm" @click="close" />
         <div
-          class="relative w-full max-w-lg bg-white dark:bg-gray-800 rounded-xl shadow-xl border border-gray-200 dark:border-gray-700 max-h-[90vh] flex flex-col"
-          :class="sizeClass"
+          class="relative w-full bg-white dark:bg-gray-800 shadow-xl border border-gray-200 dark:border-gray-700 flex flex-col"
+          :class="panelClass"
         >
           <div class="flex items-center justify-between px-6 py-4 border-b border-gray-200 dark:border-gray-700">
             <div class="min-w-0 flex-1">
@@ -26,7 +27,10 @@
               </svg>
             </button>
           </div>
-          <div class="px-6 py-4 overflow-y-auto flex-1">
+          <div
+            class="px-6 py-4 overflow-y-auto flex-1"
+            :class="isFull ? 'min-h-0 flex flex-col' : ''"
+          >
             <slot />
           </div>
           <div v-if="$slots.footer" class="px-6 py-4 border-t border-gray-200 dark:border-gray-700 flex justify-end gap-3">
@@ -49,12 +53,23 @@ const props = defineProps({
 
 const emit = defineEmits(['update:modelValue']);
 
+const isFull = computed(() => props.size === 'full');
+
 const sizeClass = computed(() => ({
   sm: 'max-w-sm',
   md: 'max-w-lg',
   lg: 'max-w-2xl',
   xl: 'max-w-4xl',
-}[props.size]));
+  full: 'max-w-none',
+}[props.size] ?? 'max-w-lg'));
+
+const panelClass = computed(() => {
+  if (isFull.value) {
+    return 'h-full max-h-[100dvh] rounded-none max-w-none';
+  }
+
+  return ['max-h-[90vh] rounded-xl', sizeClass.value].join(' ');
+});
 
 function close() {
   emit('update:modelValue', false);

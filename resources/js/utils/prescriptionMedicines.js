@@ -1,4 +1,22 @@
 import { isInjectionMedicine } from '@/utils/prescriptionPrintMedicines';
+import { medicineService } from '@/services/medicineService';
+
+export const DEFAULT_PRESCRIPTION_MEDICINE_ROW_COUNT = 4;
+
+export function isPrescriptionMedicineRowEmpty(row) {
+  return !row?.mdcn_name?.trim()
+    && !row?.mdcn_type?.trim()
+    && !row?.mdcn_size?.trim()
+    && !row?.medicine_id;
+}
+
+export function createDefaultPrescriptionMedicineRows(count = DEFAULT_PRESCRIPTION_MEDICINE_ROW_COUNT) {
+  return Array.from({ length: count }, () => createPrescriptionMedicineRow());
+}
+
+export function stripEmptyPrescriptionMedicineRows(rows) {
+  return rows.filter((row) => !isPrescriptionMedicineRowEmpty(row));
+}
 
 export function mapPrescriptionMedicineToRow(item) {
   const label = [item.mdcn_type, item.mdcn_name, item.mdcn_size].filter(Boolean).join(' ');
@@ -49,6 +67,54 @@ export function serializePrescriptionMedicineRows(rows) {
     }));
 }
 
+function applyMedicineMasterToRow(row, medicine) {
+  const label = [medicine.mdcn_type, medicine.mdcn_name, medicine.mdcn_size].filter(Boolean).join(' ');
+
+  return {
+    ...row,
+    medicine_id: medicine.id,
+    medicine_search: label,
+    mdcn_type: medicine.mdcn_type ?? row.mdcn_type ?? '',
+    mdcn_name: medicine.mdcn_name ?? row.mdcn_name ?? '',
+    mdcn_size: medicine.mdcn_size ?? row.mdcn_size ?? '',
+    mdcn_time_id: medicine.mdcn_time_id ? String(medicine.mdcn_time_id) : row.mdcn_time_id,
+    mdcn_dose_from_meal_id: medicine.mdcn_dose_from_meal_id
+      ? String(medicine.mdcn_dose_from_meal_id)
+      : row.mdcn_dose_from_meal_id,
+    show_in_treatment_given: row.show_in_treatment_given ?? isInjectionMedicine(medicine),
+  };
+}
+
+export function shouldPersistMedicineRow(row) {
+  return !row.medicine_id
+    && Boolean(row.mdcn_name?.trim())
+    && Boolean(row.mdcn_type?.trim());
+}
+
+export async function persistNewMedicineRows(rows) {
+  const nextRows = [...rows];
+
+  for (let index = 0; index < nextRows.length; index += 1) {
+    const row = nextRows[index];
+
+    if (!shouldPersistMedicineRow(row)) {
+      continue;
+    }
+
+    const { data } = await medicineService.findOrCreateMedicine({
+      mdcn_type: row.mdcn_type.trim(),
+      mdcn_name: row.mdcn_name.trim(),
+      mdcn_size: row.mdcn_size?.trim() || null,
+      mdcn_time_id: row.mdcn_time_id ? Number(row.mdcn_time_id) : null,
+      mdcn_dose_from_meal_id: row.mdcn_dose_from_meal_id ? Number(row.mdcn_dose_from_meal_id) : null,
+    });
+
+    nextRows[index] = applyMedicineMasterToRow(row, data.data ?? data);
+  }
+
+  return nextRows;
+}
+
 function normalizeMedicineKey(value) {
   return String(value ?? '').trim().toLowerCase();
 }
@@ -86,7 +152,7 @@ export function appendDiagnosisTemplateMedicines(rows, templates) {
   }
 
   if (!nextRows.length) {
-    nextRows.push(createPrescriptionMedicineRow());
+    nextRows.push(...createDefaultPrescriptionMedicineRows());
   }
 
   return { rows: nextRows, added, skipped };

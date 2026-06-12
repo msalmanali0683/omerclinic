@@ -22,7 +22,7 @@
             v-if="canPrint"
             variant="secondary"
             :loading="printLoading"
-            @click="openPrintPreview"
+            @click="printScan"
           >
             Print
           </BaseButton>
@@ -96,14 +96,6 @@
         <p class="text-sm text-gray-600 dark:text-gray-400 whitespace-pre-wrap">{{ scan.notes }}</p>
       </div>
     </template>
-
-    <PrescriptionPrintSettingsModal
-      v-model="showPrintModal"
-      :print-data="printData"
-      title="Clinical Scan Print Preview"
-      :show-empty-clinical-scans-as-na="false"
-      :redirect-after-close="false"
-    />
   </div>
 </template>
 
@@ -113,10 +105,10 @@ import { useRoute, useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
 import { useToastStore } from '@/stores/toast';
 import { clinicalScanService } from '@/services/clinicalScanService';
+import { directPrintClinicalScan } from '@/utils/directPrint';
 import { displayPatientAge, formatDate, formatGender } from '@/utils/formatters';
 import { groupScanFieldsForEntry } from '@/utils/clinicalScans';
 import BaseButton from '@/components/ui/BaseButton.vue';
-import PrescriptionPrintSettingsModal from '@/components/prescription/PrescriptionPrintSettingsModal.vue';
 
 const route = useRoute();
 const router = useRouter();
@@ -125,9 +117,7 @@ const toastStore = useToastStore();
 
 const scan = ref(null);
 const loading = ref(true);
-const printData = ref(null);
 const canPrint = ref(false);
-const showPrintModal = ref(false);
 const printLoading = ref(false);
 
 const groupedFindings = computed(() => groupScanFieldsForEntry(scan.value?.values ?? []));
@@ -165,12 +155,11 @@ async function loadScan() {
   }
 }
 
-async function openPrintPreview() {
+async function printScan() {
   printLoading.value = true;
   try {
     const { data } = await clinicalScanService.getPrintData(route.params.id);
-    printData.value = data.print_data ?? data.data?.print_data ?? null;
-    showPrintModal.value = true;
+    await directPrintClinicalScan(data.print_data ?? data.data?.print_data ?? null);
   } catch (e) {
     toastStore.error(e.response?.data?.message ?? 'Failed to load print data.');
   } finally {

@@ -2,21 +2,21 @@
   <BaseModal
     :model-value="modelValue"
     :title="`Diagnosis Medicine Template — ${diagnosis?.diagnosis_name ?? ''}`"
-    size="xl"
+    size="full"
     @update:model-value="$emit('update:modelValue', $event)"
   >
-    <div class="space-y-4">
-      <div v-if="canCreate || canEdit" class="rounded-xl border border-gray-200 dark:border-gray-700 p-4 space-y-3">
-        <h4 class="font-medium text-gray-900 dark:text-white">
+    <div class="flex h-full min-h-0 flex-col gap-5">
+      <div v-if="canCreate || canEdit" class="rounded-xl border border-emerald-200 bg-emerald-50/40 p-4 sm:p-6 space-y-4 dark:border-emerald-900/40 dark:bg-emerald-950/20">
+        <h4 class="text-lg font-semibold text-gray-900 dark:text-white">
           {{ formModal.editing ? 'Edit Mapped Medicine' : 'Add Mapped Medicine' }}
         </h4>
 
-        <div class="relative">
+        <div class="relative max-w-2xl">
           <label class="block text-sm font-medium mb-1">Search Medicine</label>
           <input
             v-model="form.medicine_search"
             type="text"
-            class="w-full rounded-lg border border-gray-300 dark:border-gray-600 px-3 py-2 text-sm dark:bg-gray-800"
+            class="w-full rounded-lg border border-gray-300 dark:border-gray-600 px-3 py-2.5 text-sm dark:bg-gray-800"
             placeholder="Search medicine master..."
             autocomplete="off"
             @input="onMedicineSearch"
@@ -25,12 +25,12 @@
           />
           <ul
             v-if="showMedicineDropdown && medicineOptions.length"
-            class="absolute z-20 mt-1 w-full max-h-40 overflow-auto rounded-lg border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-800 shadow-lg text-sm"
+            class="absolute z-20 mt-1 w-full max-h-56 overflow-auto rounded-lg border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-800 shadow-lg text-sm"
           >
             <li
               v-for="opt in medicineOptions"
               :key="opt.id"
-              class="px-3 py-2 cursor-pointer hover:bg-teal-50 dark:hover:bg-teal-900/20"
+              class="px-3 py-2.5 cursor-pointer hover:bg-teal-50 dark:hover:bg-teal-900/20"
               @mousedown.prevent="selectMedicine(opt)"
             >
               {{ opt.label }}
@@ -38,7 +38,7 @@
           </ul>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
           <BaseSelect
             v-model="form.mdcn_type"
             label="Medicine Type"
@@ -78,13 +78,13 @@
         </div>
       </div>
 
-      <div v-if="loading" class="h-24 animate-pulse rounded-xl bg-gray-200 dark:bg-gray-700" />
+      <div v-if="loading" class="h-24 animate-pulse rounded-xl bg-gray-200 dark:bg-gray-700 shrink-0" />
 
-      <div v-else-if="templates.length === 0" class="text-sm text-gray-500 py-4 text-center">
+      <div v-else-if="templates.length === 0" class="flex flex-1 items-center justify-center text-sm text-gray-500 py-8">
         No medicines mapped to this diagnosis yet.
       </div>
 
-      <div v-else class="overflow-x-auto rounded-lg border border-gray-200 dark:border-gray-700">
+      <div v-else class="min-h-0 flex-1 overflow-auto rounded-xl border border-gray-200 dark:border-gray-700">
         <table class="min-w-full text-sm">
           <thead class="bg-gray-50 dark:bg-gray-900/40 text-left">
             <tr>

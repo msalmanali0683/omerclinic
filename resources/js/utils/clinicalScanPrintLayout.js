@@ -41,7 +41,7 @@ export function formatScanGroupValue(group) {
         })
         .filter(Boolean);
 
-    return parts.join('; ');
+    return parts.join('\n');
 }
 
 export function groupScanValuesForPrint(values = []) {
@@ -104,7 +104,11 @@ export function formatScanFieldValue(value) {
         return '';
     }
 
-    return String(raw).replace(/\s+/g, ' ').trim();
+    return String(raw)
+        .split(/\r?\n/)
+        .map((line) => line.replace(/[^\S\r\n]+/g, ' ').trim())
+        .join('\n')
+        .trim();
 }
 
 export function scanHasPrintableContent(scan) {
@@ -121,7 +125,7 @@ export function filterPrintableClinicalScans(scans = []) {
         .map((scan) => ({
             ...scan,
             impression: scan.impression && String(scan.impression).trim() !== ''
-                ? String(scan.impression).replace(/\s+/g, ' ').trim()
+                ? formatScanFieldValue({ field_value: scan.impression })
                 : null,
             values: (scan.values ?? []).filter((value) => !isEmptyScanFieldValue(value)),
         }));

@@ -142,8 +142,6 @@
       :initial-patient="queueModalPatient"
       @added="handlePatientAddedToQueue"
     />
-
-    <PatientTokenPrintModal v-model="showTokenPrintModal" :print-data="tokenPrintData" />
   </div>
 </template>
 
@@ -157,8 +155,8 @@ import { patientVisitTokenService } from '@/services/patientVisitTokenService';
 import { formatDate, formatVisitTime } from '@/utils/formatters';
 import PatientVisitsDrawer from '@/components/patient-visits/PatientVisitsDrawer.vue';
 import AddPatientToQueueModal from '@/components/queue/AddPatientToQueueModal.vue';
-import PatientTokenPrintModal from '@/components/tokens/PatientTokenPrintModal.vue';
 import { buildTokenPrintDataFromResponse, shouldOpenTokenPrintModal } from '@/utils/patientQueueToken';
+import { directPrintPatientToken } from '@/utils/directPrint';
 import BaseButton from '@/components/ui/BaseButton.vue';
 import BaseInput from '@/components/ui/BaseInput.vue';
 import { useAutoSearch } from '@/composables/useAutoSearch';
@@ -187,8 +185,6 @@ const returningVisitId = ref(null);
 const reprintingTokenId = ref(null);
 const addToQueueModalOpen = ref(false);
 const queueModalPatient = ref(null);
-const showTokenPrintModal = ref(false);
-const tokenPrintData = ref({});
 const selectedPatient = ref(null);
 const visitsDrawerOpen = ref(false);
 const pagination = ref({
@@ -319,10 +315,13 @@ function openAddToQueueModal(patient) {
   addToQueueModalOpen.value = true;
 }
 
-function handlePatientAddedToQueue(data) {
+async function handlePatientAddedToQueue(data) {
   if (shouldOpenTokenPrintModal(data)) {
-    tokenPrintData.value = buildTokenPrintDataFromResponse(data);
-    showTokenPrintModal.value = true;
+    try {
+      await directPrintPatientToken(buildTokenPrintDataFromResponse(data));
+    } catch (e) {
+      toastStore.error(e.message ?? 'Failed to print token.');
+    }
   }
 
   loadVisits(pagination.value.current_page);
@@ -337,8 +336,7 @@ async function reprintToken(row) {
 
   try {
     const { data } = await patientVisitTokenService.reprintToken(row.token_id);
-    tokenPrintData.value = data.print_data ?? {};
-    showTokenPrintModal.value = true;
+    await directPrintPatientToken(data.print_data ?? {});
     toastStore.success(data.message ?? 'Token ready to reprint.');
   } catch (err) {
     toastStore.error(err.response?.data?.message ?? 'Failed to reprint token.');

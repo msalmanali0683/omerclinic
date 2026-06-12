@@ -65,8 +65,6 @@
       v-model="addToQueueModalOpen"
       @added="handlePatientAddedToQueue"
     />
-
-    <PatientTokenPrintModal v-model="showTokenPrintModal" :print-data="tokenPrintData" />
   </div>
 </template>
 
@@ -83,7 +81,7 @@ import BaseSelect from '@/components/ui/BaseSelect.vue';
 import BaseTable from '@/components/ui/BaseTable.vue';
 import AddPatientToQueueModal from '@/components/queue/AddPatientToQueueModal.vue';
 import { buildTokenPrintDataFromResponse, shouldOpenTokenPrintModal } from '@/utils/patientQueueToken';
-import PatientTokenPrintModal from '@/components/tokens/PatientTokenPrintModal.vue';
+import { directPrintPatientToken } from '@/utils/directPrint';
 
 const authStore = useAuthStore();
 const toastStore = useToastStore();
@@ -109,8 +107,6 @@ const doctorOptions = ref([{ value: '', label: 'All doctors' }]);
 const filters = reactive({ search: '', status: 'pending_prescription,in_consultation', doctor_id: '', visit_date: '' });
 const pagination = reactive({ current_page: 1, last_page: 1 });
 const addToQueueModalOpen = ref(false);
-const showTokenPrintModal = ref(false);
-const tokenPrintData = ref({});
 const cancellingStale = ref(false);
 
 const statusOptions = [
@@ -158,10 +154,13 @@ function openAddToQueueModal() {
   addToQueueModalOpen.value = true;
 }
 
-function handlePatientAddedToQueue(data) {
+async function handlePatientAddedToQueue(data) {
   if (shouldOpenTokenPrintModal(data)) {
-    tokenPrintData.value = buildTokenPrintDataFromResponse(data);
-    showTokenPrintModal.value = true;
+    try {
+      await directPrintPatientToken(buildTokenPrintDataFromResponse(data));
+    } catch (e) {
+      toastStore.error(e.message ?? 'Failed to print token.');
+    }
   }
 
   fetchQueue(pagination.current_page);

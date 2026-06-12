@@ -7,4 +7,5 @@ export const medicineService = {
     updateMedicine: (id, payload) => api.put(`/medicines/${id}`, payload),
     deleteMedicine: (id) => api.delete(`/medicines/${id}`),
     getMedicineOptions: (params) => api.get('/medicines/options', { params }),
+    findOrCreateMedicine: (payload) => api.post('/medicines/find-or-create', payload),
 };

@@ -73,26 +73,22 @@ export function buildClinicalScanPrintCss(fontSizeClinicalScans = 12) {
         }
 
         .scan-values-grid {
-            display: flex;
-            flex-wrap: wrap;
-            column-gap: 12px;
-            row-gap: 4px;
-            align-items: baseline;
+            display: block;
         }
 
         .scan-value-item {
-            flex: 1 1 calc(33.333% - 12px);
-            min-width: 9ch;
+            display: block;
+            width: 100%;
             max-width: 100%;
+            margin: 0 0 4px;
             font-size: ${fontSizeClinicalScans}pt;
-            line-height: 1.2;
+            line-height: 1.25;
             break-inside: avoid;
             page-break-inside: avoid;
         }
 
-        .scan-value-item--long {
-            flex: 1 1 100%;
-            min-width: 100%;
+        .scan-value-item:last-child {
+            margin-bottom: 0;
         }
 
         .scan-field-label,
@@ -106,19 +102,20 @@ export function buildClinicalScanPrintCss(fontSizeClinicalScans = 12) {
 
         .scan-field-value {
             margin-left: 0;
-            white-space: normal;
+            white-space: pre-wrap;
             overflow-wrap: break-word;
             word-break: break-word;
         }
 
         .scan-impression,
         .scan-value-impression {
-            flex: 1 1 100%;
+            display: block;
             width: 100%;
-            margin-top: 3px;
+            margin-top: 4px;
+            margin-bottom: 4px;
             font-size: ${fontSizeClinicalScans}pt;
-            line-height: 1.2;
-            white-space: normal;
+            line-height: 1.25;
+            white-space: pre-wrap;
             overflow-wrap: break-word;
             word-break: break-word;
             break-inside: avoid;

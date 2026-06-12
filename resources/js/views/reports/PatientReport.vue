@@ -59,7 +59,6 @@
       </div>
     </div>
 
-    <PatientReportPrintModal v-model="showPrintModal" :print-data="printData" />
   </div>
 </template>
 
@@ -70,9 +69,9 @@ import { useAuthStore } from '@/stores/auth';
 import { useToastStore } from '@/stores/toast';
 import { reportService } from '@/services/reportService';
 import { userService } from '@/services/userService';
+import { directPrintPatientReport } from '@/utils/directPrint';
 import PatientReportFilters from '@/components/reports/PatientReportFilters.vue';
 import PatientReportTable from '@/components/reports/PatientReportTable.vue';
-import PatientReportPrintModal from '@/components/reports/PatientReportPrintModal.vue';
 import BaseButton from '@/components/ui/BaseButton.vue';
 
 const authStore = useAuthStore();
@@ -107,8 +106,6 @@ const summary = ref({});
 const loading = ref(false);
 const printing = ref(false);
 const exporting = ref(false);
-const showPrintModal = ref(false);
-const printData = ref(null);
 const doctorOptions = ref([]);
 const pagination = reactive({
   current_page: 1,
@@ -181,8 +178,7 @@ async function openPrint() {
 
   try {
     const { data } = await reportService.getPatientReportPrintData(buildExportParams());
-    printData.value = data.print_data ?? null;
-    showPrintModal.value = true;
+    await directPrintPatientReport(data.print_data ?? null);
   } catch (e) {
     toastStore.error(e.response?.data?.message ?? 'Unable to load report for printing.');
   } finally {

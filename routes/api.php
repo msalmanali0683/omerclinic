@@ -235,6 +235,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('medicine-dose-times/options', [MedicineDoseTimeController::class, 'options']);
     Route::apiResource('medicine-dose-times', MedicineDoseTimeController::class);
     Route::get('medicines/options', [MedicineController::class, 'options']);
+    Route::post('medicines/find-or-create', [MedicineController::class, 'findOrCreate']);
     Route::apiResource('medicines', MedicineController::class);
 
     // Clinical master — complaints & diagnosis

@@ -1,0 +1,45 @@
+<?php
+
+namespace App\Services;
+
+use App\Models\Medicine;
+use App\Models\User;
+use InvalidArgumentException;
+
+class MedicineService
+{
+    public function findOrCreate(array $data, ?User $user = null): Medicine
+    {
+        $type = trim((string) ($data['mdcn_type'] ?? ''));
+        $name = trim((string) ($data['mdcn_name'] ?? ''));
+        $size = trim((string) ($data['mdcn_size'] ?? ''));
+
+        if ($name === '') {
+            throw new InvalidArgumentException('Medicine name is required.');
+        }
+
+        if ($type === '') {
+            throw new InvalidArgumentException('Medicine type is required.');
+        }
+
+        $existing = Medicine::query()
+            ->where('mdcn_type', $type)
+            ->where('mdcn_name', $name)
+            ->where('mdcn_size', $size)
+            ->first();
+
+        if ($existing) {
+            return $existing;
+        }
+
+        return Medicine::create([
+            'mdcn_type'              => $type,
+            'mdcn_name'              => $name,
+            'mdcn_size'              => $size !== '' ? $size : null,
+            'mdcn_time_id'           => $data['mdcn_time_id'] ?? null,
+            'mdcn_dose_from_meal_id' => $data['mdcn_dose_from_meal_id'] ?? null,
+            'created_by'             => $user?->id,
+            'updated_by'             => $user?->id,
+        ]);
+    }
+}

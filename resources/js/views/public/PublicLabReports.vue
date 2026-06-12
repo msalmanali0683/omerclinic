@@ -114,11 +114,6 @@
       </div>
     </div>
 
-    <LaboratoryResultPrintModal
-      v-model="showPrintModal"
-      :print-data="printData"
-      title="Laboratory Test Report"
-    />
   </div>
 </template>
 
@@ -126,11 +121,11 @@
 import { onMounted, reactive, ref } from 'vue';
 import { useToastStore } from '@/stores/toast';
 import { publicLabReportService } from '@/services/publicLabReportService';
+import { directPrintLaboratoryReport } from '@/utils/directPrint';
 import { useFormErrors } from '@/composables/useFormErrors';
 import { formatCnicInput, formatDate } from '@/utils/formatters';
 import BaseButton from '@/components/ui/BaseButton.vue';
 import BaseInput from '@/components/ui/BaseInput.vue';
-import LaboratoryResultPrintModal from '@/components/laboratory/LaboratoryResultPrintModal.vue';
 
 const toastStore = useToastStore();
 const { errors, setErrors, clearErrors } = useFormErrors();
@@ -145,8 +140,6 @@ const verifying = ref(false);
 const verified = ref(false);
 const patient = ref(null);
 const results = ref([]);
-const printData = ref(null);
-const showPrintModal = ref(false);
 const printingResultId = ref(null);
 const printingAll = ref(false);
 
@@ -206,8 +199,7 @@ async function printResult(resultId) {
 
   try {
     const { data } = await publicLabReportService.getPrintData(resultId);
-    printData.value = data.print_data ?? null;
-    showPrintModal.value = true;
+    await directPrintLaboratoryReport(data.print_data ?? null);
   } catch (e) {
     toastStore.error(e.response?.data?.message ?? 'Could not load print data.');
   } finally {
@@ -220,8 +212,7 @@ async function printAll() {
 
   try {
     const { data } = await publicLabReportService.getAllPrintData();
-    printData.value = data.print_data ?? null;
-    showPrintModal.value = true;
+    await directPrintLaboratoryReport(data.print_data ?? null);
   } catch (e) {
     toastStore.error(e.response?.data?.message ?? 'Could not load print data.');
   } finally {

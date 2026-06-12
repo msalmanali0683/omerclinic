@@ -1,14 +1,6 @@
 <?php
 
-use App\Http\Controllers\DeployToolsController;
 use Illuminate\Support\Facades\Route;
-
-/*
-|--------------------------------------------------------------------------
-| Server deploy tools (secured with DEPLOY_SECRET)
-|--------------------------------------------------------------------------
-*/
-Route::middleware('deploy.secret')->get('/deploy-tools', [DeployToolsController::class, 'showTools']);
 
 /*
 |--------------------------------------------------------------------------

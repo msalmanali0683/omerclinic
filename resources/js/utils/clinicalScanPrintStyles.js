@@ -44,8 +44,12 @@ export function buildClinicalScanPrintCss(fontSizeClinicalScans = 12) {
         .clinical-scan-print-section .section-title {
             font-weight: 700 !important;
             text-decoration: underline;
-            margin-bottom: 0;
+            margin-bottom: 1em;
             font-size: ${fontSizeClinicalScans + 2}pt;
+        }
+
+        .clinical-scan-grid__title.clinical-scan-grid__title {
+            margin-bottom: 1em;
         }
 
         .scan-block {
@@ -191,20 +195,27 @@ export function buildClinicalScanPrintCss(fontSizeClinicalScans = 12) {
         }
 
         .scan-impression.scan-value-item--boxed,
-        .scan-value-impression.scan-value-item--boxed {
+        .scan-value-impression.scan-value-item--boxed,
+        .scan-impression--boxed {
             border: 1px solid #000;
             padding: 0;
             box-sizing: border-box;
         }
+
+        .scan-impression .scan-field-value,
+        .scan-value-impression .scan-field-value,
+        .scan-impression--boxed .scan-impression-value {
+            font-weight: 700 !important;
+        }
     `;
 }
 
-export function ensureClinicalScanPrintStyles() {
+export function ensureClinicalScanPrintStyles(fontSizeClinicalScans = 12) {
   if (typeof document === 'undefined') {
     return;
   }
 
-  const css = buildClinicalScanPrintCss();
+  const css = buildClinicalScanPrintCss(fontSizeClinicalScans);
   const existing = document.getElementById('clinical-scan-print-styles');
 
   if (existing) {

@@ -210,6 +210,29 @@ class MedicineMasterTest extends TestCase
             ->assertJsonStructure(['data' => [['id', 'label', 'value', 'mdcn_name']]]);
     }
 
+    public function test_medicine_options_can_filter_by_type(): void
+    {
+        $doctor = $this->makeUser('doctor');
+        $admin = $this->makeUser('hospital-admin');
+
+        $this->actingAs($admin)->postJson('/api/medicines', $this->medicinePayload([
+            'mdcn_type' => 'Tab.',
+            'mdcn_name' => 'TypeFilterTab',
+        ]))->assertCreated();
+
+        $this->actingAs($admin)->postJson('/api/medicines', $this->medicinePayload([
+            'mdcn_type' => 'Syp.',
+            'mdcn_name' => 'TypeFilterSyp',
+        ]))->assertCreated();
+
+        $response = $this->actingAs($doctor)->getJson('/api/medicines/options?mdcn_type=Tab.&search=TypeFilter');
+
+        $response->assertOk();
+        $labels = collect($response->json('data'))->pluck('label')->implode(' ');
+        $this->assertStringContainsString('TypeFilterTab', $labels);
+        $this->assertStringNotContainsString('TypeFilterSyp', $labels);
+    }
+
     protected function makeUser(string $role): User
     {
         $user = User::factory()->create();

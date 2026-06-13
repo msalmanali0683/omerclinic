@@ -34,7 +34,22 @@ class MedicineService
             ->first();
 
         if ($existing) {
-            return $existing;
+            $updates = [];
+
+            if (array_key_exists('mdcn_time_id', $data)) {
+                $updates['mdcn_time_id'] = $data['mdcn_time_id'] ?: null;
+            }
+
+            if (array_key_exists('mdcn_dose_from_meal_id', $data)) {
+                $updates['mdcn_dose_from_meal_id'] = $data['mdcn_dose_from_meal_id'] ?: null;
+            }
+
+            if ($updates !== []) {
+                $updates['updated_by'] = $user?->id;
+                $existing->update($updates);
+            }
+
+            return $existing->fresh(['doseTime', 'doseFromMeal']);
         }
 
         return Medicine::create([

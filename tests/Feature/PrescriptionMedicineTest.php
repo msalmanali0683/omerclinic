@@ -244,6 +244,42 @@ class PrescriptionMedicineTest extends TestCase
         ]);
     }
 
+    public function test_find_or_create_updates_dose_fields_on_existing_medicine(): void
+    {
+        $doctor = $this->makeUser('doctor');
+        $admin = $this->makeUser('hospital-admin');
+        $firstDoseTime = MedicineDoseTime::query()->orderBy('id')->first();
+        $secondDoseTime = MedicineDoseTime::query()->orderBy('id')->skip(1)->firstOrFail();
+        $meal = MedicineDoseFromMeal::first();
+
+        $this->actingAs($admin)->postJson('/api/medicines', [
+            'mdcn_type'    => 'Tab.',
+            'mdcn_name'    => 'Dose Sync Medicine',
+            'mdcn_size'    => '500mg',
+            'mdcn_time_id' => $firstDoseTime->id,
+        ])->assertCreated();
+
+        $response = $this->actingAs($doctor)->postJson('/api/medicines/find-or-create', [
+            'mdcn_type'              => 'Tab.',
+            'mdcn_name'              => 'Dose Sync Medicine',
+            'mdcn_size'              => '500mg',
+            'mdcn_time_id'           => $secondDoseTime->id,
+            'mdcn_dose_from_meal_id' => $meal->id,
+        ]);
+
+        $response->assertOk()
+            ->assertJsonPath('created', false)
+            ->assertJsonPath('data.mdcn_time_id', $secondDoseTime->id)
+            ->assertJsonPath('data.mdcn_dose_from_meal_id', $meal->id);
+
+        $this->assertDatabaseHas('medicines', [
+            'mdcn_name'              => 'Dose Sync Medicine',
+            'mdcn_size'              => '500mg',
+            'mdcn_time_id'           => $secondDoseTime->id,
+            'mdcn_dose_from_meal_id' => $meal->id,
+        ]);
+    }
+
     public function test_old_prescription_unchanged_after_medicine_master_update(): void
     {
         $doctor = $this->makeUser('doctor');
@@ -275,7 +311,7 @@ class PrescriptionMedicineTest extends TestCase
         $this->assertEquals('500mg', $item->mdcn_size);
     }
 
-    public function test_prescription_cannot_be_saved_without_medicine_rows(): void
+    public function test_prescription_can_be_saved_without_medicine_rows(): void
     {
         $doctor = $this->makeUser('doctor');
         $visit = $this->createVisit($doctor, PatientVisit::STATUS_IN_CONSULTATION);
@@ -283,7 +319,8 @@ class PrescriptionMedicineTest extends TestCase
 
         $this->actingAs($doctor)->postJson('/api/prescriptions', $this->prescriptionPayload($visit, [
             'medicines' => [],
-        ]))->assertUnprocessable();
+        ]))->assertCreated()
+            ->assertJsonPath('data.medicines', []);
     }
 
     public function test_prescription_cannot_be_saved_without_medicine_name(): void

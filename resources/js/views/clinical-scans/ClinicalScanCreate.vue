@@ -244,7 +244,13 @@
 
         />
 
-
+        <BaseInput
+          v-if="form.clinical_scan_template_id"
+          v-model="form.scan_name"
+          label="Scan Name (print heading)"
+          placeholder="Example: Abdominal Ultrasound"
+          :error="errors.scan_name"
+        />
 
         <div v-if="templateLoading" class="h-32 bg-gray-100 dark:bg-gray-700 rounded-lg animate-pulse" />
 
@@ -456,6 +462,8 @@ const form = reactive({
 
   clinical_scan_template_id: '',
 
+  scan_name: '',
+
   notes: '',
 
   impression: '',
@@ -515,6 +523,8 @@ function applyVisitSelection(item) {
   selectedVisit.value = item.visit;
 
   form.clinical_scan_template_id = '';
+
+  form.scan_name = '';
 
   scanValues.value = [];
 
@@ -612,6 +622,8 @@ async function onTemplateChange(templateId) {
 
     const template = data.data ?? data;
 
+    form.scan_name = template.template_name ?? '';
+
     scanValues.value = buildScanValuesFromTemplate(template.fields ?? []);
 
   } catch (e) {
@@ -669,6 +681,8 @@ async function submit(status) {
       patient_visit_id: selectedVisit.value.id,
 
       clinical_scan_template_id: Number(form.clinical_scan_template_id),
+
+      scan_name: form.scan_name?.trim() || null,
 
       status,
 

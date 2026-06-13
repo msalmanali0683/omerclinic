@@ -53,6 +53,7 @@
           />
           <VitalsForm
             v-else-if="authStore.can('create patient vitals')"
+            ref="vitalsFormRef"
             :patient-id="visit.patient_id"
             :visit-id="visit.id"
             @saved="handleVitalsCreated"
@@ -221,6 +222,7 @@ import { useRoute, useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
 import { useToastStore } from '@/stores/toast';
 import { patientQueueService } from '@/services/patientQueueService';
+import { patientVitalService } from '@/services/patientVitalService';
 import { prescriptionService } from '@/services/prescriptionService';
 import { clinicalScanService } from '@/services/clinicalScanService';
 import { laboratoryResultService } from '@/services/laboratoryResultService';
@@ -256,6 +258,7 @@ const toastStore = useToastStore();
 
 const visit = ref(null);
 const currentVisitVitals = ref(null);
+const vitalsFormRef = ref(null);
 const showEditVitalsModal = ref(false);
 const vitalsHistory = ref([]);
 const clinicalScanHistory = ref(null);
@@ -734,8 +737,24 @@ async function cancelVisit() {
   }
 }
 
+async function savePendingVitalsIfNeeded() {
+  if (hasSavedCurrentVitals.value || !vitalsFormRef.value?.hasDraftData?.()) {
+    return;
+  }
+
+  const { data } = await patientVitalService.createVital(vitalsFormRef.value.getDraftPayload());
+  handleVitalsCreated(data.vital ?? data.data ?? data);
+}
+
 async function savePrescription() {
   Object.keys(rxErrors).forEach((key) => delete rxErrors[key]);
+
+  try {
+    await savePendingVitalsIfNeeded();
+  } catch (e) {
+    toastStore.error(e?.response?.data?.message ?? 'Unable to save vitals before prescription.');
+    return;
+  }
 
   prescriptionMedicineRows.value = stripEmptyPrescriptionMedicineRows(prescriptionMedicineRows.value);
 
@@ -752,11 +771,6 @@ async function savePrescription() {
   }
 
   const medicines = serializePrescriptionMedicineRows(prescriptionMedicineRows.value);
-  if (!medicines.length) {
-    rxErrors.medicines = 'Add at least one medicine with a name.';
-    toastStore.error(rxErrors.medicines);
-    return;
-  }
 
   rxSaving.value = true;
   try {

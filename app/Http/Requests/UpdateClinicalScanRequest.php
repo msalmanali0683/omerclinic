@@ -24,6 +24,7 @@ class UpdateClinicalScanRequest extends FormRequest
     {
         return [
             'status'                                  => 'nullable|string|in:draft,completed,cancelled',
+            'scan_name'                               => 'nullable|string|max:255',
             'notes'                                   => 'nullable|string|max:3000',
             'impression'                              => 'nullable|string|max:3000',
             'values'                                  => 'required|array',

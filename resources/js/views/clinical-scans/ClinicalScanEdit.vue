@@ -23,6 +23,13 @@
       </div>
 
       <form class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5 shadow-sm space-y-5" @submit.prevent="submit('completed')">
+        <BaseInput
+          v-model="form.scan_name"
+          label="Scan Name (print heading)"
+          placeholder="Example: Abdominal Ultrasound"
+          :error="errors.scan_name"
+        />
+
         <div class="rounded-xl border border-teal-100 dark:border-teal-900/30 bg-teal-50/40 dark:bg-teal-900/10 p-4">
           <h4 class="text-sm font-semibold text-teal-800 dark:text-teal-300 mb-3">Scan Findings</h4>
           <ClinicalScanDynamicFields v-model="scanValues" :error="errors.values" />
@@ -76,6 +83,7 @@ import { useFormErrors } from '@/composables/useFormErrors';
 import { buildScanValuesFromTemplate, serializeScanValues } from '@/utils/clinicalScans';
 import { displayPatientAge, formatGender } from '@/utils/formatters';
 import BaseButton from '@/components/ui/BaseButton.vue';
+import BaseInput from '@/components/ui/BaseInput.vue';
 import ClinicalScanDynamicFields from '@/components/clinical-scans/ClinicalScanDynamicFields.vue';
 
 const route = useRoute();
@@ -90,6 +98,7 @@ const saving = ref(false);
 const savingStatus = ref('');
 
 const form = reactive({
+  scan_name: '',
   notes: '',
   impression: '',
 });
@@ -101,6 +110,7 @@ async function submit(status) {
 
   try {
     const payload = {
+      scan_name: form.scan_name?.trim() || null,
       status,
       notes: form.notes?.trim() || null,
       impression: form.impression?.trim() || null,
@@ -128,6 +138,7 @@ onMounted(async () => {
     const { data } = await clinicalScanService.getScan(route.params.id);
     const row = data.data ?? data;
     scan.value = row;
+    form.scan_name = row.scan_name || row.scan_template_name || '';
     form.notes = row.notes || '';
     form.impression = row.impression || '';
 

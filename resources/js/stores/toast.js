@@ -24,6 +24,14 @@ export const useToastStore = defineStore('toast', {
             this.show(message, 'error', 6000);
         },
 
+        warning(message) {
+            this.show(message, 'warning', 5000);
+        },
+
+        info(message) {
+            this.show(message, 'info', 4000);
+        },
+
         remove(id) {
             this.toasts = this.toasts.filter((t) => t.id !== id);
         },

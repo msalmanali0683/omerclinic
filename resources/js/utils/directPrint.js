@@ -66,7 +66,7 @@ async function resolvePrescriptionPrintSettings(printData) {
   }
 
   applyPrescriptionPrintPageStyle(settings);
-  ensureClinicalScanPrintStyles();
+  ensureClinicalScanPrintStyles(settings.font_size_clinical_scans);
 
   return settings;
 }

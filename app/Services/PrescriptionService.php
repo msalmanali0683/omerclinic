@@ -53,14 +53,14 @@ class PrescriptionService
                 'prescription_date' => $prescriptionDate,
                 ...PrescriptionFollowUp::resolveFields($data, $prescriptionDate),
                 'diagnosis'         => $diagnosisSummary ?: null,
-                'medicines'         => $this->buildLegacyMedicinesText($data['medicines']),
+                'medicines'         => $this->buildLegacyMedicinesText($data['medicines'] ?? []),
                 'notes'             => $data['notes'] ?? null,
                 'status'            => 'active',
                 'created_by'        => $user->id,
                 'updated_by'        => $user->id,
             ]);
 
-            $this->syncMedicines($prescription, $data['medicines'], $user, replaceAll: true);
+            $this->syncMedicines($prescription, $data['medicines'] ?? [], $user, replaceAll: true);
 
             $visit->update([
                 'status'     => PatientVisit::STATUS_PRESCRIBED,
@@ -85,7 +85,7 @@ class PrescriptionService
 
             $prescription->update([
                 'notes'      => $data['notes'] ?? null,
-                'medicines'  => $this->buildLegacyMedicinesText($data['medicines']),
+                'medicines'  => $this->buildLegacyMedicinesText($data['medicines'] ?? []),
                 'diagnosis'  => $diagnosisSummary ?: null,
                 ...PrescriptionFollowUp::resolveFields(
                     $data,
@@ -94,7 +94,7 @@ class PrescriptionService
                 'updated_by' => $user->id,
             ]);
 
-            $this->syncMedicines($prescription, $data['medicines'], $user, replaceAll: true);
+            $this->syncMedicines($prescription, $data['medicines'] ?? [], $user, replaceAll: true);
 
             $visit = $prescription->visit;
 

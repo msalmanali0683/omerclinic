@@ -3,6 +3,9 @@ import { PRESCRIPTION_PRINT_FONT_FAMILY } from '@/utils/prescriptionPrintFonts';
 
 export { PRESCRIPTION_PRINT_FONT_FAMILY };
 
+/** Bottom page margin enforced on every prescription / scan print. */
+export const ENFORCED_PRINT_MARGIN_BOTTOM = '1.5in';
+
 export const DEFAULT_PAPER_PRESETS = {
   A4: {
     label: 'A4',
@@ -12,7 +15,7 @@ export const DEFAULT_PAPER_PRESETS = {
     min_height: '297mm',
     margin_top: '0.1in',
     margin_right: '0.32in',
-    margin_bottom: '0.2in',
+    margin_bottom: ENFORCED_PRINT_MARGIN_BOTTOM,
     margin_left: '0.5in',
   },
   Legal: {
@@ -23,10 +26,18 @@ export const DEFAULT_PAPER_PRESETS = {
     min_height: '14in',
     margin_top: '0.1in',
     margin_right: '0.32in',
-    margin_bottom: '0.2in',
+    margin_bottom: ENFORCED_PRINT_MARGIN_BOTTOM,
     margin_left: '0.5in',
   },
 };
+
+function applyEnforcedPrintMargins(resolved) {
+  return {
+    ...resolved,
+    margin_bottom: ENFORCED_PRINT_MARGIN_BOTTOM,
+    margin: `${resolved.margin_top} ${resolved.margin_right} ${ENFORCED_PRINT_MARGIN_BOTTOM} ${resolved.margin_left}`,
+  };
+}
 
 export const PAPER_SIZE_OPTIONS = [
   { value: 'A4', label: 'A4 (210mm × 297mm)' },
@@ -36,7 +47,7 @@ export const PAPER_SIZE_OPTIONS = [
 export function getDefaultResolvedSettings() {
   const preset = DEFAULT_PAPER_PRESETS.A4;
 
-  return {
+  return applyEnforcedPrintMargins({
     active_paper_key: 'A4',
     paper_presets: structuredClone(DEFAULT_PAPER_PRESETS),
     letterhead_height: '2.45in',
@@ -54,7 +65,7 @@ export function getDefaultResolvedSettings() {
     margin_bottom: preset.margin_bottom,
     margin_left: preset.margin_left,
     margin: `${preset.margin_top} ${preset.margin_right} ${preset.margin_bottom} ${preset.margin_left}`,
-  };
+  });
 }
 
 export function mergePrescriptionPrintSettings(apiSettings) {
@@ -69,7 +80,7 @@ export function mergePrescriptionPrintSettings(apiSettings) {
   const activeKey = paperPresets[apiSettings.active_paper_key] ? apiSettings.active_paper_key : 'A4';
   const activePreset = paperPresets[activeKey];
 
-  return {
+  const resolved = {
     active_paper_key: activeKey,
     paper_presets: paperPresets,
     letterhead_height: apiSettings.letterhead_height ?? '2.45in',
@@ -88,6 +99,8 @@ export function mergePrescriptionPrintSettings(apiSettings) {
     margin_left: activePreset.margin_left,
     margin: `${activePreset.margin_top} ${activePreset.margin_right} ${activePreset.margin_bottom} ${activePreset.margin_left}`,
   };
+
+  return applyEnforcedPrintMargins(resolved);
 }
 
 /** @deprecated use mergePrescriptionPrintSettings */

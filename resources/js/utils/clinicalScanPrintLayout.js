@@ -19,6 +19,13 @@ export function formatScanFieldLabel(value) {
     return fieldLabel;
 }
 
+export function formatScanPrintName(scan) {
+    const scanName = String(scan?.scan_name ?? '').replace(/\s+/g, ' ').trim();
+    const legacyName = String(scan?.scan_template_name ?? '').replace(/\s+/g, ' ').trim();
+
+    return scanName || legacyName || 'Clinical Scan';
+}
+
 export function formatScanGroupLabel(group) {
     return String(group?.label ?? group?.group_label ?? '').replace(/\s+/g, ' ').trim();
 }

@@ -15,6 +15,7 @@ class ClinicalScanResource extends JsonResource
             'patient_visit_id'          => $this->patient_visit_id,
             'clinical_scan_template_id' => $this->clinical_scan_template_id,
             'scan_template_name'        => $this->scan_template_name,
+            'scan_name'                 => $this->scan_name,
             'scan_operator_id'          => $this->scan_operator_id,
             'scan_date'                 => $this->scan_date?->format('Y-m-d'),
             'scan_time'                 => $this->scan_time,

@@ -24,6 +24,7 @@ class StoreClinicalScanRequest extends FormRequest
             'scan_date'                               => 'nullable|date',
             'scan_time'                               => 'nullable',
             'status'                                  => 'nullable|string|in:draft,completed,cancelled',
+            'scan_name'                                 => 'nullable|string|max:255',
             'notes'                                   => 'nullable|string|max:3000',
             'impression'                              => 'nullable|string|max:3000',
             'values'                                  => 'required|array',

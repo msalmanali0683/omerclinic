@@ -23,6 +23,7 @@ class ClinicalScanService
                 'patient_visit_id'          => $data['patient_visit_id'],
                 'clinical_scan_template_id' => $template->id,
                 'scan_template_name'        => $template->template_name,
+                'scan_name'                   => $data['scan_name'] ?? $template->template_name,
                 'scan_operator_id'          => $user->id,
                 'scan_date'                 => $data['scan_date'] ?? now()->toDateString(),
                 'scan_time'                 => $data['scan_time'] ?? now()->format('H:i:s'),
@@ -47,6 +48,7 @@ class ClinicalScanService
                 : null;
 
             $scan->update([
+                'scan_name'  => $data['scan_name'] ?? $scan->scan_name,
                 'status'     => $data['status'] ?? $scan->status,
                 'notes'      => $data['notes'] ?? null,
                 'impression' => $data['impression'] ?? null,

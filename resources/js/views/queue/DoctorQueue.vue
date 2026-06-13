@@ -8,6 +8,14 @@
       <BaseButton variant="secondary" :loading="loading" @click="loadQueue()">Refresh</BaseButton>
     </div>
 
+    <div class="mb-4 rounded-xl border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800">
+      <BaseInput
+        v-model="filters.search"
+        placeholder="Search by patient name or MR number..."
+        @keyup.enter="loadQueue()"
+      />
+    </div>
+
     <BaseTable :columns="columns" :rows="visits" :loading="loading" empty-message="No patients in your queue.">
       <template #cell-mr_number="{ row }">{{ row.patient?.mr_number }}</template>
       <template #cell-patient_name="{ row }">{{ row.patient?.patient_name }}</template>
@@ -34,17 +42,21 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue';
+import { onMounted, reactive, ref, watch } from 'vue';
 import { useToastStore } from '@/stores/toast';
 import { patientQueueService } from '@/services/patientQueueService';
 import { displayPatientAge, formatGender } from '@/utils/formatters';
 import { useAutoRefresh } from '@/composables/useAutoRefresh';
+import { SEARCH_DEBOUNCE_MS } from '@/composables/useAutoSearch';
 import BaseButton from '@/components/ui/BaseButton.vue';
+import BaseInput from '@/components/ui/BaseInput.vue';
 import BaseTable from '@/components/ui/BaseTable.vue';
 
 const toastStore = useToastStore();
 const visits = ref([]);
 const loading = ref(true);
+const filters = reactive({ search: '' });
+const searchTimer = ref(null);
 
 const columns = [
   { key: 'mr_number', label: 'MR No.' },
@@ -67,10 +79,16 @@ async function loadQueue(silent = false) {
   }
 
   try {
-    const { data } = await patientQueueService.getQueue({
+    const params = {
       status: 'pending_prescription,in_consultation',
       assigned_to_me: 1,
-    });
+    };
+
+    if (filters.search.trim()) {
+      params.search = filters.search.trim();
+    }
+
+    const { data } = await patientQueueService.getQueue(params);
     visits.value = data.data ?? [];
   } catch (e) {
     if (!silent) {
@@ -94,6 +112,14 @@ async function startConsultation(row) {
 }
 
 onMounted(() => loadQueue());
+
+watch(
+  () => filters.search,
+  () => {
+    clearTimeout(searchTimer.value);
+    searchTimer.value = setTimeout(() => loadQueue(true), SEARCH_DEBOUNCE_MS);
+  },
+);
 
 useAutoRefresh(() => loadQueue(true), 15000);
 </script>

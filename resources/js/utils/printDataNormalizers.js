@@ -82,6 +82,7 @@ export function normalizePrintClinicalScans(scans = []) {
   return list.map((scan) => ({
     ...scan,
     scan_template_name: scan.scan_template_name || 'Clinical Scan',
+    scan_name: scan.scan_name || scan.scan_template_name || 'Clinical Scan',
     values: (scan.values ?? []).map((value, index) => ({
       ...value,
       id: value.id ?? value.field_key ?? `value-${index}`,

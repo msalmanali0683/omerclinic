@@ -51,14 +51,14 @@
           <div class="clinical-scan-grid">
             <div class="section-title clinical-scan-grid__title">Clinical Scan Findings</div>
             <strong v-if="printableClinicalScans[0]" class="scan-template-name clinical-scan-grid__name">
-              ({{ printableClinicalScans[0].scan_template_name }})
+              ({{ formatScanPrintName(printableClinicalScans[0]) }})
             </strong>
 
             <template v-for="(scan, scanIndex) in printableClinicalScans" :key="scan.id">
               <template v-if="scanIndex > 0">
                 <div class="clinical-scan-grid__spacer" aria-hidden="true" />
                 <strong class="scan-template-name clinical-scan-grid__name">
-                  ({{ scan.scan_template_name }})
+                  ({{ formatScanPrintName(scan) }})
                 </strong>
               </template>
 
@@ -98,10 +98,9 @@
                     v-for="group in row.groups"
                     v-show="formatScanGroupValue(group)"
                     :key="`impression-group-${group.id}`"
-                    class="scan-impression scan-value-impression bidi-text"
-                    :class="{ 'scan-value-item--boxed': group.print_in_box }"
+                    class="scan-impression scan-value-impression bidi-text scan-value-item--boxed"
                   >
-                    <div :class="group.print_in_box ? 'scan-value-item__table' : 'scan-value-item__inline'">
+                    <div class="scan-value-item__table">
                       <span class="scan-field-label">{{ formatScanGroupLabel(group) }}:</span>
                       <span class="scan-field-value">{{ formatScanGroupValue(group) }}</span>
                     </div>
@@ -112,17 +111,19 @@
                   v-for="value in scan.impressionValues"
                   v-show="!scan.impressionPrintRows?.length && !isEmptyScanFieldValue(value)"
                   :key="`impression-${value.id || value.field_key}`"
-                  class="scan-impression scan-value-impression bidi-text"
-                  :class="{ 'scan-value-item--boxed': value.print_in_box }"
+                  class="scan-impression scan-value-impression bidi-text scan-value-item--boxed"
                 >
-                  <div :class="value.print_in_box ? 'scan-value-item__table' : 'scan-value-item__inline'">
+                  <div class="scan-value-item__table">
                     <span class="scan-field-label">{{ formatScanFieldLabel(value) }}:</span>
                     <span class="scan-field-value">{{ formatScanFieldValue(value) }}</span>
                   </div>
                 </div>
 
-                <div v-if="scan.impression" class="scan-impression bidi-text">
-                  <strong>Impression:</strong> {{ formatScanFieldValue({ field_value: scan.impression }) }}
+                <div v-if="scan.impression" class="scan-impression scan-impression--boxed bidi-text">
+                  <div class="scan-value-item__table">
+                    <span class="scan-field-label">Impression:</span>
+                    <span class="scan-field-value scan-impression-value">{{ formatScanFieldValue({ field_value: scan.impression }) }}</span>
+                  </div>
                 </div>
               </div>
             </template>
@@ -191,7 +192,7 @@
 </template>
 
 <script setup>
-import { computed, onMounted } from 'vue';
+import { computed, onMounted, watch } from 'vue';
 import { normalizeVisitPrintData, PRINT_NA } from '@/utils/printDataNormalizers';
 import {
   filterPrintableClinicalScans,
@@ -199,6 +200,7 @@ import {
   formatScanFieldValue,
   formatScanGroupLabel,
   formatScanGroupValue,
+  formatScanPrintName,
   isEmptyScanFieldValue,
   withScanValueLayout,
 } from '@/utils/clinicalScanPrintLayout';
@@ -256,8 +258,13 @@ const treatmentGivenReserveStyle = computed(() => {
 const slipStyle = computed(() => buildSlipStyleVars(resolvedSettings.value));
 
 onMounted(() => {
-  ensureClinicalScanPrintStyles();
+  ensureClinicalScanPrintStyles(resolvedSettings.value.font_size_clinical_scans);
 });
+
+watch(
+  () => resolvedSettings.value.font_size_clinical_scans,
+  (size) => ensureClinicalScanPrintStyles(size),
+);
 </script>
 
 <style scoped>
@@ -408,10 +415,12 @@ onMounted(() => {
   font-size: calc(13px + 2pt);
 }
 
-.clinical-scan-print-section .section-title {
+.clinical-scan-print-section .section-title,
+.clinical-scan-print-section .clinical-scan-grid__title {
   font-weight: 700 !important;
   text-decoration: underline;
   font-size: calc(var(--print-font-clinical-scans, 12pt) + 2pt);
+  margin-bottom: 1em;
 }
 
 .treatment-given-list {

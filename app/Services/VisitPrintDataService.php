@@ -182,6 +182,7 @@ class VisitPrintDataService
         return [
             'id'                 => $scan->id,
             'scan_template_name' => $scan->scan_template_name,
+            'scan_name'          => $scan->scan_name,
             'scan_date'          => $scan->scan_date?->format('Y-m-d'),
             'scan_time'          => $scan->scan_time,
             'status'             => $scan->status,

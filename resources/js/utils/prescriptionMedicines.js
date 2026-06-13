@@ -23,13 +23,15 @@ export function stripEmptyPrescriptionMedicineRows(rows) {
   return rows.filter((row) => !isPrescriptionMedicineRowEmpty(row));
 }
 
-export function mapPrescriptionMedicineToRow(item) {
-  const label = [item.mdcn_type, item.mdcn_name, item.mdcn_size].filter(Boolean).join(' ');
+export function formatMedicineSearchOptionLabel(medicine) {
+  return [medicine?.mdcn_name, medicine?.mdcn_size].filter(Boolean).join(' ');
+}
 
+export function mapPrescriptionMedicineToRow(item) {
   return createPrescriptionMedicineRow({
     id: item.id ?? null,
     medicine_id: item.medicine_id ?? null,
-    medicine_search: label,
+    medicine_search: item.mdcn_name ?? '',
     mdcn_type: item.mdcn_type ?? '',
     mdcn_name: item.mdcn_name ?? '',
     mdcn_size: item.mdcn_size ?? '',
@@ -73,12 +75,10 @@ export function serializePrescriptionMedicineRows(rows) {
 }
 
 function applyMedicineMasterToRow(row, medicine) {
-  const label = [medicine.mdcn_type, medicine.mdcn_name, medicine.mdcn_size].filter(Boolean).join(' ');
-
   return {
     ...row,
     medicine_id: medicine.id,
-    medicine_search: label,
+    medicine_search: medicine.mdcn_name ?? row.mdcn_name ?? '',
     mdcn_type: medicine.mdcn_type ?? row.mdcn_type ?? '',
     mdcn_name: medicine.mdcn_name ?? row.mdcn_name ?? '',
     mdcn_size: medicine.mdcn_size ?? row.mdcn_size ?? '',
@@ -90,10 +90,25 @@ function applyMedicineMasterToRow(row, medicine) {
   };
 }
 
+export function shouldSyncMedicineMasterRow(row) {
+  return Boolean(row.mdcn_name?.trim()) && Boolean(row.mdcn_type?.trim());
+}
+
+/** @deprecated use shouldSyncMedicineMasterRow */
 export function shouldPersistMedicineRow(row) {
-  return !row.medicine_id
-    && Boolean(row.mdcn_name?.trim())
-    && Boolean(row.mdcn_type?.trim());
+  return shouldSyncMedicineMasterRow(row);
+}
+
+export async function syncMedicineMasterFromRow(row) {
+  const { data } = await medicineService.findOrCreateMedicine({
+    mdcn_type: row.mdcn_type.trim(),
+    mdcn_name: row.mdcn_name.trim(),
+    mdcn_size: row.mdcn_size?.trim() || null,
+    mdcn_time_id: row.mdcn_time_id ? Number(row.mdcn_time_id) : null,
+    mdcn_dose_from_meal_id: row.mdcn_dose_from_meal_id ? Number(row.mdcn_dose_from_meal_id) : null,
+  });
+
+  return applyMedicineMasterToRow(row, data.data ?? data);
 }
 
 export async function persistNewMedicineRows(rows) {
@@ -102,19 +117,11 @@ export async function persistNewMedicineRows(rows) {
   for (let index = 0; index < nextRows.length; index += 1) {
     const row = nextRows[index];
 
-    if (!shouldPersistMedicineRow(row)) {
+    if (!shouldSyncMedicineMasterRow(row)) {
       continue;
     }
 
-    const { data } = await medicineService.findOrCreateMedicine({
-      mdcn_type: row.mdcn_type.trim(),
-      mdcn_name: row.mdcn_name.trim(),
-      mdcn_size: row.mdcn_size?.trim() || null,
-      mdcn_time_id: row.mdcn_time_id ? Number(row.mdcn_time_id) : null,
-      mdcn_dose_from_meal_id: row.mdcn_dose_from_meal_id ? Number(row.mdcn_dose_from_meal_id) : null,
-    });
-
-    nextRows[index] = applyMedicineMasterToRow(row, data.data ?? data);
+    nextRows[index] = await syncMedicineMasterFromRow(row);
   }
 
   return nextRows;
@@ -126,12 +133,8 @@ function normalizeMedicineKey(value) {
 
 export function isDuplicatePrescriptionMedicineRow(rows, candidate) {
   return rows.some((row) => {
-    if (!row.mdcn_name?.trim()) {
+    if (!row.mdcn_name?.trim() || !candidate.mdcn_name?.trim()) {
       return false;
-    }
-
-    if (candidate.medicine_id && row.medicine_id) {
-      return Number(row.medicine_id) === Number(candidate.medicine_id);
     }
 
     return normalizeMedicineKey(row.mdcn_type) === normalizeMedicineKey(candidate.mdcn_type)

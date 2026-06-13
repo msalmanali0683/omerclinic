@@ -18,7 +18,7 @@ class PrescriptionPrintSettingService
                 'min_height' => '297mm',
                 'margin_top' => '0.1in',
                 'margin_right' => '0.32in',
-                'margin_bottom' => '0.2in',
+                'margin_bottom' => '1.5in',
                 'margin_left' => '0.5in',
             ],
             'Legal' => [
@@ -29,7 +29,7 @@ class PrescriptionPrintSettingService
                 'min_height' => '14in',
                 'margin_top' => '0.1in',
                 'margin_right' => '0.32in',
-                'margin_bottom' => '0.2in',
+                'margin_bottom' => '1.5in',
                 'margin_left' => '0.5in',
             ],
         ];
@@ -60,7 +60,7 @@ class PrescriptionPrintSettingService
             : 'A4';
         $activePreset = $presets[$activeKey];
 
-        return [
+        return $this->enforcePrintMargins([
             'active_paper_key' => $activeKey,
             'paper_presets' => $presets,
             'letterhead_height' => $settings->letterhead_height,
@@ -83,7 +83,7 @@ class PrescriptionPrintSettingService
                 $activePreset['margin_bottom'],
                 $activePreset['margin_left'],
             ]),
-        ];
+        ]);
     }
 
     public function update(array $data, User $user): array
@@ -104,6 +104,19 @@ class PrescriptionPrintSettingService
 
         $settings->save();
 
-        return $this->resolve($settings->fresh());
+        return $this->enforcePrintMargins($this->resolve($settings->fresh()));
+    }
+
+    protected function enforcePrintMargins(array $settings): array
+    {
+        $settings['margin_bottom'] = '1.5in';
+        $settings['margin'] = implode(' ', [
+            $settings['margin_top'],
+            $settings['margin_right'],
+            '1.5in',
+            $settings['margin_left'],
+        ]);
+
+        return $settings;
     }
 }

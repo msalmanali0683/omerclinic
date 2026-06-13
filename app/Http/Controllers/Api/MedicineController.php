@@ -111,6 +111,10 @@ class MedicineController extends Controller
             });
         }
 
+        if ($request->filled('mdcn_type') && in_array($request->mdcn_type, MedicineTypes::allowed(), true)) {
+            $query->where('mdcn_type', $request->mdcn_type);
+        }
+
         $items = $query->limit($request->get('limit', 50))->get()->map(function (Medicine $medicine) {
                 return [
                     'id'                     => $medicine->id,

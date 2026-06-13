@@ -23,7 +23,7 @@ class UpdatePrescriptionRequest extends FormRequest
         return [
             'notes'                              => 'nullable|string|max:2000',
             'next_visit_days'                    => 'nullable|integer|min:1|max:365',
-            'medicines'                          => 'required|array|min:1',
+            'medicines'                          => 'nullable|array',
             'medicines.*.id'                     => 'nullable|integer|exists:prescription_medicines,id',
             'medicines.*.medicine_id'            => 'nullable|integer|exists:medicines,id',
             'medicines.*.mdcn_type'              => 'nullable|string|max:100',

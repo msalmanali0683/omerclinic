@@ -23,6 +23,7 @@ class ClinicalScan extends Model
         'patient_visit_id',
         'clinical_scan_template_id',
         'scan_template_name',
+        'scan_name',
         'scan_operator_id',
         'scan_date',
         'scan_time',

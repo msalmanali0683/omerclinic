@@ -7,7 +7,7 @@
         </span>
         <div>
           <h4 class="font-semibold leading-tight">Prescription Medicines</h4>
-          <p class="text-xs text-emerald-50/90">Search a medicine, set dose, then add to the list below</p>
+          <p class="text-xs text-emerald-50/90">Select type, search or type medicine name, then add to the list</p>
         </div>
       </div>
       <span class="rounded-full bg-white/20 px-3 py-1 text-xs font-medium">
@@ -18,14 +18,13 @@
     <div class="rounded-2xl border border-emerald-200 bg-white shadow-sm dark:border-emerald-800/60 dark:bg-gray-800/80">
       <div class="border-b border-emerald-100 bg-emerald-50/80 px-4 py-2.5 dark:border-emerald-900/40 dark:bg-emerald-900/15">
         <p class="text-sm font-semibold text-gray-900 dark:text-white">Add Medicine</p>
-        <p class="text-xs text-gray-500 dark:text-gray-400">Search master list or enter a new medicine manually</p>
+        <p class="text-xs text-gray-500 dark:text-gray-400">Pick type, search master list or type a new medicine name</p>
       </div>
 
       <div class="space-y-3 p-4">
         <div class="hidden lg:grid lg:grid-cols-12 gap-2 px-1 text-[11px] font-semibold uppercase tracking-wide">
-          <div class="lg:col-span-3 text-emerald-700 dark:text-emerald-300">Medicine</div>
           <div class="lg:col-span-1 text-sky-700 dark:text-sky-300">Type</div>
-          <div class="lg:col-span-2 text-violet-700 dark:text-violet-300">Name</div>
+          <div class="lg:col-span-3 text-violet-700 dark:text-violet-300">Medicine</div>
           <div class="lg:col-span-1 text-fuchsia-700 dark:text-fuchsia-300">Size</div>
           <div class="lg:col-span-2 text-amber-700 dark:text-amber-300">Dose Time</div>
           <div class="lg:col-span-2 text-rose-700 dark:text-rose-300">Dose From Meal</div>
@@ -33,41 +32,9 @@
         </div>
 
         <div class="grid grid-cols-1 gap-3 lg:grid-cols-12">
-          <div class="lg:col-span-3 relative">
-            <label class="mb-1 flex items-center gap-1.5 text-xs font-medium text-emerald-700 dark:text-emerald-300 lg:sr-only">
-              <AppIcon name="search" class-name="w-3.5 h-3.5" />
-              Medicine
-            </label>
-            <input
-              v-model="entryRow.medicine_search"
-              type="text"
-              :class="fieldClasses.emerald"
-              placeholder="Search medicine..."
-              autocomplete="off"
-              @keydown.enter.prevent="addToTable"
-              @input="onMedicineSearch(entryRow)"
-              @focus="openDropdown(entryRow)"
-              @blur="closeDropdown(entryRow)"
-            />
-            <ul
-              v-if="entryRow.show_dropdown && entryRow.medicine_options.length"
-              class="absolute z-30 mt-1 w-full overflow-y-auto rounded-xl border border-emerald-200 bg-white shadow-xl dark:border-emerald-800 dark:bg-gray-900 text-sm"
-              :style="medicineDropdownStyle(entryRow)"
-            >
-              <li
-                v-for="opt in entryRow.medicine_options"
-                :key="opt.id"
-                class="cursor-pointer border-b border-gray-100 px-3 py-2 last:border-0 hover:bg-emerald-50 dark:border-gray-800 dark:hover:bg-emerald-900/20"
-                @mousedown.prevent="selectMedicine(opt)"
-              >
-                {{ opt.label }}
-              </li>
-            </ul>
-          </div>
-
           <div class="lg:col-span-1">
             <label class="mb-1 text-xs font-medium text-sky-700 dark:text-sky-300 lg:sr-only">Type</label>
-            <select v-model="entryRow.mdcn_type" :class="fieldClasses.sky">
+            <select v-model="entryRow.mdcn_type" :class="fieldClasses.sky" @change="onTypeChange">
               <option value="">Type</option>
               <option v-for="opt in medicineTypeOptions" :key="opt.value" :value="opt.value">
                 {{ opt.label }}
@@ -75,16 +42,36 @@
             </select>
           </div>
 
-          <div class="lg:col-span-2">
-            <label class="mb-1 text-xs font-medium text-violet-700 dark:text-violet-300 lg:sr-only">Name</label>
+          <div class="lg:col-span-3 relative">
+            <label class="mb-1 flex items-center gap-1.5 text-xs font-medium text-violet-700 dark:text-violet-300 lg:sr-only">
+              Medicine
+            </label>
             <input
-              v-model="entryRow.mdcn_name"
+              v-model="entryRow.medicine_search"
               type="text"
               :class="fieldClasses.violet"
-              placeholder="Medicine name"
+              :placeholder="entryRow.mdcn_type ? 'Search or type medicine name...' : 'Select type first...'"
+              :disabled="!entryRow.mdcn_type"
               autocomplete="off"
               @keydown.enter.prevent="addToTable"
+              @input="onMedicineInput"
+              @focus="openDropdown(entryRow)"
+              @blur="closeDropdown(entryRow)"
             />
+            <ul
+              v-if="entryRow.show_dropdown && entryRow.medicine_options.length"
+              class="absolute z-30 mt-1 w-full overflow-y-auto rounded-xl border border-violet-200 bg-white shadow-xl dark:border-violet-800 dark:bg-gray-900 text-sm"
+              :style="medicineDropdownStyle(entryRow)"
+            >
+              <li
+                v-for="opt in entryRow.medicine_options"
+                :key="opt.id"
+                class="cursor-pointer border-b border-gray-100 px-3 py-2 last:border-0 hover:bg-violet-50 dark:border-gray-800 dark:hover:bg-violet-900/20"
+                @mousedown.prevent="selectMedicine(opt)"
+              >
+                {{ formatMedicineSearchOptionLabel(opt) }}
+              </li>
+            </ul>
           </div>
 
           <div class="lg:col-span-1">
@@ -157,7 +144,7 @@
         v-if="!tableRows.length"
         class="rounded-xl border border-dashed border-gray-300 bg-gray-50 px-4 py-8 text-center text-sm text-gray-500 dark:border-gray-600 dark:bg-gray-900/30 dark:text-gray-400"
       >
-        No medicines added yet. Use the form above to search and add medicines.
+        No medicines added yet. Prescription can be saved without medicines, or add them using the form above.
       </div>
 
       <div
@@ -249,9 +236,11 @@ import { medicineService } from '@/services/medicineService';
 import { SEARCH_DEBOUNCE_MS } from '@/composables/useAutoSearch';
 import {
   createPrescriptionMedicineRow,
+  formatMedicineSearchOptionLabel,
   isDuplicatePrescriptionMedicineRow,
   persistNewMedicineRows,
-  shouldPersistMedicineRow,
+  syncMedicineMasterFromRow,
+  shouldSyncMedicineMasterRow,
 } from '@/utils/prescriptionMedicines';
 import { MEDICINE_TYPE_OPTIONS } from '@/constants/medicineTypes';
 import { isInjectionMedicine } from '@/utils/prescriptionPrintMedicines';
@@ -318,13 +307,46 @@ function isMedicineSelected(row) {
   return Boolean(row.medicine_id) || Boolean(row.mdcn_name?.trim());
 }
 
+function onTypeChange() {
+  entryRow.value.medicine_id = null;
+  entryRow.value.medicine_search = '';
+  entryRow.value.mdcn_name = '';
+  entryRow.value.mdcn_size = '';
+  entryRow.value.medicine_options = [];
+  entryRow.value.show_dropdown = false;
+}
+
+function onMedicineInput() {
+  if (!entryRow.value.mdcn_type?.trim()) {
+    entryRow.value.medicine_options = [];
+    entryRow.value.show_dropdown = false;
+    return;
+  }
+
+  entryRow.value.medicine_id = null;
+  entryRow.value.mdcn_name = entryRow.value.medicine_search?.trim() ?? '';
+
+  onMedicineSearch(entryRow.value);
+}
+
 function onMedicineSearch(row) {
+  if (!row.mdcn_type?.trim()) {
+    return;
+  }
+
   clearTimeout(searchTimer.value);
   searchTimer.value = setTimeout(() => fetchMedicineOptions(row), SEARCH_DEBOUNCE_MS);
 }
 
 async function fetchMedicineOptions(row) {
   const term = row.medicine_search?.trim();
+  const type = row.mdcn_type?.trim();
+
+  if (!type) {
+    row.medicine_options = [];
+    row.show_dropdown = false;
+    return;
+  }
 
   if (!term) {
     row.medicine_options = [];
@@ -332,7 +354,11 @@ async function fetchMedicineOptions(row) {
   }
 
   try {
-    const { data } = await medicineService.getMedicineOptions({ search: term, limit: 30 });
+    const { data } = await medicineService.getMedicineOptions({
+      search: term,
+      mdcn_type: type,
+      limit: 30,
+    });
     row.medicine_options = data.data ?? [];
     row.show_dropdown = true;
   } catch {
@@ -341,6 +367,10 @@ async function fetchMedicineOptions(row) {
 }
 
 function openDropdown(row) {
+  if (!row.mdcn_type?.trim()) {
+    return;
+  }
+
   if (row.medicine_options.length) {
     row.show_dropdown = true;
   }
@@ -352,8 +382,8 @@ function closeDropdown(row) {
 
 function selectMedicine(opt) {
   entryRow.value.medicine_id = opt.id;
-  entryRow.value.medicine_search = opt.label;
-  entryRow.value.mdcn_type = opt.mdcn_type ?? '';
+  entryRow.value.medicine_search = opt.mdcn_name ?? '';
+  entryRow.value.mdcn_type = opt.mdcn_type ?? entryRow.value.mdcn_type ?? '';
   entryRow.value.mdcn_name = opt.mdcn_name ?? '';
   entryRow.value.mdcn_size = opt.mdcn_size ?? '';
   entryRow.value.mdcn_time_id = opt.mdcn_time_id ? String(opt.mdcn_time_id) : '';
@@ -367,13 +397,23 @@ function resetEntryRow() {
 }
 
 async function addToTable() {
-  if (!entryRow.value.mdcn_name?.trim()) {
+  const name = entryRow.value.mdcn_name?.trim() || entryRow.value.medicine_search?.trim();
+
+  if (!name) {
     toastStore.error('Enter medicine name before adding.');
     return;
   }
 
+  entryRow.value.mdcn_name = name;
+  entryRow.value.medicine_search = name;
+
+  if (!entryRow.value.medicine_id && !entryRow.value.mdcn_type?.trim()) {
+    toastStore.error('Select medicine type before adding a new medicine.');
+    return;
+  }
+
   if (isDuplicatePrescriptionMedicineRow(tableRows.value, entryRow.value)) {
-    toastStore.warning('This medicine is already in the list.');
+    toastStore.warning('This medicine is already added to the list.');
     return;
   }
 
@@ -382,9 +422,8 @@ async function addToTable() {
   try {
     let rowToAdd = { ...entryRow.value, _key: `row-${Date.now()}-${Math.random().toString(36).slice(2)}` };
 
-    if (shouldPersistMedicineRow(rowToAdd)) {
-      const [persisted] = await persistNewMedicineRows([rowToAdd]);
-      rowToAdd = { ...persisted, _key: rowToAdd._key };
+    if (shouldSyncMedicineMasterRow(rowToAdd)) {
+      rowToAdd = { ...(await syncMedicineMasterFromRow(rowToAdd)), _key: rowToAdd._key };
     }
 
     emit('update:modelValue', [...tableRows.value, rowToAdd]);

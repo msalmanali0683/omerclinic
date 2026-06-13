@@ -52,6 +52,32 @@ const form = reactive({
 
 const saving = ref(false);
 
+function hasDraftData() {
+  return Boolean(
+    form.blood_pressure?.trim()
+    || form.temperature?.trim()
+    || form.weight?.trim()
+    || form.pulse_rate?.toString().trim()
+    || form.respiratory_rate?.toString().trim()
+    || form.notes?.trim()
+  );
+}
+
+function getDraftPayload() {
+  return {
+    patient_id: props.patientId,
+    patient_visit_id: props.visitId,
+    blood_pressure: form.blood_pressure || null,
+    temperature: form.temperature || null,
+    weight: form.weight || null,
+    pulse_rate: form.pulse_rate || null,
+    respiratory_rate: form.respiratory_rate || null,
+    notes: form.notes || null,
+  };
+}
+
+defineExpose({ hasDraftData, getDraftPayload });
+
 async function submit() {
   clearErrors();
   saving.value = true;

@@ -496,6 +496,77 @@ class PrescriptionMedicineTest extends TestCase
         ])->assertOk();
     }
 
+    public function test_prescription_update_rejects_foreign_medicine_row_ids(): void
+    {
+        $doctor = $this->makeUser('doctor');
+        $visit = $this->createVisit($doctor, PatientVisit::STATUS_IN_CONSULTATION);
+        $otherVisit = $this->createVisit($doctor, PatientVisit::STATUS_IN_CONSULTATION);
+        $this->addVisitDiagnosis($visit);
+        $this->addVisitDiagnosis($otherVisit);
+        $medicine = Medicine::where('mdcn_name', 'Panadol')->first();
+
+        $createResponse = $this->actingAs($doctor)->postJson('/api/prescriptions', $this->prescriptionPayload($visit))
+            ->assertCreated();
+
+        $prescriptionId = $createResponse->json('data.id');
+
+        $otherResponse = $this->actingAs($doctor)->postJson('/api/prescriptions', $this->prescriptionPayload($otherVisit))
+            ->assertCreated();
+
+        $foreignRowId = $otherResponse->json('data.medicines.0.id');
+
+        $this->actingAs($doctor)->putJson("/api/prescriptions/{$prescriptionId}", [
+            'medicines' => [[
+                'id'          => $foreignRowId,
+                'medicine_id' => $medicine->id,
+                'mdcn_type'   => $medicine->mdcn_type,
+                'mdcn_name'   => $medicine->mdcn_name,
+                'mdcn_size'   => $medicine->mdcn_size,
+            ]],
+        ])->assertStatus(422)
+            ->assertJsonValidationErrors(['medicines.0.id']);
+    }
+
+    public function test_prescription_update_accepts_template_medicines_without_row_id(): void
+    {
+        $doctor = $this->makeUser('doctor');
+        $visit = $this->createVisit($doctor, PatientVisit::STATUS_IN_CONSULTATION);
+        $this->addVisitDiagnosis($visit);
+        $firstMedicine = Medicine::where('mdcn_name', 'Panadol')->first();
+        $secondMedicine = Medicine::where('mdcn_name', '!=', 'Panadol')->first();
+
+        $createResponse = $this->actingAs($doctor)->postJson('/api/prescriptions', $this->prescriptionPayload($visit, [
+            'medicines' => [[
+                'medicine_id' => $firstMedicine->id,
+                'mdcn_type'   => $firstMedicine->mdcn_type,
+                'mdcn_name'   => $firstMedicine->mdcn_name,
+                'mdcn_size'   => $firstMedicine->mdcn_size,
+            ]],
+        ]))->assertCreated();
+
+        $prescriptionId = $createResponse->json('data.id');
+        $existingRowId = $createResponse->json('data.medicines.0.id');
+
+        $this->actingAs($doctor)->putJson("/api/prescriptions/{$prescriptionId}", [
+            'medicines' => [
+                [
+                    'id'          => $existingRowId,
+                    'medicine_id' => $firstMedicine->id,
+                    'mdcn_type'   => $firstMedicine->mdcn_type,
+                    'mdcn_name'   => $firstMedicine->mdcn_name,
+                    'mdcn_size'   => $firstMedicine->mdcn_size,
+                ],
+                [
+                    'medicine_id' => $secondMedicine->id,
+                    'mdcn_type'   => $secondMedicine->mdcn_type,
+                    'mdcn_name'   => $secondMedicine->mdcn_name,
+                    'mdcn_size'   => $secondMedicine->mdcn_size,
+                ],
+            ],
+        ])->assertOk()
+            ->assertJsonCount(2, 'data.medicines');
+    }
+
     protected function makeUser(string $role): User
     {
         $user = User::factory()->create();

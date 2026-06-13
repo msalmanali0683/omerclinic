@@ -74,19 +74,48 @@ export function createPrescriptionMedicineRow(overrides = {}) {
   };
 }
 
-export function serializePrescriptionMedicineRows(rows) {
-  return rows
+export function collectPrescriptionMedicineIds(prescription) {
+  return new Set(
+    (prescription?.medicines ?? [])
+      .map((item) => Number(item.id))
+      .filter((id) => Number.isInteger(id) && id > 0),
+  );
+}
+
+/** Remove row ids that are not real prescription_medicines ids (e.g. diagnosis template ids). */
+export function stripForeignPrescriptionMedicineIds(rows, allowedIds = new Set()) {
+  return (rows ?? []).map((row) => {
+    const rowId = Number(row.id);
+
+    if (!rowId || allowedIds.has(rowId)) {
+      return row;
+    }
+
+    return { ...row, id: null };
+  });
+}
+
+export function serializePrescriptionMedicineRows(rows, { allowedIds = null } = {}) {
+  return (rows ?? [])
     .filter((row) => row.mdcn_name?.trim())
-    .map((row) => ({
-      id: row.id || undefined,
-      medicine_id: row.medicine_id || null,
-      mdcn_type: row.mdcn_type || null,
-      mdcn_name: row.mdcn_name.trim(),
-      mdcn_size: row.mdcn_size || null,
-      mdcn_time_id: row.mdcn_time_id ? Number(row.mdcn_time_id) : null,
-      mdcn_dose_from_meal_id: row.mdcn_dose_from_meal_id ? Number(row.mdcn_dose_from_meal_id) : null,
-      show_in_treatment_given: !!row.show_in_treatment_given,
-    }));
+    .map((row) => {
+      const rowId = Number(row.id);
+      const payload = {
+        medicine_id: row.medicine_id || null,
+        mdcn_type: row.mdcn_type || null,
+        mdcn_name: row.mdcn_name.trim(),
+        mdcn_size: row.mdcn_size || null,
+        mdcn_time_id: row.mdcn_time_id ? Number(row.mdcn_time_id) : null,
+        mdcn_dose_from_meal_id: row.mdcn_dose_from_meal_id ? Number(row.mdcn_dose_from_meal_id) : null,
+        show_in_treatment_given: !!row.show_in_treatment_given,
+      };
+
+      if (rowId && (!allowedIds || allowedIds.has(rowId))) {
+        payload.id = rowId;
+      }
+
+      return payload;
+    });
 }
 
 function applyMedicineMasterToRow(row, medicine) {

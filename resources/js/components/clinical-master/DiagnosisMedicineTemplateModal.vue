@@ -62,7 +62,6 @@
             :options="doseFromMealOptions"
             :error="formErrors.mdcn_dose_from_meal_id"
           />
-          <BaseInput v-model="form.sort_order" type="number" min="0" label="Sort Order" :error="formErrors.sort_order" />
         </div>
 
         <label class="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300">
@@ -80,20 +79,22 @@
 
       <div v-if="loading" class="h-24 animate-pulse rounded-xl bg-gray-200 dark:bg-gray-700 shrink-0" />
 
-      <div v-else-if="templates.length === 0" class="flex flex-1 items-center justify-center text-sm text-gray-500 py-8">
-        No medicines mapped to this diagnosis yet.
-      </div>
+      <div v-else class="diagnosis-template-table-panel rounded-xl border border-gray-200 dark:border-gray-700">
+        <div
+          v-if="templates.length === 0"
+          class="flex min-h-[28rem] items-center justify-center px-4 py-8 text-sm text-gray-500"
+        >
+          No medicines mapped to this diagnosis yet.
+        </div>
 
-      <div v-else class="min-h-0 flex-1 overflow-auto rounded-xl border border-gray-200 dark:border-gray-700">
-        <table class="min-w-full text-sm">
-          <thead class="bg-gray-50 dark:bg-gray-900/40 text-left">
+        <table v-else class="min-w-full text-sm">
+          <thead class="sticky top-0 z-10 bg-gray-50 dark:bg-gray-900/40 text-left">
             <tr>
               <th class="px-3 py-2 font-medium">Type</th>
               <th class="px-3 py-2 font-medium">Name</th>
               <th class="px-3 py-2 font-medium">Size</th>
               <th class="px-3 py-2 font-medium">Dose Time</th>
               <th class="px-3 py-2 font-medium">Dose From Meal</th>
-              <th class="px-3 py-2 font-medium">Sort</th>
               <th class="px-3 py-2 font-medium">Active</th>
               <th v-if="canEdit || canDelete" class="px-3 py-2 font-medium">Actions</th>
             </tr>
@@ -105,7 +106,6 @@
               <td class="px-3 py-2">{{ row.mdcn_size || '—' }}</td>
               <td class="px-3 py-2">{{ row.dose_time_text || '—' }}</td>
               <td class="px-3 py-2">{{ row.dose_from_meal_text || '—' }}</td>
-              <td class="px-3 py-2">{{ row.sort_order ?? 0 }}</td>
               <td class="px-3 py-2">{{ row.is_active ? 'Yes' : 'No' }}</td>
               <td v-if="canEdit || canDelete" class="px-3 py-2">
                 <div class="flex gap-1">
@@ -146,6 +146,7 @@ import { medicineDoseTimeService } from '@/services/medicineDoseTimeService';
 import { medicineDoseFromMealService } from '@/services/medicineDoseFromMealService';
 import { useFormErrors } from '@/composables/useFormErrors';
 import { MEDICINE_TYPE_OPTIONS, normalizeMedicineType } from '@/constants/medicineTypes';
+import { shouldSyncMedicineMasterRow, syncMedicineMasterFromRow } from '@/utils/prescriptionMedicines';
 import BaseButton from '@/components/ui/BaseButton.vue';
 import BaseInput from '@/components/ui/BaseInput.vue';
 import BaseSelect from '@/components/ui/BaseSelect.vue';
@@ -183,7 +184,6 @@ const form = reactive({
   mdcn_size: '',
   mdcn_time_id: '',
   mdcn_dose_from_meal_id: '',
-  sort_order: '0',
   is_active: true,
 });
 
@@ -201,7 +201,6 @@ function resetForm() {
   form.mdcn_size = '';
   form.mdcn_time_id = '';
   form.mdcn_dose_from_meal_id = '';
-  form.sort_order = String((templates.value.length || 0) + 1);
   form.is_active = true;
   clearErrors();
 }
@@ -284,16 +283,40 @@ function buildPayload() {
     mdcn_size: form.mdcn_size || null,
     mdcn_time_id: form.mdcn_time_id ? Number(form.mdcn_time_id) : null,
     mdcn_dose_from_meal_id: form.mdcn_dose_from_meal_id ? Number(form.mdcn_dose_from_meal_id) : null,
-    sort_order: Number(form.sort_order || 0),
     is_active: Boolean(form.is_active),
   };
 }
 
 async function saveTemplate() {
   clearErrors();
+
+  const name = form.mdcn_name?.trim();
+
+  if (!name) {
+    toastStore.error('Enter medicine name before saving.');
+    return;
+  }
+
+  form.mdcn_name = name;
+
+  if (!form.medicine_id && !form.mdcn_type?.trim()) {
+    toastStore.error('Select medicine type before adding a new medicine.');
+    return;
+  }
+
   formModal.saving = true;
 
   try {
+    if (shouldSyncMedicineMasterRow(form)) {
+      const synced = await syncMedicineMasterFromRow(form);
+      form.medicine_id = synced.medicine_id ? String(synced.medicine_id) : '';
+      form.mdcn_type = synced.mdcn_type ?? form.mdcn_type;
+      form.mdcn_name = synced.mdcn_name ?? form.mdcn_name;
+      form.mdcn_size = synced.mdcn_size ?? form.mdcn_size;
+      form.mdcn_time_id = synced.mdcn_time_id ? String(synced.mdcn_time_id) : '';
+      form.mdcn_dose_from_meal_id = synced.mdcn_dose_from_meal_id ? String(synced.mdcn_dose_from_meal_id) : '';
+    }
+
     const payload = buildPayload();
 
     if (formModal.editing) {
@@ -324,7 +347,6 @@ function openEdit(row) {
   form.mdcn_size = row.mdcn_size ?? '';
   form.mdcn_time_id = row.mdcn_time_id ? String(row.mdcn_time_id) : '';
   form.mdcn_dose_from_meal_id = row.mdcn_dose_from_meal_id ? String(row.mdcn_dose_from_meal_id) : '';
-  form.sort_order = String(row.sort_order ?? 0);
   form.is_active = Boolean(row.is_active);
   clearErrors();
 }
@@ -359,3 +381,11 @@ watch(
   }
 );
 </script>
+
+<style scoped>
+.diagnosis-template-table-panel {
+  min-height: 28rem;
+  max-height: 28rem;
+  overflow-y: auto;
+}
+</style>

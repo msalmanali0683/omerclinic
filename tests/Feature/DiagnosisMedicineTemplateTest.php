@@ -172,11 +172,142 @@ class DiagnosisMedicineTemplateTest extends TestCase
             ->assertJsonCount(0, 'medicines');
     }
 
+    public function test_create_assigns_incrementing_sort_order_automatically(): void
+    {
+        $admin = $this->makeUser('hospital-admin');
+        $diagnosis = DiagnosisMaster::create(['diagnosis_name' => 'Sort Order Test Diagnosis']);
+        $medicineA = $this->makeMedicine('Tab.', 'Sort Med A', '500mg');
+        $medicineB = $this->makeMedicine('Tab.', 'Sort Med B', '250mg');
+
+        $first = $this->actingAs($admin)->postJson('/api/diagnosis-medicine-templates', [
+            'diagnosis_master_id' => $diagnosis->id,
+            'medicine_id'         => $medicineA->id,
+            'mdcn_name'           => $medicineA->mdcn_name,
+            'is_active'           => true,
+        ]);
+
+        $second = $this->actingAs($admin)->postJson('/api/diagnosis-medicine-templates', [
+            'diagnosis_master_id' => $diagnosis->id,
+            'medicine_id'         => $medicineB->id,
+            'mdcn_name'           => $medicineB->mdcn_name,
+            'is_active'           => true,
+        ]);
+
+        $first->assertCreated()->assertJsonPath('data.sort_order', 1);
+        $second->assertCreated()->assertJsonPath('data.sort_order', 2);
+    }
+
+    public function test_create_syncs_new_medicine_to_master(): void
+    {
+        $admin = $this->makeUser('hospital-admin');
+        $diagnosis = DiagnosisMaster::first();
+        $doseTime = MedicineDoseTime::first();
+        $doseMeal = MedicineDoseFromMeal::first();
+
+        $response = $this->actingAs($admin)->postJson('/api/diagnosis-medicine-templates', [
+            'diagnosis_master_id'    => $diagnosis->id,
+            'mdcn_type'              => 'Tab.',
+            'mdcn_name'              => 'Brand New Diagnosis Med',
+            'mdcn_size'              => '500mg',
+            'mdcn_time_id'           => $doseTime->id,
+            'mdcn_dose_from_meal_id' => $doseMeal->id,
+            'is_active'              => true,
+        ]);
+
+        $medicineId = $response->json('data.medicine_id');
+
+        $response->assertCreated()
+            ->assertJsonPath('data.mdcn_name', 'Brand New Diagnosis Med');
+
+        $this->assertNotNull($medicineId);
+        $this->assertDatabaseHas('medicines', [
+            'id'        => $medicineId,
+            'mdcn_type' => 'Tab.',
+            'mdcn_name' => 'Brand New Diagnosis Med',
+            'mdcn_size' => '500mg',
+        ]);
+    }
+
+    public function test_update_syncs_changed_dose_to_medicine_master(): void
+    {
+        $admin = $this->makeUser('hospital-admin');
+        $diagnosis = DiagnosisMaster::first();
+        $medicine = $this->makeMedicine('Tab.', 'Dose Sync Med', '500mg');
+        $doseTime = MedicineDoseTime::first();
+        $doseMeal = MedicineDoseFromMeal::first();
+        $newDoseTime = MedicineDoseTime::skip(1)->first() ?? $doseTime;
+
+        $create = $this->actingAs($admin)->postJson('/api/diagnosis-medicine-templates', [
+            'diagnosis_master_id' => $diagnosis->id,
+            'medicine_id'         => $medicine->id,
+            'mdcn_type'           => $medicine->mdcn_type,
+            'mdcn_name'           => $medicine->mdcn_name,
+            'mdcn_size'           => $medicine->mdcn_size,
+            'mdcn_time_id'        => $doseTime->id,
+            'is_active'           => true,
+        ])->assertCreated();
+
+        $templateId = $create->json('data.id');
+
+        $this->actingAs($admin)->putJson("/api/diagnosis-medicine-templates/{$templateId}", [
+            'diagnosis_master_id'    => $diagnosis->id,
+            'medicine_id'            => $medicine->id,
+            'mdcn_type'              => $medicine->mdcn_type,
+            'mdcn_name'              => $medicine->mdcn_name,
+            'mdcn_size'              => $medicine->mdcn_size,
+            'mdcn_time_id'           => $newDoseTime->id,
+            'mdcn_dose_from_meal_id' => $doseMeal->id,
+            'is_active'              => true,
+        ])->assertOk();
+
+        $this->assertDatabaseHas('medicines', [
+            'id'                     => $medicine->id,
+            'mdcn_time_id'           => $newDoseTime->id,
+            'mdcn_dose_from_meal_id' => $doseMeal->id,
+        ]);
+    }
+
+    public function test_update_does_not_change_sort_order(): void
+    {
+        $admin = $this->makeUser('hospital-admin');
+        $diagnosis = DiagnosisMaster::first();
+        $medicine = $this->makeMedicine('Tab.', 'Sort Preserve Med', '500mg');
+
+        $create = $this->actingAs($admin)->postJson('/api/diagnosis-medicine-templates', [
+            'diagnosis_master_id' => $diagnosis->id,
+            'medicine_id'         => $medicine->id,
+            'mdcn_name'           => $medicine->mdcn_name,
+            'is_active'           => true,
+        ])->assertCreated();
+
+        $templateId = $create->json('data.id');
+        $originalSortOrder = $create->json('data.sort_order');
+
+        $this->actingAs($admin)->putJson("/api/diagnosis-medicine-templates/{$templateId}", [
+            'diagnosis_master_id' => $diagnosis->id,
+            'medicine_id'         => $medicine->id,
+            'mdcn_name'           => $medicine->mdcn_name,
+            'mdcn_size'           => 'Updated size',
+            'sort_order'          => 99,
+            'is_active'           => true,
+        ])->assertOk()
+            ->assertJsonPath('data.sort_order', $originalSortOrder);
+    }
+
     protected function makeUser(string $role): User
     {
         $user = User::factory()->create();
         $user->assignRole($role);
 
         return $user;
+    }
+
+    protected function makeMedicine(string $type, string $name, ?string $size = null): Medicine
+    {
+        return Medicine::create([
+            'mdcn_type' => $type,
+            'mdcn_name' => $name,
+            'mdcn_size' => $size,
+        ]);
     }
 }

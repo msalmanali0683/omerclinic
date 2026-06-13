@@ -11,6 +11,8 @@ use Illuminate\Validation\ValidationException;
 
 class DiagnosisMedicineTemplateService
 {
+    public function __construct(protected MedicineService $medicineService) {}
+
     public function prepareAttributes(array $data): array
     {
         if (! empty($data['medicine_id'])) {
@@ -26,6 +28,42 @@ class DiagnosisMedicineTemplateService
         }
 
         return $data;
+    }
+
+    public function syncMedicineMaster(array $data, ?User $user = null): array
+    {
+        $type = trim((string) ($data['mdcn_type'] ?? ''));
+        $name = trim((string) ($data['mdcn_name'] ?? ''));
+
+        if ($type === '' || $name === '') {
+            return $data;
+        }
+
+        $medicine = $this->medicineService->findOrCreate([
+            'mdcn_type'              => $type,
+            'mdcn_name'              => $name,
+            'mdcn_size'              => $data['mdcn_size'] ?? null,
+            'mdcn_time_id'           => $data['mdcn_time_id'] ?? null,
+            'mdcn_dose_from_meal_id' => $data['mdcn_dose_from_meal_id'] ?? null,
+        ], $user);
+
+        $data['medicine_id'] = $medicine->id;
+        $data['mdcn_type'] = $medicine->mdcn_type;
+        $data['mdcn_name'] = $medicine->mdcn_name;
+        $data['mdcn_size'] = $medicine->mdcn_size;
+        $data['mdcn_time_id'] = $data['mdcn_time_id'] ?? $medicine->mdcn_time_id;
+        $data['mdcn_dose_from_meal_id'] = $data['mdcn_dose_from_meal_id'] ?? $medicine->mdcn_dose_from_meal_id;
+
+        return $data;
+    }
+
+    protected function nextSortOrder(int $diagnosisMasterId): int
+    {
+        $max = DiagnosisMedicineTemplate::withTrashed()
+            ->where('diagnosis_master_id', $diagnosisMasterId)
+            ->max('sort_order');
+
+        return ((int) $max) + 1;
     }
 
     public function assertDiagnosisExists(int $diagnosisMasterId): DiagnosisMaster
@@ -117,8 +155,13 @@ class DiagnosisMedicineTemplateService
     public function create(array $data, User $user): DiagnosisMedicineTemplate
     {
         $data = $this->prepareAttributes($data);
+        $data = $this->syncMedicineMaster($data, $user);
         $this->assertDiagnosisExists((int) $data['diagnosis_master_id']);
         $this->assertNotDuplicate((int) $data['diagnosis_master_id'], $data);
+
+        if (! array_key_exists('sort_order', $data) || $data['sort_order'] === null || $data['sort_order'] === '') {
+            $data['sort_order'] = $this->nextSortOrder((int) $data['diagnosis_master_id']);
+        }
 
         return DiagnosisMedicineTemplate::create([
             ...$data,
@@ -130,8 +173,11 @@ class DiagnosisMedicineTemplateService
     public function update(DiagnosisMedicineTemplate $template, array $data, User $user): DiagnosisMedicineTemplate
     {
         $data = $this->prepareAttributes($data);
+        $data = $this->syncMedicineMaster($data, $user);
         $this->assertDiagnosisExists((int) $data['diagnosis_master_id']);
         $this->assertNotDuplicate((int) $data['diagnosis_master_id'], $data, $template->id);
+
+        unset($data['sort_order']);
 
         $template->update([
             ...$data,

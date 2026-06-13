@@ -234,7 +234,7 @@ import VitalsHistory from '@/components/vitals/VitalsHistory.vue';
 import ClinicalScanHistory from '@/components/clinical-scans/ClinicalScanHistory.vue';
 import LaboratoryHistory from '@/components/laboratory/LaboratoryHistory.vue';
 import PrescriptionMedicineRows from '@/components/prescription/PrescriptionMedicineRows.vue';
-import { mapPrescriptionMedicineToRow, persistNewMedicineRows, preparePrescriptionMedicineRowsForSave, serializePrescriptionMedicineRows, stripEmptyPrescriptionMedicineRows, appendDiagnosisTemplateMedicines } from '@/utils/prescriptionMedicines';
+import { mapPrescriptionMedicineToRow, persistNewMedicineRows, preparePrescriptionMedicineRowsForSave, serializePrescriptionMedicineRows, stripEmptyPrescriptionMedicineRows, appendDiagnosisTemplateMedicines, collectPrescriptionMedicineIds, stripForeignPrescriptionMedicineIds } from '@/utils/prescriptionMedicines';
 import { diagnosisMedicineTemplateService } from '@/services/diagnosisMedicineTemplateService';
 import { medicineDoseTimeService } from '@/services/medicineDoseTimeService';
 import { medicineDoseFromMealService } from '@/services/medicineDoseFromMealService';
@@ -664,7 +664,8 @@ function applyLoadedTemplateMedicines(templates, { silent = false } = {}) {
   }
 
   const { rows, added, skipped } = appendDiagnosisTemplateMedicines(prescriptionMedicineRows.value, templates);
-  prescriptionMedicineRows.value = rows;
+  const allowedIds = collectPrescriptionMedicineIds(existingPrescription.value);
+  prescriptionMedicineRows.value = stripForeignPrescriptionMedicineIds(rows, allowedIds);
 
   if (silent) {
     return;
@@ -758,6 +759,12 @@ async function savePrescription() {
 
   prescriptionMedicineRows.value = stripEmptyPrescriptionMedicineRows(prescriptionMedicineRows.value);
 
+  const allowedPrescriptionMedicineIds = collectPrescriptionMedicineIds(existingPrescription.value);
+  prescriptionMedicineRows.value = stripForeignPrescriptionMedicineIds(
+    prescriptionMedicineRows.value,
+    allowedPrescriptionMedicineIds,
+  );
+
   try {
     prescriptionMedicineRows.value = await persistNewMedicineRows(prescriptionMedicineRows.value);
   } catch (error) {
@@ -770,7 +777,9 @@ async function savePrescription() {
     }
   }
 
-  const medicines = serializePrescriptionMedicineRows(prescriptionMedicineRows.value);
+  const medicines = serializePrescriptionMedicineRows(prescriptionMedicineRows.value, {
+    allowedIds: allowedPrescriptionMedicineIds,
+  });
 
   rxSaving.value = true;
   try {

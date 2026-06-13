@@ -41,6 +41,21 @@ export function mapPrescriptionMedicineToRow(item) {
   });
 }
 
+export function mapDiagnosisTemplateToPrescriptionRow(template) {
+  return createPrescriptionMedicineRow({
+    medicine_id: template.medicine_id ?? null,
+    medicine_search: template.mdcn_name ?? '',
+    mdcn_type: template.mdcn_type ?? '',
+    mdcn_name: template.mdcn_name ?? '',
+    mdcn_size: template.mdcn_size ?? '',
+    mdcn_time_id: template.mdcn_time_id ? String(template.mdcn_time_id) : '',
+    mdcn_dose_from_meal_id: template.mdcn_dose_from_meal_id
+      ? String(template.mdcn_dose_from_meal_id)
+      : '',
+    show_in_treatment_given: template.show_in_treatment_given ?? isInjectionMedicine(template),
+  });
+}
+
 export function createPrescriptionMedicineRow(overrides = {}) {
   return {
     _key: `row-${Date.now()}-${Math.random().toString(36).slice(2)}`,
@@ -154,7 +169,7 @@ export function appendDiagnosisTemplateMedicines(rows, templates) {
       continue;
     }
 
-    nextRows.push(mapPrescriptionMedicineToRow(template));
+    nextRows.push(mapDiagnosisTemplateToPrescriptionRow(template));
     added += 1;
   }
 

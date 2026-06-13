@@ -6,6 +6,7 @@ use App\Models\ClinicalScanTemplate;
 use App\Models\ClinicalScanTemplateField;
 use App\Models\User;
 use App\Support\ClinicalScanFieldKeyGenerator;
+use App\Support\SoftDeletedTemplateFieldKeyRelease;
 use Illuminate\Support\Facades\DB;
 
 class ClinicalScanTemplateService
@@ -13,6 +14,26 @@ class ClinicalScanTemplateService
     public function create(array $data, User $user): ClinicalScanTemplate
     {
         return DB::transaction(function () use ($data, $user) {
+            $existing = ClinicalScanTemplate::withTrashed()
+                ->where('template_name', $data['template_name'])
+                ->first();
+
+            if ($existing) {
+                if ($existing->trashed()) {
+                    $existing->restore();
+                }
+
+                $existing->update([
+                    'description' => $data['description'] ?? null,
+                    'is_active'   => $data['is_active'] ?? true,
+                    'updated_by'  => $user->id,
+                ]);
+
+                $this->syncFields($existing, $data['fields'], $user);
+
+                return $existing->load('fields');
+            }
+
             $template = ClinicalScanTemplate::create([
                 'template_name' => $data['template_name'],
                 'description'   => $data['description'] ?? null,
@@ -82,16 +103,61 @@ class ClinicalScanTemplateService
             ];
 
             if (! empty($row['id'])) {
-                $field = ClinicalScanTemplateField::query()
+                $fieldId = (int) $row['id'];
+
+                SoftDeletedTemplateFieldKeyRelease::release(
+                    ClinicalScanTemplateField::class,
+                    'clinical_scan_template_id',
+                    $template->id,
+                    $fieldKey,
+                    $fieldId,
+                );
+
+                $field = ClinicalScanTemplateField::withTrashed()
                     ->where('clinical_scan_template_id', $template->id)
-                    ->whereKey($row['id'])
+                    ->whereKey($fieldId)
                     ->firstOrFail();
+
+                if ($field->trashed()) {
+                    $field->restore();
+                }
 
                 $field->update($payload);
                 $keptIds[] = $field->id;
 
                 continue;
             }
+
+            $existingField = ClinicalScanTemplateField::withTrashed()
+                ->where('clinical_scan_template_id', $template->id)
+                ->where('field_key', $fieldKey)
+                ->first();
+
+            if ($existingField) {
+                SoftDeletedTemplateFieldKeyRelease::release(
+                    ClinicalScanTemplateField::class,
+                    'clinical_scan_template_id',
+                    $template->id,
+                    $fieldKey,
+                    $existingField->id,
+                );
+
+                if ($existingField->trashed()) {
+                    $existingField->restore();
+                }
+
+                $existingField->update($payload);
+                $keptIds[] = $existingField->id;
+
+                continue;
+            }
+
+            SoftDeletedTemplateFieldKeyRelease::release(
+                ClinicalScanTemplateField::class,
+                'clinical_scan_template_id',
+                $template->id,
+                $fieldKey,
+            );
 
             $field = ClinicalScanTemplateField::create([
                 ...$payload,

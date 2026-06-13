@@ -3,8 +3,8 @@
 namespace App\Http\Requests;
 
 use App\Models\ClinicalScanTemplateField;
+use App\Support\ActiveRecordValidation;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
 class StoreClinicalScanTemplateRequest extends FormRequest
 {
@@ -16,7 +16,7 @@ class StoreClinicalScanTemplateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'template_name'           => 'required|string|max:255|unique:clinical_scan_templates,template_name',
+            'template_name'           => ['required', 'string', 'max:255', ActiveRecordValidation::unique('clinical_scan_templates', 'template_name')],
             'description'             => 'nullable|string|max:2000',
             'is_active'               => 'boolean',
             'fields'                  => 'required|array|min:1',

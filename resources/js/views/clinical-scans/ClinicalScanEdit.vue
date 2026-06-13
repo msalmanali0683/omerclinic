@@ -35,27 +35,6 @@
           <ClinicalScanDynamicFields v-model="scanValues" :error="errors.values" />
         </div>
 
-        <div>
-          <label class="block text-sm font-medium mb-1">Notes</label>
-          <textarea
-            v-model="form.notes"
-            rows="2"
-            placeholder="Optional internal notes..."
-            class="w-full rounded-lg border border-gray-300 dark:border-gray-600 px-3 py-2 text-sm dark:bg-gray-800"
-          />
-        </div>
-
-        <div>
-          <label class="block text-sm font-medium mb-1">Impression</label>
-          <textarea
-            v-model="form.impression"
-            rows="3"
-            placeholder="Overall impression..."
-            class="w-full rounded-lg border border-gray-300 dark:border-gray-600 px-3 py-2 text-sm dark:bg-gray-800"
-          />
-          <p v-if="errors.impression" class="mt-1 text-sm text-red-600">{{ errors.impression }}</p>
-        </div>
-
         <div class="flex flex-wrap gap-3">
           <BaseButton type="submit" :loading="saving && savingStatus === 'completed'">Save Scan</BaseButton>
           <BaseButton
@@ -80,7 +59,7 @@ import { useToastStore } from '@/stores/toast';
 import { clinicalScanService } from '@/services/clinicalScanService';
 import { clinicalScanTemplateService } from '@/services/clinicalScanTemplateService';
 import { useFormErrors } from '@/composables/useFormErrors';
-import { buildScanValuesFromTemplate, serializeScanValues } from '@/utils/clinicalScans';
+import { applyLegacyScanMetaToValues, buildScanValuesFromTemplate, serializeScanValues } from '@/utils/clinicalScans';
 import { displayPatientAge, formatGender } from '@/utils/formatters';
 import BaseButton from '@/components/ui/BaseButton.vue';
 import BaseInput from '@/components/ui/BaseInput.vue';
@@ -99,8 +78,6 @@ const savingStatus = ref('');
 
 const form = reactive({
   scan_name: '',
-  notes: '',
-  impression: '',
 });
 
 async function submit(status) {
@@ -112,8 +89,8 @@ async function submit(status) {
     const payload = {
       scan_name: form.scan_name?.trim() || null,
       status,
-      notes: form.notes?.trim() || null,
-      impression: form.impression?.trim() || null,
+      notes: null,
+      impression: null,
       values: serializeScanValues(scanValues.value),
     };
 
@@ -139,8 +116,6 @@ onMounted(async () => {
     const row = data.data ?? data;
     scan.value = row;
     form.scan_name = row.scan_name || row.scan_template_name || '';
-    form.notes = row.notes || '';
-    form.impression = row.impression || '';
 
     let templateFields = row.template?.fields ?? [];
 
@@ -150,7 +125,10 @@ onMounted(async () => {
       templateFields = template.fields ?? [];
     }
 
-    scanValues.value = buildScanValuesFromTemplate(templateFields, row.values ?? []);
+    scanValues.value = applyLegacyScanMetaToValues(
+      buildScanValuesFromTemplate(templateFields, row.values ?? []),
+      { notes: row.notes, impression: row.impression },
+    );
   } catch {
     toastStore.error('Failed to load scan.');
     router.push('/clinical-scans');

@@ -2,8 +2,8 @@
 
 namespace App\Http\Requests;
 
+use App\Support\ActiveRecordValidation;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
 class UpdateLaboratoryTestTemplateRequest extends FormRequest
 {
@@ -23,11 +23,11 @@ class UpdateLaboratoryTestTemplateRequest extends FormRequest
         return [
             'test_name'                => [
                 'required', 'string', 'max:255',
-                Rule::unique('laboratory_test_templates', 'test_name')->ignore($template->id),
+                ActiveRecordValidation::unique('laboratory_test_templates', 'test_name', $template->id),
             ],
             'test_code'                => [
                 'nullable', 'string', 'max:100',
-                Rule::unique('laboratory_test_templates', 'test_code')->ignore($template->id),
+                ActiveRecordValidation::unique('laboratory_test_templates', 'test_code', $template->id),
             ],
             'test_type'                => 'nullable|string|in:standard,imaging',
             'test_price'               => 'nullable|numeric|min:0|max:99999999.99',

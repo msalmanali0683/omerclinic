@@ -2,8 +2,8 @@
 
 namespace App\Http\Requests;
 
+use App\Support\ActiveRecordValidation;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
 class UpdateComplaintMasterRequest extends FormRequest
 {
@@ -19,7 +19,7 @@ class UpdateComplaintMasterRequest extends FormRequest
                 'required',
                 'string',
                 'max:255',
-                Rule::unique('complaint_masters', 'complaint_name')->ignore($this->route('complaint_master')),
+                ActiveRecordValidation::unique('complaint_masters', 'complaint_name', $this->route('complaint_master')),
             ],
         ];
     }

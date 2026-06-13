@@ -28,6 +28,22 @@ class MedicineDoseTimeController extends Controller
 
     public function store(StoreMedicineDoseTimeRequest $request)
     {
+        $existing = MedicineDoseTime::withTrashed()
+            ->where('dose_time', $request->validated('dose_time'))
+            ->first();
+
+        if ($existing) {
+            if ($existing->trashed()) {
+                $existing->restore();
+                $existing->update(['updated_by' => $request->user()->id]);
+            }
+
+            return response()->json([
+                'message' => 'Dose time created successfully.',
+                'data'    => new MedicineDoseTimeResource($existing),
+            ], 201);
+        }
+
         $record = MedicineDoseTime::create([
             ...$request->validated(),
             'created_by' => $request->user()->id,

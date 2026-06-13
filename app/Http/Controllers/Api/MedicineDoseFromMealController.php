@@ -28,6 +28,22 @@ class MedicineDoseFromMealController extends Controller
 
     public function store(StoreMedicineDoseFromMealRequest $request)
     {
+        $existing = MedicineDoseFromMeal::withTrashed()
+            ->where('dose_from_meal', $request->validated('dose_from_meal'))
+            ->first();
+
+        if ($existing) {
+            if ($existing->trashed()) {
+                $existing->restore();
+                $existing->update(['updated_by' => $request->user()->id]);
+            }
+
+            return response()->json([
+                'message' => 'Dose from meal created successfully.',
+                'data'    => new MedicineDoseFromMealResource($existing),
+            ], 201);
+        }
+
         $record = MedicineDoseFromMeal::create([
             ...$request->validated(),
             'created_by' => $request->user()->id,

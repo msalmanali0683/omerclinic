@@ -6,6 +6,7 @@ use App\Models\LaboratoryTestTemplate;
 use App\Models\LaboratoryTestTemplateField;
 use App\Models\User;
 use App\Support\LaboratoryFieldKeyGenerator;
+use App\Support\SoftDeletedTemplateFieldKeyRelease;
 use Illuminate\Support\Facades\DB;
 
 class LaboratoryTestTemplateService
@@ -13,6 +14,29 @@ class LaboratoryTestTemplateService
     public function create(array $data, User $user): LaboratoryTestTemplate
     {
         return DB::transaction(function () use ($data, $user) {
+            $existing = LaboratoryTestTemplate::withTrashed()
+                ->where('test_name', $data['test_name'])
+                ->first();
+
+            if ($existing) {
+                if ($existing->trashed()) {
+                    $existing->restore();
+                }
+
+                $existing->update([
+                    'test_code'   => $data['test_code'] ?? null,
+                    'test_type'   => $data['test_type'] ?? LaboratoryTestTemplate::TYPE_STANDARD,
+                    'test_price'  => $data['test_price'] ?? 0,
+                    'description' => $data['description'] ?? null,
+                    'is_active'   => $data['is_active'] ?? true,
+                    'updated_by'  => $user->id,
+                ]);
+
+                $this->syncFields($existing, $data['fields'], $user);
+
+                return $existing->load('fields');
+            }
+
             $template = LaboratoryTestTemplate::create([
                 'test_name'   => $data['test_name'],
                 'test_code'   => $data['test_code'] ?? null,
@@ -81,16 +105,61 @@ class LaboratoryTestTemplateService
             ];
 
             if (! empty($row['id'])) {
-                $field = LaboratoryTestTemplateField::query()
+                $fieldId = (int) $row['id'];
+
+                SoftDeletedTemplateFieldKeyRelease::release(
+                    LaboratoryTestTemplateField::class,
+                    'laboratory_test_template_id',
+                    $template->id,
+                    $fieldKey,
+                    $fieldId,
+                );
+
+                $field = LaboratoryTestTemplateField::withTrashed()
                     ->where('laboratory_test_template_id', $template->id)
-                    ->whereKey($row['id'])
+                    ->whereKey($fieldId)
                     ->firstOrFail();
+
+                if ($field->trashed()) {
+                    $field->restore();
+                }
 
                 $field->update($payload);
                 $keptIds[] = $field->id;
 
                 continue;
             }
+
+            $existingField = LaboratoryTestTemplateField::withTrashed()
+                ->where('laboratory_test_template_id', $template->id)
+                ->where('field_key', $fieldKey)
+                ->first();
+
+            if ($existingField) {
+                SoftDeletedTemplateFieldKeyRelease::release(
+                    LaboratoryTestTemplateField::class,
+                    'laboratory_test_template_id',
+                    $template->id,
+                    $fieldKey,
+                    $existingField->id,
+                );
+
+                if ($existingField->trashed()) {
+                    $existingField->restore();
+                }
+
+                $existingField->update($payload);
+                $keptIds[] = $existingField->id;
+
+                continue;
+            }
+
+            SoftDeletedTemplateFieldKeyRelease::release(
+                LaboratoryTestTemplateField::class,
+                'laboratory_test_template_id',
+                $template->id,
+                $fieldKey,
+            );
 
             $field = LaboratoryTestTemplateField::create([
                 ...$payload,

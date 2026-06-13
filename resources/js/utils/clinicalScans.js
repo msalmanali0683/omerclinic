@@ -240,6 +240,35 @@ export function buildScanValuesFromTemplate(fields, existingValues = []) {
     });
 }
 
+export function isScanImpressionField(row) {
+    const key = String(row?.field_key || '').toLowerCase();
+    const label = String(row?.field_label || '').toLowerCase();
+
+    return key === 'impression' || label === 'impression';
+}
+
+export function isScanNotesField(row) {
+    const key = String(row?.field_key || '').toLowerCase();
+    const label = String(row?.field_label || '').toLowerCase();
+
+    return key === 'notes' || label === 'notes';
+}
+
+/** Merge legacy scan.notes / scan.impression columns into matching template fields when editing. */
+export function applyLegacyScanMetaToValues(scanValues, { notes = null, impression = null } = {}) {
+    return (scanValues || []).map((row) => {
+        if (impression && isScanImpressionField(row) && !String(row.field_value ?? '').trim()) {
+            return { ...row, field_value: impression };
+        }
+
+        if (notes && isScanNotesField(row) && !String(row.field_value ?? '').trim()) {
+            return { ...row, field_value: notes };
+        }
+
+        return row;
+    });
+}
+
 export function groupScanFieldsForEntry(values = []) {
     const sorted = [...values].sort((a, b) => (a.sort_order || 0) - (b.sort_order || 0));
     const groups = [];

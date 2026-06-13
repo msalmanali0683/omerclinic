@@ -446,6 +446,56 @@ class PrescriptionMedicineTest extends TestCase
         ]);
     }
 
+    public function test_prescription_save_and_update_work_with_diagnosis_template_medicines(): void
+    {
+        $doctor = $this->makeUser('doctor');
+        $admin = $this->makeUser('hospital-admin');
+        $visit = $this->createVisit($doctor, PatientVisit::STATUS_IN_CONSULTATION);
+        $this->addVisitDiagnosis($visit);
+        $diagnosis = DiagnosisMaster::first();
+        $medicine = Medicine::where('mdcn_name', 'Panadol')->first();
+        $doseTime = MedicineDoseTime::first();
+
+        $this->actingAs($admin)->postJson('/api/diagnosis-medicine-templates', [
+            'diagnosis_master_id' => $diagnosis->id,
+            'medicine_id'         => $medicine->id,
+            'mdcn_name'           => $medicine->mdcn_name,
+            'mdcn_type'           => $medicine->mdcn_type,
+            'mdcn_size'           => $medicine->mdcn_size,
+            'mdcn_time_id'        => $doseTime->id,
+            'is_active'           => true,
+        ])->assertCreated();
+
+        $createResponse = $this->actingAs($doctor)->postJson('/api/prescriptions', $this->prescriptionPayload($visit, [
+            'medicines' => [[
+                'medicine_id'  => $medicine->id,
+                'mdcn_type'    => $medicine->mdcn_type,
+                'mdcn_name'    => $medicine->mdcn_name,
+                'mdcn_size'    => $medicine->mdcn_size,
+                'mdcn_time_id' => $doseTime->id,
+            ]],
+        ]));
+
+        $createResponse->assertCreated()
+            ->assertJsonPath('data.medicines.0.mdcn_name', 'Panadol')
+            ->assertJsonStructure(['print_data' => ['medicines']]);
+
+        $prescriptionId = $createResponse->json('data.id');
+        $medicineItemId = $createResponse->json('data.medicines.0.id');
+
+        $this->actingAs($doctor)->putJson("/api/prescriptions/{$prescriptionId}", [
+            'notes'     => 'Updated after diagnosis template load',
+            'medicines' => [[
+                'id'           => $medicineItemId,
+                'medicine_id'  => $medicine->id,
+                'mdcn_type'    => $medicine->mdcn_type,
+                'mdcn_name'    => $medicine->mdcn_name,
+                'mdcn_size'    => $medicine->mdcn_size,
+                'mdcn_time_id' => $doseTime->id,
+            ]],
+        ])->assertOk();
+    }
+
     protected function makeUser(string $role): User
     {
         $user = User::factory()->create();

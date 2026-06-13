@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Support\ActiveRecordValidation;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreLaboratoryTestTemplateRequest extends FormRequest
@@ -14,8 +15,8 @@ class StoreLaboratoryTestTemplateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'test_name'                => 'required|string|max:255|unique:laboratory_test_templates,test_name',
-            'test_code'                => 'nullable|string|max:100|unique:laboratory_test_templates,test_code',
+            'test_name'                => ['required', 'string', 'max:255', ActiveRecordValidation::unique('laboratory_test_templates', 'test_name')],
+            'test_code'                => ['nullable', 'string', 'max:100', ActiveRecordValidation::unique('laboratory_test_templates', 'test_code')],
             'test_type'                => 'nullable|string|in:standard,imaging',
             'test_price'               => 'nullable|numeric|min:0|max:99999999.99',
             'description'              => 'nullable|string|max:2000',

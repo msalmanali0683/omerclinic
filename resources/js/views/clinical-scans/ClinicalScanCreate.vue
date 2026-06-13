@@ -266,54 +266,6 @@
 
           </div>
 
-
-
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-
-            <div class="rounded-xl border border-gray-200 dark:border-gray-700 p-4">
-
-              <label class="block text-sm font-semibold mb-2 text-gray-900 dark:text-white">Notes</label>
-
-              <textarea
-
-                v-model="form.notes"
-
-                rows="3"
-
-                placeholder="Optional internal notes..."
-
-                class="w-full rounded-lg border border-gray-300 dark:border-gray-600 px-3 py-2 text-sm dark:bg-gray-800"
-
-              />
-
-            </div>
-
-
-
-            <div class="rounded-xl border border-gray-200 dark:border-gray-700 p-4">
-
-              <label class="block text-sm font-semibold mb-2 text-gray-900 dark:text-white">Impression</label>
-
-              <textarea
-
-                v-model="form.impression"
-
-                rows="3"
-
-                placeholder="Overall impression..."
-
-                class="w-full rounded-lg border border-gray-300 dark:border-gray-600 px-3 py-2 text-sm dark:bg-gray-800"
-
-              />
-
-              <p v-if="errors.impression" class="mt-1 text-sm text-red-600">{{ errors.impression }}</p>
-
-            </div>
-
-          </div>
-
-
-
           <div class="flex flex-wrap gap-3 pt-1">
 
             <BaseButton :loading="saving && savingStatus === 'completed'" @click="submit('completed')">
@@ -398,9 +350,7 @@ import { useAutoSearch } from '@/composables/useAutoSearch';
 import { useFormErrors } from '@/composables/useFormErrors';
 
 import { buildScanValuesFromTemplate, serializeScanValues } from '@/utils/clinicalScans';
-
 import { displayPatientAge, formatGender } from '@/utils/formatters';
-
 import BaseButton from '@/components/ui/BaseButton.vue';
 
 import BaseInput from '@/components/ui/BaseInput.vue';
@@ -463,10 +413,6 @@ const form = reactive({
   clinical_scan_template_id: '',
 
   scan_name: '',
-
-  notes: '',
-
-  impression: '',
 
 });
 
@@ -686,9 +632,9 @@ async function submit(status) {
 
       status,
 
-      notes: form.notes?.trim() || null,
+      notes: null,
 
-      impression: form.impression?.trim() || null,
+      impression: null,
 
       values: serializeScanValues(scanValues.value),
 

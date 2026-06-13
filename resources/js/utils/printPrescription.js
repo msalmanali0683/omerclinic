@@ -99,8 +99,8 @@ function buildPrintStyles(options, baseUrl = '') {
 
         .patient-info-grid {
             display: grid;
-            grid-template-columns: 4.35in 1.35in 2.85in;
-            column-gap: 18px;
+            grid-template-columns: 4.02in 1.35in 3.18in;
+            column-gap: 0;
             row-gap: 2px;
             width: 8.55in;
             max-width: 100%;
@@ -214,6 +214,7 @@ function buildPrintStyles(options, baseUrl = '') {
             left: 0;
             right: 0.08in;
             bottom: 0.05in;
+            padding-bottom: 1in;
             font-size: 12px;
             line-height: 1.2;
             break-inside: avoid;

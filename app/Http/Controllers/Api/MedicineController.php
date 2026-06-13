@@ -49,11 +49,10 @@ class MedicineController extends Controller
 
     public function store(StoreMedicineRequest $request)
     {
-        $medicine = Medicine::create([
-            ...$request->validated(),
-            'created_by' => $request->user()->id,
-            'updated_by' => $request->user()->id,
-        ]);
+        $medicine = $this->medicineService->findOrCreate(
+            $request->validated(),
+            $request->user()
+        );
 
         return response()->json([
             'message' => 'Medicine created successfully.',

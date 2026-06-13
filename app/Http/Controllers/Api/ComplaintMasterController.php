@@ -32,11 +32,10 @@ class ComplaintMasterController extends Controller
 
     public function store(StoreComplaintMasterRequest $request)
     {
-        $record = ComplaintMaster::create([
-            ...$request->validated(),
-            'created_by' => $request->user()->id,
-            'updated_by' => $request->user()->id,
-        ]);
+        $record = $this->clinicalService->findOrCreateComplaint(
+            $request->validated('complaint_name'),
+            $request->user()
+        );
 
         return response()->json([
             'message' => 'Complaint created successfully.',

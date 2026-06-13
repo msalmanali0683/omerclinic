@@ -2,8 +2,8 @@
 
 namespace App\Http\Requests;
 
+use App\Support\ActiveRecordValidation;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
 class UpdateDiagnosisMasterRequest extends FormRequest
 {
@@ -19,7 +19,7 @@ class UpdateDiagnosisMasterRequest extends FormRequest
                 'required',
                 'string',
                 'max:255',
-                Rule::unique('diagnosis_masters', 'diagnosis_name')->ignore($this->route('diagnosis_master')),
+                ActiveRecordValidation::unique('diagnosis_masters', 'diagnosis_name', $this->route('diagnosis_master')),
             ],
         ];
     }

@@ -3,8 +3,8 @@
 namespace App\Http\Requests;
 
 use App\Models\ClinicalScanTemplate;
+use App\Support\ActiveRecordValidation;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
 class UpdateClinicalScanTemplateRequest extends FormRequest
 {
@@ -26,7 +26,7 @@ class UpdateClinicalScanTemplateRequest extends FormRequest
                 'required',
                 'string',
                 'max:255',
-                Rule::unique('clinical_scan_templates', 'template_name')->ignore($template?->id),
+                ActiveRecordValidation::unique('clinical_scan_templates', 'template_name', $template?->id),
             ],
             'description'             => 'nullable|string|max:2000',
             'is_active'               => 'boolean',

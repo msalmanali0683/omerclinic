@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Support\ActiveRecordValidation;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreComplaintMasterRequest extends FormRequest
@@ -14,7 +15,7 @@ class StoreComplaintMasterRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'complaint_name' => 'required|string|max:255|unique:complaint_masters,complaint_name',
+            'complaint_name' => ['required', 'string', 'max:255', ActiveRecordValidation::unique('complaint_masters', 'complaint_name')],
         ];
     }
 }

@@ -27,13 +27,17 @@ class MedicineService
             throw new InvalidArgumentException('Invalid medicine type.');
         }
 
-        $existing = Medicine::query()
+        $existing = Medicine::withTrashed()
             ->where('mdcn_type', $type)
             ->where('mdcn_name', $name)
             ->where('mdcn_size', $size)
             ->first();
 
         if ($existing) {
+            if ($existing->trashed()) {
+                $existing->restore();
+            }
+
             $updates = [];
 
             if (array_key_exists('mdcn_time_id', $data)) {

@@ -388,6 +388,100 @@ class ClinicalScanTest extends TestCase
         ]);
     }
 
+    public function test_removed_template_field_can_be_re_added(): void
+    {
+        $admin = $this->makeUser('hospital-admin');
+        $operator = $this->makeUser('scan-operator');
+        $visit = $this->createVisit();
+        $template = $this->createTemplate();
+
+        $this->actingAs($operator)->postJson('/api/clinical-scans', $this->scanPayload($visit, $template))
+            ->assertCreated();
+
+        $liverField = $template->fields->firstWhere('field_key', 'liver');
+        $keepField = $template->fields->firstWhere('field_key', 'impression');
+
+        $this->actingAs($admin)->patchJson("/api/clinical-scan-templates/{$template->id}", [
+            'template_name' => $template->template_name,
+            'is_active'     => true,
+            'fields'        => [[
+                'id'          => $keepField->id,
+                'field_label' => $keepField->field_label,
+                'field_type'  => $keepField->field_type,
+                'sort_order'  => $keepField->sort_order,
+            ]],
+        ])->assertOk();
+
+        $this->assertSoftDeleted('clinical_scan_template_fields', ['id' => $liverField->id]);
+
+        $this->actingAs($admin)->patchJson("/api/clinical-scan-templates/{$template->id}", [
+            'template_name' => $template->template_name,
+            'is_active'     => true,
+            'fields'        => [
+                [
+                    'id'          => $keepField->id,
+                    'field_label' => $keepField->field_label,
+                    'field_type'  => $keepField->field_type,
+                    'sort_order'  => $keepField->sort_order,
+                ],
+                [
+                    'field_label' => 'Liver',
+                    'field_type'  => 'textarea',
+                    'sort_order'  => 1,
+                ],
+            ],
+        ])->assertOk();
+
+        $this->assertDatabaseHas('clinical_scan_template_fields', [
+            'clinical_scan_template_id' => $template->id,
+            'field_key'                 => 'liver',
+            'deleted_at'                => null,
+        ]);
+    }
+
+    public function test_re_added_field_works_when_soft_deleted_key_blocks_active_field_update(): void
+    {
+        $admin = $this->makeUser('hospital-admin');
+        $visit = $this->createVisit();
+        $template = $this->createTemplate();
+
+        $liverField = $template->fields->firstWhere('field_key', 'liver');
+        $kidneyField = $template->fields->firstWhere('field_key', '!=', 'liver') ?? $template->fields->last();
+
+        $this->actingAs($admin)->patchJson("/api/clinical-scan-templates/{$template->id}", [
+            'template_name' => $template->template_name,
+            'is_active'     => true,
+            'fields'        => [[
+                'id'          => $liverField->id,
+                'field_label' => $liverField->field_label,
+                'field_type'  => $liverField->field_type,
+                'sort_order'  => $liverField->sort_order,
+            ]],
+        ])->assertOk();
+
+        $this->assertSoftDeleted('clinical_scan_template_fields', ['id' => $kidneyField->id]);
+
+        $this->actingAs($admin)->patchJson("/api/clinical-scan-templates/{$template->id}", [
+            'template_name' => $template->template_name,
+            'is_active'     => true,
+            'fields'        => [
+                [
+                    'id'          => $liverField->id,
+                    'field_label' => 'Kidney',
+                    'field_type'  => 'textarea',
+                    'sort_order'  => 1,
+                ],
+            ],
+        ])->assertOk();
+
+        $this->assertDatabaseHas('clinical_scan_template_fields', [
+            'id'          => $liverField->id,
+            'field_label' => 'Kidney',
+            'field_key'   => 'kidney',
+            'deleted_at'  => null,
+        ]);
+    }
+
     public function test_field_key_is_generated_from_label(): void
     {
         $this->assertSame('gall_bladder', ClinicalScanFieldKeyGenerator::fromLabel('Gall Bladder'));

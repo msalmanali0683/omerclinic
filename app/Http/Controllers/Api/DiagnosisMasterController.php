@@ -32,11 +32,10 @@ class DiagnosisMasterController extends Controller
 
     public function store(StoreDiagnosisMasterRequest $request)
     {
-        $record = DiagnosisMaster::create([
-            ...$request->validated(),
-            'created_by' => $request->user()->id,
-            'updated_by' => $request->user()->id,
-        ]);
+        $record = $this->clinicalService->findOrCreateDiagnosis(
+            $request->validated('diagnosis_name'),
+            $request->user()
+        );
 
         return response()->json([
             'message' => 'Diagnosis created successfully.',

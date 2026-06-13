@@ -253,6 +253,50 @@ class ClinicalComplaintDiagnosisTest extends TestCase
         $this->assertSoftDeleted('diagnosis_masters', ['id' => $id]);
     }
 
+    public function test_deleted_diagnosis_master_can_be_recreated(): void
+    {
+        $admin = $this->makeUser('hospital-admin');
+        $doctor = $this->makeUser('doctor');
+
+        $create = $this->actingAs($admin)->postJson('/api/diagnosis-masters', [
+            'diagnosis_name' => 'Reusable Diagnosis',
+        ])->assertCreated();
+
+        $id = $create->json('data.id');
+
+        $this->actingAs($admin)->deleteJson("/api/diagnosis-masters/{$id}")
+            ->assertOk();
+
+        $this->actingAs($admin)->postJson('/api/diagnosis-masters', [
+            'diagnosis_name' => 'Reusable Diagnosis',
+        ])->assertCreated()
+            ->assertJsonPath('data.diagnosis_name', 'Reusable Diagnosis');
+
+        $this->actingAs($doctor)->postJson('/api/diagnosis-masters/find-or-create', [
+            'diagnosis_name' => 'Reusable Diagnosis',
+        ])->assertOk()
+            ->assertJsonPath('data.diagnosis_name', 'Reusable Diagnosis');
+    }
+
+    public function test_deleted_visit_diagnosis_can_be_added_again(): void
+    {
+        $doctor = $this->makeUser('doctor');
+        $visit = $this->createVisit($doctor);
+
+        $response = $this->actingAs($doctor)->postJson('/api/patient-visit-diagnoses', $this->diagnosisPayload($visit, [
+            'diagnosis_text' => 'Anemia',
+        ]))->assertCreated();
+
+        $id = $response->json('data.id');
+
+        $this->actingAs($doctor)->deleteJson("/api/patient-visit-diagnoses/{$id}")
+            ->assertOk();
+
+        $this->actingAs($doctor)->postJson('/api/patient-visit-diagnoses', $this->diagnosisPayload($visit, [
+            'diagnosis_text' => 'Anemia',
+        ]))->assertCreated();
+    }
+
     public function test_duplicate_complaint_on_same_visit_is_blocked(): void
     {
         $doctor = $this->makeUser('doctor');

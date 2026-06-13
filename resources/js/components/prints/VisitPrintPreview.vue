@@ -248,7 +248,8 @@ const treatmentGivenReserveStyle = computed(() => {
   const count = Math.max(injectionMedicines.value.length, 1);
   const base = 0.28;
   const perItem = 0.18;
-  const reserve = Math.min(1.4, base + count * perItem);
+  const bottomPadding = 1;
+  const reserve = Math.min(2.4, base + count * perItem + bottomPadding);
 
   return {
     '--treatment-given-reserve': `${reserve}in`,
@@ -298,8 +299,8 @@ watch(
 
 .patient-info-grid {
   display: grid;
-  grid-template-columns: 4.35in 1.35in 2.85in;
-  column-gap: 18px;
+  grid-template-columns: 4.02in 1.35in 3.18in;
+  column-gap: 0;
   row-gap: 2px;
   width: 8.55in;
   max-width: 100%;
@@ -402,6 +403,7 @@ watch(
   left: 0;
   right: 0.08in;
   bottom: 0.05in;
+  padding-bottom: 1in;
   font-size: 12px;
   line-height: 1.2;
   break-inside: avoid;

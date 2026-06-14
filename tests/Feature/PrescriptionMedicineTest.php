@@ -280,6 +280,112 @@ class PrescriptionMedicineTest extends TestCase
         ]);
     }
 
+    public function test_find_or_create_reuses_null_size_medicine_when_prescribing_without_size(): void
+    {
+        $doctor = $this->makeUser('doctor');
+
+        $this->actingAs($doctor)->postJson('/api/medicines/find-or-create', [
+            'mdcn_type' => 'Tab.',
+            'mdcn_name' => 'No Size Med',
+        ])->assertOk()->assertJsonPath('created', true);
+
+        $existingId = Medicine::query()
+            ->where('mdcn_name', 'No Size Med')
+            ->whereNull('mdcn_size')
+            ->value('id');
+
+        $response = $this->actingAs($doctor)->postJson('/api/medicines/find-or-create', [
+            'mdcn_type' => 'Tab.',
+            'mdcn_name' => 'No Size Med',
+            'mdcn_size' => null,
+        ]);
+
+        $response->assertOk()
+            ->assertJsonPath('created', false)
+            ->assertJsonPath('data.id', $existingId);
+
+        $this->assertEquals(1, Medicine::query()->whereRaw('LOWER(mdcn_name) = ?', ['no size med'])->count());
+    }
+
+    public function test_find_or_create_does_not_link_empty_size_to_sized_medicine(): void
+    {
+        $doctor = $this->makeUser('doctor');
+
+        $this->actingAs($doctor)->postJson('/api/medicines/find-or-create', [
+            'mdcn_type' => 'Tab.',
+            'mdcn_name' => 'Sized Panadol',
+            'mdcn_size' => '500',
+        ])->assertOk()->assertJsonPath('created', true);
+
+        $response = $this->actingAs($doctor)->postJson('/api/medicines/find-or-create', [
+            'mdcn_type' => 'Tab.',
+            'mdcn_name' => 'Sized Panadol',
+        ]);
+
+        $response->assertOk()->assertJsonPath('created', true);
+
+        $this->assertEquals(2, Medicine::query()->whereRaw('LOWER(mdcn_name) = ?', ['sized panadol'])->count());
+    }
+
+    public function test_find_or_create_matches_name_case_insensitively(): void
+    {
+        $doctor = $this->makeUser('doctor');
+
+        $createResponse = $this->actingAs($doctor)->postJson('/api/medicines/find-or-create', [
+            'mdcn_type' => 'Tab.',
+            'mdcn_name' => 'Case Med',
+            'mdcn_size' => '250mg',
+        ])->assertOk()->assertJsonPath('created', true);
+
+        $existingId = $createResponse->json('data.id');
+
+        $this->actingAs($doctor)->postJson('/api/medicines/find-or-create', [
+            'mdcn_type' => 'Tab.',
+            'mdcn_name' => 'case med',
+            'mdcn_size' => '250mg',
+        ])->assertOk()
+            ->assertJsonPath('created', false)
+            ->assertJsonPath('data.id', $existingId);
+    }
+
+    public function test_prescribing_without_medicine_id_reuses_existing_null_size_master(): void
+    {
+        $doctor = $this->makeUser('doctor');
+        $visit = $this->createVisit($doctor, PatientVisit::STATUS_IN_CONSULTATION);
+        $doseTime = MedicineDoseTime::first();
+        $doseFromMeal = MedicineDoseFromMeal::first();
+
+        $this->actingAs($doctor)->postJson('/api/medicines/find-or-create', [
+            'mdcn_type'              => 'Tab.',
+            'mdcn_name'              => 'Manual Match Med',
+            'mdcn_time_id'           => $doseTime->id,
+            'mdcn_dose_from_meal_id' => $doseFromMeal->id,
+        ])->assertOk();
+
+        $master = Medicine::query()
+            ->where('mdcn_name', 'Manual Match Med')
+            ->whereNull('mdcn_size')
+            ->firstOrFail();
+
+        $secondDoseTime = MedicineDoseTime::query()->orderBy('id')->skip(1)->firstOrFail();
+
+        $response = $this->actingAs($doctor)->postJson('/api/prescriptions', $this->prescriptionPayload($visit, [
+            'medicines' => [[
+                'mdcn_type'              => 'Tab.',
+                'mdcn_name'              => 'manual match med',
+                'mdcn_time_id'           => $secondDoseTime->id,
+                'mdcn_dose_from_meal_id' => $doseFromMeal->id,
+            ]],
+        ]));
+
+        $response->assertCreated()
+            ->assertJsonPath('data.medicines.0.medicine_id', $master->id);
+
+        $master->refresh();
+        $this->assertEquals($secondDoseTime->id, $master->mdcn_time_id);
+        $this->assertEquals(1, Medicine::query()->whereRaw('LOWER(mdcn_name) = ?', ['manual match med'])->count());
+    }
+
     public function test_old_prescription_unchanged_after_medicine_master_update(): void
     {
         $doctor = $this->makeUser('doctor');

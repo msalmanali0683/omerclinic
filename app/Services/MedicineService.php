@@ -13,7 +13,7 @@ class MedicineService
     {
         $type = trim((string) ($data['mdcn_type'] ?? ''));
         $name = trim((string) ($data['mdcn_name'] ?? ''));
-        $size = trim((string) ($data['mdcn_size'] ?? ''));
+        $size = $this->normalizeSize($data['mdcn_size'] ?? null);
 
         if ($name === '') {
             throw new InvalidArgumentException('Medicine name is required.');
@@ -27,11 +27,7 @@ class MedicineService
             throw new InvalidArgumentException('Invalid medicine type.');
         }
 
-        $existing = Medicine::withTrashed()
-            ->where('mdcn_type', $type)
-            ->where('mdcn_name', $name)
-            ->where('mdcn_size', $size)
-            ->first();
+        $existing = $this->findExistingMedicine($type, $name, $size);
 
         if ($existing) {
             if ($existing->trashed()) {
@@ -59,11 +55,36 @@ class MedicineService
         return Medicine::create([
             'mdcn_type'              => $type,
             'mdcn_name'              => $name,
-            'mdcn_size'              => $size !== '' ? $size : null,
+            'mdcn_size'              => $size,
             'mdcn_time_id'           => $data['mdcn_time_id'] ?? null,
             'mdcn_dose_from_meal_id' => $data['mdcn_dose_from_meal_id'] ?? null,
             'created_by'             => $user?->id,
             'updated_by'             => $user?->id,
         ]);
+    }
+
+    protected function normalizeSize(mixed $size): ?string
+    {
+        $value = trim((string) ($size ?? ''));
+
+        return $value === '' ? null : $value;
+    }
+
+    protected function findExistingMedicine(string $type, string $name, ?string $size): ?Medicine
+    {
+        $query = Medicine::withTrashed()
+            ->where('mdcn_type', $type)
+            ->whereRaw('LOWER(mdcn_name) = ?', [mb_strtolower($name)]);
+
+        if ($size === null) {
+            $query->where(function ($builder) {
+                $builder->whereNull('mdcn_size')
+                    ->orWhere('mdcn_size', '');
+            });
+        } else {
+            $query->where('mdcn_size', $size);
+        }
+
+        return $query->first();
     }
 }

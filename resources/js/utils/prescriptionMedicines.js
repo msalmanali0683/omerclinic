@@ -144,15 +144,18 @@ export function shouldPersistMedicineRow(row) {
 }
 
 export async function syncMedicineMasterFromRow(row) {
+  const resolvedRow = resolveMedicineMasterFromRow(row);
   const { data } = await medicineService.findOrCreateMedicine({
-    mdcn_type: row.mdcn_type.trim(),
-    mdcn_name: row.mdcn_name.trim(),
-    mdcn_size: row.mdcn_size?.trim() || null,
-    mdcn_time_id: row.mdcn_time_id ? Number(row.mdcn_time_id) : null,
-    mdcn_dose_from_meal_id: row.mdcn_dose_from_meal_id ? Number(row.mdcn_dose_from_meal_id) : null,
+    mdcn_type: resolvedRow.mdcn_type.trim(),
+    mdcn_name: resolvedRow.mdcn_name.trim(),
+    mdcn_size: normalizeMedicineSize(resolvedRow.mdcn_size),
+    mdcn_time_id: resolvedRow.mdcn_time_id ? Number(resolvedRow.mdcn_time_id) : null,
+    mdcn_dose_from_meal_id: resolvedRow.mdcn_dose_from_meal_id
+      ? Number(resolvedRow.mdcn_dose_from_meal_id)
+      : null,
   });
 
-  return applyMedicineMasterToRow(row, data.data ?? data);
+  return applyMedicineMasterToRow(resolvedRow, data.data ?? data);
 }
 
 export async function persistNewMedicineRows(rows) {
@@ -175,15 +178,64 @@ function normalizeMedicineKey(value) {
   return String(value ?? '').trim().toLowerCase();
 }
 
+export function normalizeMedicineSize(size) {
+  const value = String(size ?? '').trim();
+
+  return value === '' ? null : value;
+}
+
+export function prescriptionMedicineIdentityKey(type, name, size) {
+  return [
+    normalizeMedicineKey(type),
+    normalizeMedicineKey(name),
+    normalizeMedicineKey(normalizeMedicineSize(size) ?? ''),
+  ].join('|');
+}
+
+export function resolveMedicineIdFromOptions(row, options = []) {
+  if (row?.medicine_id) {
+    return row.medicine_id;
+  }
+
+  const candidateKey = prescriptionMedicineIdentityKey(
+    row?.mdcn_type,
+    row?.mdcn_name ?? row?.medicine_search,
+    row?.mdcn_size,
+  );
+
+  const match = (options ?? []).find((option) => (
+    prescriptionMedicineIdentityKey(option?.mdcn_type, option?.mdcn_name, option?.mdcn_size) === candidateKey
+  ));
+
+  return match?.id ?? null;
+}
+
+export function resolveMedicineMasterFromRow(row) {
+  const resolvedId = resolveMedicineIdFromOptions(row, row?.medicine_options);
+
+  if (!resolvedId) {
+    return row;
+  }
+
+  return {
+    ...row,
+    medicine_id: resolvedId,
+  };
+}
+
 export function isDuplicatePrescriptionMedicineRow(rows, candidate) {
+  const candidateKey = prescriptionMedicineIdentityKey(
+    candidate?.mdcn_type,
+    candidate?.mdcn_name ?? candidate?.medicine_search,
+    candidate?.mdcn_size,
+  );
+
   return rows.some((row) => {
-    if (!row.mdcn_name?.trim() || !candidate.mdcn_name?.trim()) {
+    if (!row.mdcn_name?.trim() && !row.medicine_search?.trim()) {
       return false;
     }
 
-    return normalizeMedicineKey(row.mdcn_type) === normalizeMedicineKey(candidate.mdcn_type)
-      && normalizeMedicineKey(row.mdcn_name) === normalizeMedicineKey(candidate.mdcn_name)
-      && normalizeMedicineKey(row.mdcn_size) === normalizeMedicineKey(candidate.mdcn_size);
+    return prescriptionMedicineIdentityKey(row.mdcn_type, row.mdcn_name, row.mdcn_size) === candidateKey;
   });
 }
 

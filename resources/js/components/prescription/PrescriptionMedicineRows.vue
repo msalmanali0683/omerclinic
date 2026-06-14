@@ -239,6 +239,8 @@ import {
   formatMedicineSearchOptionLabel,
   isDuplicatePrescriptionMedicineRow,
   persistNewMedicineRows,
+  prescriptionMedicineIdentityKey,
+  resolveMedicineMasterFromRow,
   syncMedicineMasterFromRow,
   shouldSyncMedicineMasterRow,
 } from '@/utils/prescriptionMedicines';
@@ -309,6 +311,7 @@ function isMedicineSelected(row) {
 
 function onTypeChange() {
   entryRow.value.medicine_id = null;
+  entryRow.value.medicine_identity_key = null;
   entryRow.value.medicine_search = '';
   entryRow.value.mdcn_name = '';
   entryRow.value.mdcn_size = '';
@@ -323,8 +326,19 @@ function onMedicineInput() {
     return;
   }
 
-  entryRow.value.medicine_id = null;
-  entryRow.value.mdcn_name = entryRow.value.medicine_search?.trim() ?? '';
+  const trimmed = entryRow.value.medicine_search?.trim() ?? '';
+  entryRow.value.mdcn_name = trimmed;
+
+  const currentKey = prescriptionMedicineIdentityKey(
+    entryRow.value.mdcn_type,
+    trimmed,
+    entryRow.value.mdcn_size,
+  );
+
+  if (entryRow.value.medicine_id && entryRow.value.medicine_identity_key !== currentKey) {
+    entryRow.value.medicine_id = null;
+    entryRow.value.medicine_identity_key = null;
+  }
 
   onMedicineSearch(entryRow.value);
 }
@@ -386,6 +400,11 @@ function selectMedicine(opt) {
   entryRow.value.mdcn_type = opt.mdcn_type ?? entryRow.value.mdcn_type ?? '';
   entryRow.value.mdcn_name = opt.mdcn_name ?? '';
   entryRow.value.mdcn_size = opt.mdcn_size ?? '';
+  entryRow.value.medicine_identity_key = prescriptionMedicineIdentityKey(
+    entryRow.value.mdcn_type,
+    entryRow.value.mdcn_name,
+    entryRow.value.mdcn_size,
+  );
   entryRow.value.mdcn_time_id = opt.mdcn_time_id ? String(opt.mdcn_time_id) : '';
   entryRow.value.mdcn_dose_from_meal_id = opt.mdcn_dose_from_meal_id ? String(opt.mdcn_dose_from_meal_id) : '';
   entryRow.value.show_in_treatment_given = isInjectionMedicine(entryRow.value);
@@ -420,7 +439,10 @@ async function addToTable() {
   addingToTable.value = true;
 
   try {
-    let rowToAdd = { ...entryRow.value, _key: `row-${Date.now()}-${Math.random().toString(36).slice(2)}` };
+    let rowToAdd = resolveMedicineMasterFromRow({
+      ...entryRow.value,
+      _key: `row-${Date.now()}-${Math.random().toString(36).slice(2)}`,
+    });
 
     if (shouldSyncMedicineMasterRow(rowToAdd)) {
       rowToAdd = { ...(await syncMedicineMasterFromRow(rowToAdd)), _key: rowToAdd._key };

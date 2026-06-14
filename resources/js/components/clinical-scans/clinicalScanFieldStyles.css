@@ -1,0 +1,361 @@
+/* Shared scan entry form theme — cards vs inputs use distinct contrast */
+
+.clinical-scan-findings-panel__title::before {
+  content: '';
+  display: inline-block;
+  width: 0.35rem;
+  height: 1rem;
+  margin-right: 0.5rem;
+  border-radius: 9999px;
+  background: linear-gradient(180deg, #0d9488, #6366f1);
+  vertical-align: -0.15rem;
+}
+
+.clinical-scan-field {
+  --scan-accent: #0f766e;
+  --scan-accent-soft: #ccfbf1;
+  --scan-card-bg: linear-gradient(145deg, #ecfdf5 0%, #f8fafc 55%, #ffffff 100%);
+  --scan-card-border: #2dd4bf;
+  --scan-label: #134e4a;
+  --scan-sub-label: #0f766e;
+  --scan-input-bg: #ffffff;
+  --scan-input-border: #94a3b8;
+  --scan-input-text: #0f172a;
+  --scan-input-placeholder: #64748b;
+  --scan-focus-ring: rgb(13 148 136 / 0.22);
+  --scan-preset-bg: #ffffff;
+  --scan-preset-border: #5eead4;
+  --scan-preset-text: #115e59;
+  --scan-preset-active-bg: #0f766e;
+  --scan-preset-active-text: #ffffff;
+  --scan-toolbar-bg: #ffffff;
+  --scan-toolbar-border: #cbd5e1;
+  --scan-preview-bg: #ffffff;
+  --scan-preview-border: #94a3b8;
+  --scan-slot-divider: #99f6e4;
+
+  background: var(--scan-card-bg);
+  border: 1px solid var(--scan-card-border);
+  border-radius: 1rem;
+  padding: 1rem 1.1rem;
+  box-shadow:
+    0 1px 2px rgb(15 23 42 / 0.06),
+    inset 0 1px 0 rgb(255 255 255 / 0.85);
+}
+
+.clinical-scan-field--teal {
+  --scan-accent: #0f766e;
+  --scan-accent-soft: #ccfbf1;
+  --scan-card-bg: linear-gradient(145deg, #d1fae5 0%, #f0fdfa 45%, #ffffff 100%);
+  --scan-card-border: #14b8a6;
+  --scan-label: #134e4a;
+  --scan-sub-label: #0f766e;
+  --scan-focus-ring: rgb(20 184 166 / 0.24);
+  --scan-preset-border: #2dd4bf;
+  --scan-preset-text: #115e59;
+  --scan-preset-active-bg: #0f766e;
+  --scan-slot-divider: #99f6e4;
+}
+
+.clinical-scan-field--violet {
+  --scan-accent: #6d28d9;
+  --scan-accent-soft: #ede9fe;
+  --scan-card-bg: linear-gradient(145deg, #ddd6fe 0%, #f5f3ff 45%, #ffffff 100%);
+  --scan-card-border: #8b5cf6;
+  --scan-label: #4c1d95;
+  --scan-sub-label: #6d28d9;
+  --scan-focus-ring: rgb(139 92 246 / 0.24);
+  --scan-preset-border: #c4b5fd;
+  --scan-preset-text: #5b21b6;
+  --scan-preset-active-bg: #6d28d9;
+  --scan-slot-divider: #ddd6fe;
+}
+
+.clinical-scan-field--sky {
+  --scan-accent: #0369a1;
+  --scan-accent-soft: #e0f2fe;
+  --scan-card-bg: linear-gradient(145deg, #bae6fd 0%, #f0f9ff 45%, #ffffff 100%);
+  --scan-card-border: #0ea5e9;
+  --scan-label: #0c4a6e;
+  --scan-sub-label: #0369a1;
+  --scan-focus-ring: rgb(14 165 233 / 0.24);
+  --scan-preset-border: #7dd3fc;
+  --scan-preset-text: #075985;
+  --scan-preset-active-bg: #0369a1;
+  --scan-slot-divider: #bae6fd;
+}
+
+.clinical-scan-field--indigo {
+  --scan-accent: #4338ca;
+  --scan-accent-soft: #e0e7ff;
+  --scan-card-bg: linear-gradient(145deg, #c7d2fe 0%, #eef2ff 45%, #ffffff 100%);
+  --scan-card-border: #6366f1;
+  --scan-label: #312e81;
+  --scan-sub-label: #4338ca;
+  --scan-focus-ring: rgb(99 102 241 / 0.24);
+  --scan-preset-border: #a5b4fc;
+  --scan-preset-text: #3730a3;
+  --scan-preset-active-bg: #4338ca;
+  --scan-slot-divider: #c7d2fe;
+}
+
+.clinical-scan-field--cyan {
+  --scan-accent: #0e7490;
+  --scan-accent-soft: #cffafe;
+  --scan-card-bg: linear-gradient(145deg, #a5f3fc 0%, #ecfeff 45%, #ffffff 100%);
+  --scan-card-border: #06b6d4;
+  --scan-label: #164e63;
+  --scan-sub-label: #0e7490;
+  --scan-focus-ring: rgb(6 182 212 / 0.24);
+  --scan-preset-border: #67e8f9;
+  --scan-preset-text: #155e75;
+  --scan-preset-active-bg: #0e7490;
+  --scan-slot-divider: #a5f3fc;
+}
+
+.clinical-scan-field--amber {
+  --scan-accent: #b45309;
+  --scan-accent-soft: #fef3c7;
+  --scan-card-bg: linear-gradient(145deg, #fde68a 0%, #fffbeb 45%, #ffffff 100%);
+  --scan-card-border: #f59e0b;
+  --scan-label: #78350f;
+  --scan-sub-label: #b45309;
+  --scan-focus-ring: rgb(245 158 11 / 0.26);
+  --scan-preset-border: #fcd34d;
+  --scan-preset-text: #92400e;
+  --scan-preset-active-bg: #b45309;
+  --scan-slot-divider: #fde68a;
+}
+
+:global(.dark) .clinical-scan-field {
+  --scan-input-bg: #0f172a;
+  --scan-input-border: #475569;
+  --scan-input-text: #f8fafc;
+  --scan-input-placeholder: #94a3b8;
+  --scan-preset-bg: #0f172a;
+  --scan-toolbar-bg: #0f172a;
+  --scan-toolbar-border: #475569;
+  --scan-preview-bg: #0f172a;
+  --scan-preview-border: #64748b;
+  box-shadow:
+    0 1px 2px rgb(0 0 0 / 0.35),
+    inset 0 1px 0 rgb(255 255 255 / 0.04);
+}
+
+:global(.dark) .clinical-scan-field--teal {
+  --scan-card-bg: linear-gradient(145deg, rgb(19 78 74 / 0.55) 0%, rgb(15 23 42) 100%);
+  --scan-card-border: #14b8a6;
+  --scan-label: #99f6e4;
+  --scan-sub-label: #5eead4;
+}
+
+:global(.dark) .clinical-scan-field--violet {
+  --scan-card-bg: linear-gradient(145deg, rgb(76 29 149 / 0.45) 0%, rgb(15 23 42) 100%);
+  --scan-card-border: #8b5cf6;
+  --scan-label: #ddd6fe;
+  --scan-sub-label: #c4b5fd;
+}
+
+:global(.dark) .clinical-scan-field--sky {
+  --scan-card-bg: linear-gradient(145deg, rgb(12 74 110 / 0.45) 0%, rgb(15 23 42) 100%);
+  --scan-card-border: #0ea5e9;
+  --scan-label: #bae6fd;
+  --scan-sub-label: #7dd3fc;
+}
+
+:global(.dark) .clinical-scan-field--indigo {
+  --scan-card-bg: linear-gradient(145deg, rgb(49 46 129 / 0.45) 0%, rgb(15 23 42) 100%);
+  --scan-card-border: #6366f1;
+  --scan-label: #c7d2fe;
+  --scan-sub-label: #a5b4fc;
+}
+
+:global(.dark) .clinical-scan-field--cyan {
+  --scan-card-bg: linear-gradient(145deg, rgb(22 78 99 / 0.45) 0%, rgb(15 23 42) 100%);
+  --scan-card-border: #06b6d4;
+  --scan-label: #a5f3fc;
+  --scan-sub-label: #67e8f9;
+}
+
+:global(.dark) .clinical-scan-field--amber {
+  --scan-card-bg: linear-gradient(145deg, rgb(120 53 15 / 0.45) 0%, rgb(15 23 42) 100%);
+  --scan-card-border: #f59e0b;
+  --scan-label: #fde68a;
+  --scan-sub-label: #fcd34d;
+}
+
+.clinical-scan-field__header {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  margin-bottom: 0.65rem;
+}
+
+.clinical-scan-field__badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.5rem;
+  height: 1.5rem;
+  padding: 0 0.35rem;
+  border-radius: 0.45rem;
+  background: var(--scan-accent);
+  color: #fff;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  box-shadow: 0 1px 2px rgb(15 23 42 / 0.18);
+}
+
+.clinical-scan-field__label {
+  margin: 0;
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--scan-label);
+  letter-spacing: 0.01em;
+}
+
+.clinical-scan-field__sub-label {
+  margin: 0 0 0.4rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--scan-sub-label);
+}
+
+.clinical-scan-field__slot + .clinical-scan-field__slot {
+  margin-top: 0.85rem;
+  padding-top: 0.85rem;
+  border-top: 1px dashed var(--scan-slot-divider);
+}
+
+.clinical-scan-field__required {
+  color: #dc2626;
+  margin-left: 0.15rem;
+}
+
+.clinical-scan-field__control {
+  width: 100%;
+  box-sizing: border-box;
+  border-radius: 0.7rem;
+  border: 1.5px solid var(--scan-input-border);
+  padding: 0.6rem 0.8rem;
+  font-size: 0.875rem;
+  line-height: 1.45;
+  color: var(--scan-input-text);
+  background: var(--scan-input-bg);
+  box-shadow: inset 0 1px 2px rgb(15 23 42 / 0.04);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.clinical-scan-field__control::placeholder {
+  color: var(--scan-input-placeholder);
+}
+
+.clinical-scan-field__control:focus {
+  outline: none;
+  border-color: var(--scan-accent);
+  box-shadow:
+    0 0 0 3px var(--scan-focus-ring),
+    inset 0 1px 2px rgb(15 23 42 / 0.04);
+}
+
+.clinical-scan-field__control:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+  background: #f1f5f9;
+}
+
+:global(.dark) .clinical-scan-field__control:disabled {
+  background: #1e293b;
+}
+
+.clinical-scan-field__textarea {
+  resize: vertical;
+  min-height: 7rem;
+}
+
+.clinical-scan-field__input-shell :deep(input),
+.clinical-scan-field__input-shell :deep(select) {
+  width: 100%;
+  box-sizing: border-box;
+  border-radius: 0.7rem;
+  border: 1.5px solid var(--scan-input-border);
+  padding: 0.6rem 0.8rem;
+  font-size: 0.875rem;
+  color: var(--scan-input-text);
+  background: var(--scan-input-bg);
+  box-shadow: inset 0 1px 2px rgb(15 23 42 / 0.04);
+}
+
+.clinical-scan-field__input-shell :deep(input:focus),
+.clinical-scan-field__input-shell :deep(select:focus) {
+  outline: none;
+  border-color: var(--scan-accent);
+  box-shadow: 0 0 0 3px var(--scan-focus-ring);
+}
+
+.clinical-scan-field__presets {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin-bottom: 0.6rem;
+}
+
+.clinical-scan-field__preset {
+  display: inline-flex;
+  align-items: center;
+  max-width: 100%;
+  padding: 0.35rem 0.7rem;
+  border-radius: 9999px;
+  border: 1.5px solid var(--scan-preset-border);
+  background: var(--scan-preset-bg);
+  font-size: 0.75rem;
+  line-height: 1.25;
+  font-weight: 600;
+  color: var(--scan-preset-text);
+  cursor: pointer;
+  text-align: left;
+  box-shadow: 0 1px 1px rgb(15 23 42 / 0.05);
+}
+
+.clinical-scan-field__preset:hover:not(:disabled) {
+  border-color: var(--scan-accent);
+}
+
+.clinical-scan-field__preset--active {
+  border-color: var(--scan-preset-active-bg);
+  background: var(--scan-preset-active-bg);
+  color: var(--scan-preset-active-text);
+}
+
+.clinical-scan-field__preset:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.clinical-scan-field__options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.clinical-scan-field__option,
+.clinical-scan-field__toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.45rem 0.75rem;
+  border-radius: 9999px;
+  border: 1.5px solid var(--scan-input-border);
+  background: var(--scan-input-bg);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--scan-input-text);
+  cursor: pointer;
+  box-shadow: 0 1px 1px rgb(15 23 42 / 0.05);
+}
+
+.clinical-scan-field__radio,
+.clinical-scan-field__checkbox {
+  accent-color: var(--scan-accent);
+}

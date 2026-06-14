@@ -81,7 +81,7 @@
                     >
                       <div :class="group.print_in_box ? 'scan-value-item__table' : 'scan-value-item__inline'">
                         <span class="scan-field-label">{{ formatScanGroupLabel(group) }}:</span>
-                        <span class="scan-field-value">{{ formatScanGroupValue(group) }}</span>
+                        <span class="scan-field-value" v-html="renderScanGroupRichHtml(group)" />
                       </div>
                     </div>
                   </div>
@@ -102,7 +102,7 @@
                   >
                     <div class="scan-value-item__table">
                       <span class="scan-field-label">{{ formatScanGroupLabel(group) }}:</span>
-                      <span class="scan-field-value">{{ formatScanGroupValue(group) }}</span>
+                      <span class="scan-field-value" v-html="renderScanGroupRichHtml(group)" />
                     </div>
                   </div>
                 </div>
@@ -115,14 +115,14 @@
                 >
                   <div class="scan-value-item__table">
                     <span class="scan-field-label">{{ formatScanFieldLabel(value) }}:</span>
-                    <span class="scan-field-value">{{ formatScanFieldValue(value) }}</span>
+                    <span class="scan-field-value" v-html="renderScanFieldRichHtmlFromValue(value)" />
                   </div>
                 </div>
 
                 <div v-if="scan.impression" class="scan-impression scan-impression--boxed bidi-text">
                   <div class="scan-value-item__table">
                     <span class="scan-field-label">Impression:</span>
-                    <span class="scan-field-value scan-impression-value">{{ formatScanFieldValue({ field_value: scan.impression }) }}</span>
+                    <span class="scan-field-value scan-impression-value" v-html="renderScanFieldRichHtml(scan.impression)" />
                   </div>
                 </div>
               </div>
@@ -202,8 +202,11 @@ import {
   formatScanGroupValue,
   formatScanPrintName,
   isEmptyScanFieldValue,
+  renderScanFieldRichHtmlFromValue,
+  renderScanGroupRichHtml,
   withScanValueLayout,
 } from '@/utils/clinicalScanPrintLayout';
+import { renderScanFieldRichHtml } from '@/utils/scanFieldRichText';
 import { ensureClinicalScanPrintStyles } from '@/utils/clinicalScanPrintStyles';
 import { printMedicineTypeLabel, splitPrintMedicines } from '@/utils/prescriptionPrintMedicines';
 import {
@@ -571,6 +574,7 @@ watch(
 
 .next-visit-print-footer {
   margin-top: 8px;
+  padding: 1in;
   text-align: right;
   font-weight: normal;
   font-size: 15px;

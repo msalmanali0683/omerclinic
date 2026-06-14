@@ -258,9 +258,9 @@
 
         <template v-else-if="scanValues.length">
 
-          <div class="rounded-xl border border-teal-100 dark:border-teal-900/30 bg-teal-50/40 dark:bg-teal-900/10 p-4">
+          <div :class="clinicalScanFindingsPanelClass">
 
-            <h4 class="text-sm font-semibold text-teal-800 dark:text-teal-300 mb-3">Scan Findings</h4>
+            <h4 :class="clinicalScanFindingsPanelTitleClass">Scan Findings</h4>
 
             <ClinicalScanDynamicFields v-model="scanValues" :error="errors.values" />
 
@@ -350,6 +350,7 @@ import { useAutoSearch } from '@/composables/useAutoSearch';
 import { useFormErrors } from '@/composables/useFormErrors';
 
 import { buildScanValuesFromTemplate, serializeScanValues } from '@/utils/clinicalScans';
+import { clinicalScanFindingsPanelClass, clinicalScanFindingsPanelTitleClass } from '@/utils/clinicalScanFieldTheme';
 import { displayPatientAge, formatGender } from '@/utils/formatters';
 import BaseButton from '@/components/ui/BaseButton.vue';
 

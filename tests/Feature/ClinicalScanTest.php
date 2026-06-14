@@ -992,6 +992,54 @@ class ClinicalScanTest extends TestCase
         );
     }
 
+    public function test_show_scan_includes_template_fields_and_saved_values_for_edit(): void
+    {
+        $operator = $this->makeUser('scan-operator');
+        $visit = $this->createVisit();
+        $template = $this->createTemplate();
+
+        $create = $this->actingAs($operator)->postJson('/api/clinical-scans', $this->scanPayload($visit, $template));
+        $scanId = $create->json('data.id');
+
+        $response = $this->actingAs($operator)->getJson("/api/clinical-scans/{$scanId}");
+
+        $response->assertOk()
+            ->assertJsonPath('data.values.0.field_value', 'Normal Size And Echotexture.')
+            ->assertJsonStructure([
+                'data' => [
+                    'values' => [['id', 'field_value', 'field_key', 'clinical_scan_template_field_id']],
+                    'template' => [
+                        'fields' => [['id', 'field_label', 'field_key', 'field_type']],
+                    ],
+                ],
+            ]);
+    }
+
+    public function test_scan_field_value_preserves_bold_markup_syntax(): void
+    {
+        $operator = $this->makeUser('scan-operator');
+        $visit = $this->createVisit();
+        $template = $this->createTemplate();
+        $liverField = $template->fields->firstWhere('field_key', 'liver')
+            ?? $template->fields->first();
+
+        $response = $this->actingAs($operator)->postJson('/api/clinical-scans', [
+            ...$this->scanPayload($visit, $template),
+            'values' => [[
+                'clinical_scan_template_field_id' => $liverField->id,
+                'field_value'                     => 'Size is normal. **Mild fatty change** noted.',
+            ]],
+        ]);
+
+        $response->assertCreated()
+            ->assertJsonPath('data.values.0.field_value', 'Size Is Normal. **Mild fatty change** Noted.');
+
+        $this->assertDatabaseHas('clinical_scan_values', [
+            'clinical_scan_template_field_id' => $liverField->id,
+            'field_value'                     => 'Size Is Normal. **Mild fatty change** Noted.',
+        ]);
+    }
+
     protected function makeUser(string $role): User
     {
         $user = User::factory()->create();

@@ -214,13 +214,87 @@ export function buildDefaultAbdominalFields() {
 }
 
 export function buildScanValuesFromTemplate(fields, existingValues = []) {
-    const existingByFieldId = new Map(
-        (existingValues || []).map((value) => [value.clinical_scan_template_field_id, value])
-    );
+    return buildScanValuesForEdit(fields, existingValues);
+}
 
-    return (fields || []).map((field) => {
-        const existing = existingByFieldId.get(field.id);
+export function extractResourceList(payload) {
+    if (Array.isArray(payload)) {
+        return payload;
+    }
+
+    if (Array.isArray(payload?.data)) {
+        return payload.data;
+    }
+
+    return [];
+}
+
+function normalizeTemplateFieldId(id) {
+    if (id == null || id === '') {
+        return null;
+    }
+
+    const normalized = Number(id);
+
+    return Number.isNaN(normalized) ? null : normalized;
+}
+
+function mapStoredScanValueToFormRow(value) {
+    return {
+        id: value.id || null,
+        clinical_scan_template_field_id: value.clinical_scan_template_field_id,
+        field_label: value.field_label ?? '',
+        group_label: value.group_label || null,
+        field_key: value.field_key ?? '',
+        field_type: value.field_type || 'textarea',
+        field_value: value.field_value ?? '',
+        default_values: resolveTemplateDefaultValues(value),
+        is_required: !!value.is_required,
+        print_in_box: !!value.print_in_box,
+        placeholder: value.placeholder || '',
+        options: value.options || [],
+        sort_order: value.sort_order || 0,
+    };
+}
+
+export function buildScanValuesForEdit(templateFields = [], existingValues = []) {
+    const storedValues = Array.isArray(existingValues) ? existingValues : [];
+
+    if (!templateFields?.length) {
+        return storedValues
+            .map(mapStoredScanValueToFormRow)
+            .sort((a, b) => (a.sort_order || 0) - (b.sort_order || 0));
+    }
+
+    const existingByFieldId = new Map();
+    const existingByFieldKey = new Map();
+
+    for (const value of storedValues) {
+        const fieldId = normalizeTemplateFieldId(value.clinical_scan_template_field_id);
+
+        if (fieldId != null && !existingByFieldId.has(fieldId)) {
+            existingByFieldId.set(fieldId, value);
+        }
+
+        const fieldKey = String(value.field_key ?? '').trim().toLowerCase();
+
+        if (fieldKey && !existingByFieldKey.has(fieldKey)) {
+            existingByFieldKey.set(fieldKey, value);
+        }
+    }
+
+    const matchedStoredIds = new Set();
+
+    const rows = templateFields.map((field) => {
+        const fieldId = normalizeTemplateFieldId(field.id);
+        const fieldKey = String(field.field_key ?? '').trim().toLowerCase();
+        const existing = (fieldId != null ? existingByFieldId.get(fieldId) : null)
+            ?? (fieldKey ? existingByFieldKey.get(fieldKey) : null);
         const defaultValues = resolveTemplateDefaultValues(field);
+
+        if (existing?.id) {
+            matchedStoredIds.add(existing.id);
+        }
 
         return {
             id: existing?.id || null,
@@ -238,6 +312,12 @@ export function buildScanValuesFromTemplate(fields, existingValues = []) {
             sort_order: field.sort_order || 0,
         };
     });
+
+    const unmatchedStoredValues = storedValues
+        .filter((value) => value.id && !matchedStoredIds.has(value.id))
+        .map(mapStoredScanValueToFormRow);
+
+    return [...rows, ...unmatchedStoredValues].sort((a, b) => (a.sort_order || 0) - (b.sort_order || 0));
 }
 
 export function isScanImpressionField(row) {

@@ -39,4 +39,12 @@ class TextCaseTest extends TestCase
         $this->assertSame('tablet', $result['medicines'][0]['mdcn_type']);
         $this->assertSame('dr@example.com', $result['email']);
     }
+
+    public function test_capitalize_words_preserves_text_inside_bold_markers(): void
+    {
+        $this->assertSame(
+            'Size Is Normal. **Mild fatty change** Noted.',
+            TextCase::capitalizeWords('size is normal. **Mild fatty change** noted.')
+        );
+    }
 }

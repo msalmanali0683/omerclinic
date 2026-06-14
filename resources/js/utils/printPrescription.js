@@ -408,6 +408,7 @@ function buildPrintStyles(options, baseUrl = '') {
 
         .next-visit-print-footer {
             margin-top: 8px;
+            padding: 1in;
             text-align: right;
             font-family: ${PRESCRIPTION_PRINT_FONT_FAMILY};
             font-weight: normal;

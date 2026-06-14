@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\MedicineDoseFromMeal;
 use App\Models\MedicineDoseTime;
+use App\Models\Patient;
 use App\Models\PatientVisit;
 use App\Models\PatientVisitDiagnosis;
 use App\Models\Prescription;
@@ -28,6 +29,10 @@ class PrescriptionService
             }
 
             $visit = PatientVisit::with('diagnoses')->findOrFail($data['patient_visit_id']);
+
+            if (! empty($data['patient']) && is_array($data['patient'])) {
+                $this->syncPatient((int) $data['patient_id'], $data['patient'], $user);
+            }
 
             $diagnosisSummary = PatientVisitDiagnosis::query()
                 ->where('patient_visit_id', $visit->id)
@@ -76,6 +81,10 @@ class PrescriptionService
     {
         return DB::transaction(function () use ($prescription, $data, $user) {
             $prescription->loadMissing('visit.diagnoses');
+
+            if (! empty($data['patient']) && is_array($data['patient'])) {
+                $this->syncPatient((int) $prescription->patient_id, $data['patient'], $user);
+            }
 
             $diagnosisSummary = PatientVisitDiagnosis::query()
                 ->where('patient_visit_id', $prescription->patient_visit_id)
@@ -203,5 +212,17 @@ class PrescriptionService
 
             return trim($line);
         })->filter()->implode("\n");
+    }
+
+    protected function syncPatient(int $patientId, array $patientData, User $user): void
+    {
+        $patient = Patient::query()->findOrFail($patientId);
+
+        $patient->update([
+            ...$patientData,
+            'updated_by' => $user->id,
+            'name'       => $patientData['patient_name'],
+            'phone'      => $patientData['patient_cell'],
+        ]);
     }
 }

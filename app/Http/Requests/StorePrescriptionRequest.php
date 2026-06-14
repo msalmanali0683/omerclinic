@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use App\Models\PatientVisit;
 use App\Support\MedicineTypes;
+use App\Support\PatientValidationRules;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Validator;
 
@@ -29,6 +30,7 @@ class StorePrescriptionRequest extends FormRequest
             'medicines.*.mdcn_time_id'           => 'nullable|integer|exists:medicine_dose_times,id',
             'medicines.*.mdcn_dose_from_meal_id' => 'nullable|integer|exists:medicine_dose_from_meals,id',
             'medicines.*.show_in_treatment_given' => 'nullable|boolean',
+            ...PatientValidationRules::nestedProfile((int) $this->input('patient_id')),
         ];
     }
 

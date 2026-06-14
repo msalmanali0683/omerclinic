@@ -79,7 +79,13 @@ class ClinicalScanController extends Controller
         $this->authorize('view', $clinicalScan);
 
         return new ClinicalScanResource(
-            $clinicalScan->load(['values', 'patient', 'visit.doctor', 'template', 'scanOperator'])
+            $clinicalScan->load([
+                'values',
+                'patient',
+                'visit.doctor',
+                'template.fields' => fn ($query) => $query->orderBy('sort_order'),
+                'scanOperator',
+            ])
         );
     }
 

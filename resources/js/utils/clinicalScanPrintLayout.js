@@ -1,3 +1,5 @@
+import { normalizeScanFieldPlainText, renderScanFieldRichHtml, escapeHtml } from '@/utils/scanFieldRichText';
+
 export function isEmptyScanFieldValue(value) {
     const fieldValue = formatScanFieldValue(value);
 
@@ -108,18 +110,31 @@ export function isLongScanGroupValue(group) {
 }
 
 export function formatScanFieldValue(value) {
-    const raw = value?.field_value;
-
-    if (raw == null) {
-        return '';
-    }
-
-    return String(raw)
-        .split(/\r?\n/)
-        .map((line) => line.replace(/[^\S\r\n]+/g, ' ').trim())
-        .join('\n')
-        .trim();
+    return normalizeScanFieldPlainText(value?.field_value);
 }
+
+export function renderScanGroupRichHtml(group) {
+    const parts = (group?.values ?? [])
+        .map((value) => {
+            const subLabel = String(value?.field_label ?? '').replace(/\s+/g, ' ').trim();
+            const fieldHtml = renderScanFieldRichHtml(value?.field_value);
+
+            if (!fieldHtml) {
+                return '';
+            }
+
+            if (group?.is_multi_value && subLabel && subLabel.toLowerCase() !== formatScanGroupLabel(group).toLowerCase()) {
+                return `${escapeHtml(subLabel)}: ${fieldHtml}`;
+            }
+
+            return fieldHtml;
+        })
+        .filter(Boolean);
+
+    return parts.join('<br>');
+}
+
+export { renderScanFieldRichHtmlFromValue } from '@/utils/scanFieldRichText';
 
 export function scanHasPrintableContent(scan) {
     if (scan?.impression && String(scan.impression).trim() !== '') {

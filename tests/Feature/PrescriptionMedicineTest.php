@@ -567,6 +567,53 @@ class PrescriptionMedicineTest extends TestCase
             ->assertJsonCount(2, 'data.medicines');
     }
 
+    public function test_prescription_create_updates_patient_profile_when_patient_payload_sent(): void
+    {
+        $doctor = $this->makeUser('doctor');
+        $visit = $this->createVisit($doctor, PatientVisit::STATUS_IN_CONSULTATION);
+        $patientProfile = $this->patientProfilePayload();
+
+        $this->actingAs($doctor)->postJson('/api/prescriptions', $this->prescriptionPayload($visit, [
+            'patient' => $patientProfile,
+        ]))->assertCreated();
+
+        $this->assertDatabaseHas('patients', [
+            'id'                  => $visit->patient_id,
+            'patient_name'        => 'Updated Rx Patient',
+            'patient_father_name' => 'Updated Father',
+            'patient_gender'      => 'male',
+            'patient_age'         => 42,
+            'patient_cell'        => '03009998877',
+            'patient_address'     => 'Updated address',
+        ]);
+    }
+
+    public function test_prescription_update_updates_patient_profile_when_patient_payload_sent(): void
+    {
+        $doctor = $this->makeUser('doctor');
+        $visit = $this->createVisit($doctor, PatientVisit::STATUS_IN_CONSULTATION);
+
+        $createResponse = $this->actingAs($doctor)->postJson('/api/prescriptions', $this->prescriptionPayload($visit))
+            ->assertCreated();
+
+        $prescriptionId = $createResponse->json('data.id');
+        $patientProfile = $this->patientProfilePayload([
+            'patient_name' => 'Revised Rx Patient',
+            'patient_age'  => 45,
+        ]);
+
+        $this->actingAs($doctor)->putJson("/api/prescriptions/{$prescriptionId}", [
+            'medicines' => $createResponse->json('data.medicines'),
+            'patient'   => $patientProfile,
+        ])->assertOk();
+
+        $this->assertDatabaseHas('patients', [
+            'id'           => $visit->patient_id,
+            'patient_name' => 'Revised Rx Patient',
+            'patient_age'  => 45,
+        ]);
+    }
+
     protected function makeUser(string $role): User
     {
         $user = User::factory()->create();
@@ -625,6 +672,20 @@ class PrescriptionMedicineTest extends TestCase
                 'mdcn_name'   => $medicine?->mdcn_name ?? 'Fallback Med',
                 'mdcn_size'   => $medicine?->mdcn_size,
             ]],
+        ], $overrides);
+    }
+
+    protected function patientProfilePayload(array $overrides = []): array
+    {
+        return array_merge([
+            'patient_name'        => 'Updated Rx Patient',
+            'patient_father_name' => 'Updated Father',
+            'patient_gender'      => 'male',
+            'patient_age'         => 42,
+            'patient_age_unit'    => 'years',
+            'patient_cell'        => '03009998877',
+            'patient_address'     => 'Updated address',
+            'patient_cnic'        => null,
         ], $overrides);
     }
 }

@@ -2,15 +2,18 @@
   <div class="clinical-scan-fields">
     <div class="clinical-scan-fields__grid">
       <div
-        v-for="group in groupedFields"
+        v-for="(group, groupIndex) in groupedFields"
         :key="group.group_label || group.fields[0]?.clinical_scan_template_field_id || group.label"
         class="clinical-scan-field"
-        :class="groupLayoutClass(group)"
+        :class="[groupLayoutClass(group), getScanFieldAccentClass(groupIndex)]"
       >
-        <label class="clinical-scan-field__label">
-          {{ group.label }}
-          <span v-if="groupRequiresValue(group)" class="clinical-scan-field__required">*</span>
-        </label>
+        <div class="clinical-scan-field__header">
+          <span class="clinical-scan-field__badge">{{ groupIndex + 1 }}</span>
+          <label class="clinical-scan-field__label">
+            {{ group.label }}
+            <span v-if="groupRequiresValue(group)" class="clinical-scan-field__required">*</span>
+          </label>
+        </div>
 
         <div
           v-for="field in group.fields"
@@ -37,25 +40,27 @@
           </div>
 
           <template v-if="field.field_type === 'textarea'">
-            <textarea
-              :value="field.field_value"
+            <ScanFieldTextInput
+              :model-value="field.field_value"
               :placeholder="field.placeholder || `Enter ${group.label.toLowerCase()}...`"
               :disabled="disabled"
-              rows="3"
-              class="clinical-scan-field__control clinical-scan-field__textarea"
-              @input="updateFieldValue(field, $event.target.value)"
+              :required="field.is_required"
+              multiline
+              @update:model-value="updateFieldValue(field, $event)"
             />
           </template>
 
           <template v-else-if="field.field_type === 'select'">
-            <BaseSelect
-              :model-value="field.field_value"
-              :options="selectOptions(field)"
-              :placeholder="field.placeholder || 'Select...'"
-              :required="field.is_required"
-              :disabled="disabled"
-              @update:model-value="updateFieldValue(field, $event)"
-            />
+            <div class="clinical-scan-field__input-shell">
+              <BaseSelect
+                :model-value="field.field_value"
+                :options="selectOptions(field)"
+                :placeholder="field.placeholder || 'Select...'"
+                :required="field.is_required"
+                :disabled="disabled"
+                @update:model-value="updateFieldValue(field, $event)"
+              />
+            </div>
           </template>
 
           <template v-else-if="field.field_type === 'checkbox'">
@@ -90,33 +95,37 @@
           </template>
 
           <template v-else-if="field.field_type === 'date'">
-            <BaseInput
-              :model-value="field.field_value"
-              type="date"
-              :placeholder="field.placeholder"
-              :required="field.is_required"
-              :disabled="disabled"
-              @update:model-value="updateFieldValue(field, $event)"
-            />
+            <div class="clinical-scan-field__input-shell">
+              <BaseInput
+                :model-value="field.field_value"
+                type="date"
+                :placeholder="field.placeholder"
+                :required="field.is_required"
+                :disabled="disabled"
+                @update:model-value="updateFieldValue(field, $event)"
+              />
+            </div>
           </template>
 
           <template v-else-if="field.field_type === 'number'">
-            <BaseInput
-              :model-value="field.field_value"
-              type="number"
-              :placeholder="field.placeholder"
-              :required="field.is_required"
-              :disabled="disabled"
-              @update:model-value="updateFieldValue(field, $event)"
-            />
+            <div class="clinical-scan-field__input-shell">
+              <BaseInput
+                :model-value="field.field_value"
+                type="number"
+                :placeholder="field.placeholder"
+                :required="field.is_required"
+                :disabled="disabled"
+                @update:model-value="updateFieldValue(field, $event)"
+              />
+            </div>
           </template>
 
           <template v-else>
-            <BaseInput
+            <ScanFieldTextInput
               :model-value="field.field_value"
               :placeholder="field.placeholder"
-              :required="field.is_required"
               :disabled="disabled"
+              :required="field.is_required"
               @update:model-value="updateFieldValue(field, $event)"
             />
           </template>
@@ -131,8 +140,11 @@
 <script setup>
 import { computed } from 'vue';
 import { groupScanFieldsForEntry, resolveTemplateDefaultValues } from '@/utils/clinicalScans';
+import { getScanFieldAccentClass } from '@/utils/clinicalScanFieldTheme';
+import ScanFieldTextInput from '@/components/clinical-scans/ScanFieldTextInput.vue';
 import BaseInput from '@/components/ui/BaseInput.vue';
 import BaseSelect from '@/components/ui/BaseSelect.vue';
+import './clinicalScanFieldStyles.css';
 
 const props = defineProps({
   modelValue: { type: Array, default: () => [] },
@@ -145,9 +157,9 @@ const emit = defineEmits(['update:modelValue']);
 const groupedFields = computed(() => groupScanFieldsForEntry(props.modelValue || []));
 
 function groupLayoutClass(group) {
-  const hasTextarea = group.fields.some((field) => field.field_type === 'textarea');
+  const hasWideControl = group.fields.some((field) => field.field_type === 'textarea' || field.field_type === 'text');
 
-  if (hasTextarea || group.is_multi_value) {
+  if (hasWideControl || group.is_multi_value) {
     return 'clinical-scan-field--wide';
   }
 
@@ -191,9 +203,21 @@ function defaultPresets(field) {
   return resolveTemplateDefaultValues(field);
 }
 
+function sameScanFieldRow(row, field) {
+  if (row.clinical_scan_template_field_id != null && field.clinical_scan_template_field_id != null) {
+    return String(row.clinical_scan_template_field_id) === String(field.clinical_scan_template_field_id);
+  }
+
+  if (row.id && field.id) {
+    return String(row.id) === String(field.id);
+  }
+
+  return Boolean(row.field_key && field.field_key && row.field_key === field.field_key);
+}
+
 function updateFieldValue(field, value) {
   const updated = (props.modelValue || []).map((row) =>
-    row.clinical_scan_template_field_id === field.clinical_scan_template_field_id
+    sameScanFieldRow(row, field)
       ? { ...row, field_value: value }
       : row
   );
@@ -204,167 +228,12 @@ function updateFieldValue(field, value) {
 <style scoped>
 .clinical-scan-fields__grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  grid-template-columns: 1fr;
   gap: 1rem;
-}
-
-.clinical-scan-field {
-  background: linear-gradient(180deg, rgb(240 253 250 / 0.65) 0%, rgb(255 255 255) 100%);
-  border: 1px solid rgb(204 251 241);
-  border-radius: 0.9rem;
-  padding: 0.9rem 1rem;
-  box-shadow: 0 1px 2px rgb(15 118 110 / 0.06);
-}
-
-:global(.dark) .clinical-scan-field {
-  background: linear-gradient(180deg, rgb(19 78 74 / 0.35) 0%, rgb(31 41 55) 100%);
-  border-color: rgb(45 212 191 / 0.25);
 }
 
 .clinical-scan-field--wide {
   grid-column: 1 / -1;
-}
-
-.clinical-scan-field__label {
-  display: block;
-  margin-bottom: 0.45rem;
-  font-size: 0.8125rem;
-  font-weight: 600;
-  color: rgb(15 118 110);
-  letter-spacing: 0.01em;
-}
-
-:global(.dark) .clinical-scan-field__label {
-  color: rgb(94 234 212);
-}
-
-.clinical-scan-field__sub-label {
-  margin: 0 0 0.35rem;
-  font-size: 0.75rem;
-  font-weight: 600;
-  color: rgb(13 148 136);
-}
-
-:global(.dark) .clinical-scan-field__sub-label {
-  color: rgb(153 246 228);
-}
-
-.clinical-scan-field__slot + .clinical-scan-field__slot {
-  margin-top: 0.85rem;
-  padding-top: 0.85rem;
-  border-top: 1px dashed rgb(204 251 241);
-}
-
-:global(.dark) .clinical-scan-field__slot + .clinical-scan-field__slot {
-  border-top-color: rgb(45 212 191 / 0.25);
-}
-
-.clinical-scan-field__required {
-  color: rgb(220 38 38);
-  margin-left: 0.15rem;
-}
-
-.clinical-scan-field__control {
-  width: 100%;
-  border-radius: 0.65rem;
-  border: 1px solid rgb(209 213 219);
-  padding: 0.55rem 0.75rem;
-  font-size: 0.875rem;
-  background: #fff;
-  transition: border-color 0.15s ease, box-shadow 0.15s ease;
-}
-
-:global(.dark) .clinical-scan-field__control {
-  background: rgb(17 24 39);
-  border-color: rgb(75 85 99);
-  color: #fff;
-}
-
-.clinical-scan-field__control:focus {
-  outline: none;
-  border-color: rgb(20 184 166);
-  box-shadow: 0 0 0 3px rgb(20 184 166 / 0.15);
-}
-
-.clinical-scan-field__textarea {
-  resize: vertical;
-  min-height: 5.5rem;
-}
-
-.clinical-scan-field__options {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-}
-
-.clinical-scan-field__presets {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.45rem;
-  margin-bottom: 0.55rem;
-}
-
-.clinical-scan-field__preset {
-  display: inline-flex;
-  align-items: center;
-  max-width: 100%;
-  padding: 0.35rem 0.65rem;
-  border-radius: 9999px;
-  border: 1px solid rgb(153 246 228);
-  background: rgb(240 253 250);
-  font-size: 0.75rem;
-  line-height: 1.25;
-  color: rgb(15 118 110);
-  cursor: pointer;
-  text-align: left;
-}
-
-:global(.dark) .clinical-scan-field__preset {
-  background: rgb(19 78 74 / 0.45);
-  border-color: rgb(45 212 191 / 0.35);
-  color: rgb(153 246 228);
-}
-
-.clinical-scan-field__preset--active {
-  border-color: rgb(13 148 136);
-  background: rgb(204 251 241);
-  font-weight: 600;
-}
-
-:global(.dark) .clinical-scan-field__preset--active {
-  background: rgb(13 148 136 / 0.35);
-  border-color: rgb(45 212 191);
-}
-
-.clinical-scan-field__preset:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
-.clinical-scan-field__option,
-.clinical-scan-field__toggle {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.45rem;
-  padding: 0.45rem 0.7rem;
-  border-radius: 9999px;
-  border: 1px solid rgb(229 231 235);
-  background: #fff;
-  font-size: 0.8125rem;
-  color: rgb(55 65 81);
-  cursor: pointer;
-}
-
-:global(.dark) .clinical-scan-field__option,
-:global(.dark) .clinical-scan-field__toggle {
-  background: rgb(17 24 39);
-  border-color: rgb(75 85 99);
-  color: rgb(229 231 235);
-}
-
-.clinical-scan-field__radio,
-.clinical-scan-field__checkbox {
-  accent-color: rgb(13 148 136);
 }
 
 .clinical-scan-fields__error {

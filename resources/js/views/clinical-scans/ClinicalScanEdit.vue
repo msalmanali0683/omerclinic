@@ -30,8 +30,8 @@
           :error="errors.scan_name"
         />
 
-        <div class="rounded-xl border border-teal-100 dark:border-teal-900/30 bg-teal-50/40 dark:bg-teal-900/10 p-4">
-          <h4 class="text-sm font-semibold text-teal-800 dark:text-teal-300 mb-3">Scan Findings</h4>
+        <div :class="clinicalScanFindingsPanelClass">
+          <h4 :class="clinicalScanFindingsPanelTitleClass">Scan Findings</h4>
           <ClinicalScanDynamicFields v-model="scanValues" :error="errors.values" />
         </div>
 
@@ -59,7 +59,8 @@ import { useToastStore } from '@/stores/toast';
 import { clinicalScanService } from '@/services/clinicalScanService';
 import { clinicalScanTemplateService } from '@/services/clinicalScanTemplateService';
 import { useFormErrors } from '@/composables/useFormErrors';
-import { applyLegacyScanMetaToValues, buildScanValuesFromTemplate, serializeScanValues } from '@/utils/clinicalScans';
+import { applyLegacyScanMetaToValues, buildScanValuesForEdit, extractResourceList, serializeScanValues } from '@/utils/clinicalScans';
+import { clinicalScanFindingsPanelClass, clinicalScanFindingsPanelTitleClass } from '@/utils/clinicalScanFieldTheme';
 import { displayPatientAge, formatGender } from '@/utils/formatters';
 import BaseButton from '@/components/ui/BaseButton.vue';
 import BaseInput from '@/components/ui/BaseInput.vue';
@@ -117,16 +118,16 @@ onMounted(async () => {
     scan.value = row;
     form.scan_name = row.scan_name || row.scan_template_name || '';
 
-    let templateFields = row.template?.fields ?? [];
+    let templateFields = extractResourceList(row.template?.fields);
 
     if (!templateFields.length && row.clinical_scan_template_id) {
       const templateRes = await clinicalScanTemplateService.getTemplate(row.clinical_scan_template_id);
       const template = templateRes.data.data ?? templateRes.data;
-      templateFields = template.fields ?? [];
+      templateFields = extractResourceList(template.fields);
     }
 
     scanValues.value = applyLegacyScanMetaToValues(
-      buildScanValuesFromTemplate(templateFields, row.values ?? []),
+      buildScanValuesForEdit(templateFields, extractResourceList(row.values)),
       { notes: row.notes, impression: row.impression },
     );
   } catch {

@@ -182,6 +182,10 @@ export function buildClinicalScanPrintCss(fontSizeClinicalScans = 12) {
             margin-left: 0;
         }
 
+        .scan-field-value strong {
+            font-weight: 700 !important;
+        }
+
         .scan-impression,
         .scan-value-impression {
             display: block;

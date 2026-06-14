@@ -19,6 +19,10 @@ class TextCase
             return $value;
         }
 
+        if (str_contains($value, '**')) {
+            return self::capitalizeWordsPreservingBoldSegments($value);
+        }
+
         return preg_replace_callback(
             '/(?:^|[\s\r\n]+)\K\p{L}/u',
             static fn (array $matches): string => mb_strtoupper($matches[0]),
@@ -61,5 +65,27 @@ class TextCase
         }
 
         return false;
+    }
+
+    protected static function capitalizeWordsPreservingBoldSegments(string $value): string
+    {
+        $parts = preg_split('/(\*\*.+?\*\*)/s', $value, -1, PREG_SPLIT_DELIM_CAPTURE);
+        $result = '';
+
+        foreach ($parts as $part) {
+            if ($part === '') {
+                continue;
+            }
+
+            if (preg_match('/^\*\*(.+)\*\*$/s', $part, $matches)) {
+                $result .= '**'.$matches[1].'**';
+
+                continue;
+            }
+
+            $result .= self::capitalizeWords($part) ?? $part;
+        }
+
+        return $result;
     }
 }

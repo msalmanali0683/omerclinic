@@ -6,9 +6,12 @@
       <div class="mb-6 flex items-start justify-between gap-4">
         <div>
           <p class="font-mono text-teal-600">{{ visit.patient?.mr_number }}</p>
-          <h2 class="text-2xl font-bold text-gray-900 dark:text-white">{{ visit.patient?.patient_name }}</h2>
+          <h2 class="text-2xl font-bold text-gray-900 dark:text-white">{{ patientForm.patient_name || visit.patient?.patient_name }}</h2>
           <p class="text-gray-500 text-sm">
-            {{ visit.patient?.patient_father_name }} · {{ formatGender(visit.patient?.patient_gender) }} · {{ displayPatientAge(visit.patient) }} · {{ visit.patient?.patient_cell }}
+            {{ patientForm.patient_father_name || visit.patient?.patient_father_name || '—' }}
+            · {{ formatGender(patientForm.patient_gender || visit.patient?.patient_gender) }}
+            · {{ displayPatientAge(patientForm.patient_age ? patientForm : visit.patient) }}
+            · {{ patientForm.patient_cell || visit.patient?.patient_cell || '—' }}
           </p>
         </div>
         <span class="px-3 py-1 rounded-full text-sm bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-300">{{ visit.status.replace(/_/g, ' ') }}</span>
@@ -16,8 +19,13 @@
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
         <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4 shadow-sm">
-          <h3 class="font-semibold mb-2">Personal Info</h3>
-          <dl class="text-sm space-y-1 text-gray-600 dark:text-gray-400">
+          <h3 class="font-semibold mb-3">Personal Info</h3>
+          <PatientFormFields
+            v-if="canEditPatientOnPrescription"
+            :form="patientForm"
+            :errors="patientErrors"
+          />
+          <dl v-else class="text-sm space-y-1 text-gray-600 dark:text-gray-400">
             <div><dt class="inline font-medium">Gender:</dt> {{ formatGender(visit.patient?.patient_gender) }}</div>
             <div><dt class="inline font-medium">Age:</dt> {{ displayPatientAge(visit.patient) }}</div>
             <div><dt class="inline font-medium">CNIC:</dt> {{ visit.patient?.patient_cnic || '—' }}</div>
@@ -245,7 +253,8 @@ import DiagnosisSelector from '@/components/diagnosis/DiagnosisSelector.vue';
 import VisitDiagnosisTable from '@/components/diagnosis/VisitDiagnosisTable.vue';
 import { directPrintClinicalScan, directPrintLaboratoryReport, directPrintPrescription } from '@/utils/directPrint';
 import { NEXT_VISIT_DAY_OPTIONS } from '@/utils/prescriptionPrintSettings';
-import { displayPatientAge, formatGender } from '@/utils/formatters';
+import { displayPatientAge, formatCnicInput, formatGender } from '@/utils/formatters';
+import PatientFormFields from '@/components/patients/PatientFormFields.vue';
 import AppIcon from '@/components/ui/AppIcon.vue';
 import BaseButton from '@/components/ui/BaseButton.vue';
 import BaseSelect from '@/components/ui/BaseSelect.vue';
@@ -278,6 +287,17 @@ const doseFromMealOptions = ref([]);
 const rx = reactive({ next_visit_days: '' });
 const nextVisitDayOptions = NEXT_VISIT_DAY_OPTIONS;
 const rxErrors = reactive({});
+const patientErrors = reactive({});
+const patientForm = reactive({
+  patient_name: '',
+  patient_father_name: '',
+  patient_gender: '',
+  patient_age: '',
+  patient_age_unit: 'years',
+  patient_cell: '',
+  patient_address: '',
+  patient_cnic: '',
+});
 const rxSaving = ref(false);
 const printData = ref(null);
 const scanPrintLoading = ref(false);
@@ -344,6 +364,8 @@ const canShowPrescriptionForm = computed(() => {
     && ['pending_prescription', 'in_consultation'].includes(visit.value.status);
 });
 
+const canEditPatientOnPrescription = computed(() => canShowPrescriptionForm.value);
+
 function resetPrescriptionForm() {
   existingPrescription.value = null;
   prescriptionMedicineRows.value = [];
@@ -356,6 +378,65 @@ function normalizeNextVisitDays(value) {
   }
 
   return Number(value);
+}
+
+function syncPatientFormFromVisit(patient) {
+  if (!patient) {
+    return;
+  }
+
+  Object.assign(patientForm, {
+    patient_name: patient.patient_name ?? '',
+    patient_father_name: patient.patient_father_name ?? '',
+    patient_gender: patient.patient_gender ?? '',
+    patient_age: patient.patient_age ?? '',
+    patient_age_unit: patient.patient_age_unit ?? 'years',
+    patient_cell: patient.patient_cell ?? '',
+    patient_address: patient.patient_address ?? '',
+    patient_cnic: formatCnicInput(patient.patient_cnic ?? ''),
+  });
+}
+
+function buildPatientPayload() {
+  return {
+    patient_name: patientForm.patient_name.trim(),
+    patient_father_name: patientForm.patient_father_name?.trim() || null,
+    patient_gender: patientForm.patient_gender,
+    patient_age: patientForm.patient_age !== '' ? Number(patientForm.patient_age) : null,
+    patient_age_unit: patientForm.patient_age_unit || 'years',
+    patient_cell: patientForm.patient_cell?.trim() || '',
+    patient_address: patientForm.patient_address?.trim() || null,
+    patient_cnic: patientForm.patient_cnic?.trim() || null,
+  };
+}
+
+function clearPatientErrors() {
+  Object.keys(patientErrors).forEach((key) => delete patientErrors[key]);
+}
+
+function applyPatientValidationErrors(errors = {}) {
+  clearPatientErrors();
+
+  Object.entries(errors).forEach(([key, value]) => {
+    if (key.startsWith('patient.')) {
+      patientErrors[key.replace('patient.', '')] = Array.isArray(value) ? value[0] : value;
+    }
+  });
+}
+
+function applySavedPatientToVisit(patient) {
+  if (!patient || !visit.value) {
+    return;
+  }
+
+  visit.value = {
+    ...visit.value,
+    patient: {
+      ...visit.value.patient,
+      ...patient,
+    },
+  };
+  syncPatientFormFromVisit(visit.value.patient);
 }
 
 function applyPrescriptionToForm(prescription) {
@@ -446,6 +527,8 @@ async function handleSaveSuccess(data, redirect = true) {
       can_update_prescription: true,
     };
   }
+
+  applySavedPatientToVisit(printData.value?.patient ?? data.data?.patient ?? data.prescription?.patient);
 
   if (printData.value) {
     redirectAfterPrint.value = redirect;
@@ -558,6 +641,7 @@ async function load() {
   try {
     const { data } = await patientQueueService.getQueueItem(route.params.id);
     visit.value = data.visit;
+    syncPatientFormFromVisit(data.visit?.patient);
     currentVisitVitals.value = data.latest_vitals ?? null;
     vitalsHistory.value = normalizeList(data.vitals_history);
     clinicalScanHistory.value = data.clinical_scan_history ?? null;
@@ -749,6 +833,7 @@ async function savePendingVitalsIfNeeded() {
 
 async function savePrescription() {
   Object.keys(rxErrors).forEach((key) => delete rxErrors[key]);
+  clearPatientErrors();
 
   try {
     await savePendingVitalsIfNeeded();
@@ -787,6 +872,7 @@ async function savePrescription() {
       notes: null,
       next_visit_days: normalizeNextVisitDays(rx.next_visit_days),
       medicines,
+      patient: buildPatientPayload(),
     };
 
     if (prescriptionMode.value === 'edit' && existingPrescription.value?.id) {
@@ -810,7 +896,11 @@ async function savePrescription() {
     }
 
     const errs = e.response?.data?.errors ?? {};
-    Object.assign(rxErrors, flattenValidationErrors(errs));
+    const prescriptionErrors = Object.fromEntries(
+      Object.entries(errs).filter(([key]) => !key.startsWith('patient.'))
+    );
+    Object.assign(rxErrors, flattenValidationErrors(prescriptionErrors));
+    applyPatientValidationErrors(errs);
     if (errs.medicines) {
       rxErrors.medicines = Array.isArray(errs.medicines) ? errs.medicines[0] : errs.medicines;
     }

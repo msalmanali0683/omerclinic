@@ -67,7 +67,7 @@
             class="border-b border-gray-100 dark:border-gray-700 pb-3 last:border-0"
           >
             <dt class="text-sm font-medium text-gray-900 dark:text-white">{{ group.label }}</dt>
-            <dd class="text-sm text-gray-600 dark:text-gray-400 mt-1 whitespace-pre-wrap">
+            <dd class="text-sm text-gray-600 dark:text-gray-400 mt-1 whitespace-pre-wrap bidi-text">
               <template v-if="group.is_multi_value">
                 <div
                   v-for="field in group.fields"
@@ -75,11 +75,11 @@
                   class="mt-1"
                 >
                   <span v-if="slotLabel(field)" class="font-medium">{{ slotLabel(field) }}: </span>
-                  {{ field.field_value || '—' }}
+                  <span v-html="renderFieldHtml(field.field_value)" />
                 </div>
               </template>
               <template v-else>
-                {{ group.fields[0]?.field_value || '—' }}
+                <span v-html="renderFieldHtml(group.fields[0]?.field_value)" />
               </template>
             </dd>
           </div>
@@ -108,6 +108,7 @@ import { clinicalScanService } from '@/services/clinicalScanService';
 import { directPrintClinicalScan } from '@/utils/directPrint';
 import { displayPatientAge, formatDate, formatGender } from '@/utils/formatters';
 import { groupScanFieldsForEntry } from '@/utils/clinicalScans';
+import { renderScanFieldRichHtml } from '@/utils/scanFieldRichText';
 import BaseButton from '@/components/ui/BaseButton.vue';
 
 const route = useRoute();
@@ -132,6 +133,12 @@ function slotLabel(field) {
   }
 
   return label;
+}
+
+function renderFieldHtml(value) {
+  const html = renderScanFieldRichHtml(value);
+
+  return html || '—';
 }
 
 function statusClass(status) {

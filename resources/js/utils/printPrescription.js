@@ -18,6 +18,9 @@ function buildPrintStyles(options, baseUrl = '') {
     const fontSizeClinicalScans = merged.fontSizeClinicalScans ?? 12;
     const fontSizeMedicines = merged.fontSizeMedicines ?? 13;
     const fontSizeMedicineDose = merged.fontSizeMedicineDose ?? 12;
+    const fontSizeClinicalHeading = fontSizeVitals;
+    const fontSizeClinicalList = Math.max(8, fontSizeVitals - 2);
+    const fontSizeTreatmentGiven = fontSizeVitals + 1;
 
     return `
         ${buildPrescriptionPrintFontFaceCss(baseUrl)}
@@ -200,7 +203,24 @@ function buildPrintStyles(options, baseUrl = '') {
         .vitals-section,
         .vitals-grid,
         .vitals-grid > div {
-            font-size: ${fontSizeVitals}pt;
+            font-size: ${fontSizeClinicalList}pt;
+        }
+
+        .clinical-panel__title {
+            font-weight: 700 !important;
+            text-decoration: underline;
+            margin-bottom: 6px;
+            font-size: ${fontSizeClinicalHeading}pt;
+            line-height: 1.2;
+        }
+
+        .clinical-panel__list,
+        .complaints-list.clinical-panel__list,
+        .complaints-list.clinical-panel__list li,
+        .vitals-grid.clinical-panel__list,
+        .vitals-grid.clinical-panel__list > div {
+            font-size: ${fontSizeClinicalList}pt;
+            line-height: 1.2;
         }
 
         .clinical-scan-print-section {
@@ -215,7 +235,7 @@ function buildPrintStyles(options, baseUrl = '') {
             right: 0.08in;
             bottom: 0.05in;
             padding-bottom: 1in;
-            font-size: 12px;
+            font-size: ${fontSizeTreatmentGiven}pt;
             line-height: 1.2;
             break-inside: avoid;
             page-break-inside: avoid;
@@ -225,7 +245,7 @@ function buildPrintStyles(options, baseUrl = '') {
             font-weight: 700 !important;
             text-decoration: underline;
             margin-bottom: 3px;
-            font-size: calc(13px + 2pt);
+            font-size: calc(${fontSizeTreatmentGiven}pt + 2pt);
         }
 
         .treatment-given-list {

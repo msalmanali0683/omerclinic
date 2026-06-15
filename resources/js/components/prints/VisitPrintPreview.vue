@@ -29,20 +29,20 @@
       >
         <div class="clinical-left-top">
           <div class="complaints-section">
-            <div class="section-title">PRESENTING COMPLAINTS</div>
-            <ul class="complaints-list">
+            <div class="section-title clinical-panel__title">P/C</div>
+            <ul class="complaints-list clinical-panel__list">
               <li v-for="item in complaints" :key="item.id" class="bidi-text">{{ item.complaint_text }}</li>
             </ul>
           </div>
 
           <div class="vitals-section">
-            <div class="section-title">VITALS</div>
-            <div class="vitals-grid">
-              <div><strong>B.P:</strong> {{ vitals.blood_pressure }}</div>
-              <div><strong>Temp:</strong> {{ vitals.temperature }}</div>
-              <div><strong>Weight:</strong> {{ vitals.weight }}</div>
-              <div><strong>P/R:</strong> {{ vitals.pulse_rate }}</div>
-              <div><strong>R/R:</strong> {{ vitals.respiratory_rate }}</div>
+            <div class="section-title clinical-panel__title">VITALS</div>
+            <div class="vitals-grid clinical-panel__list">
+              <div><strong>B.P:</strong> {{ printVitals.blood_pressure }}</div>
+              <div><strong>Temp:</strong> {{ printVitals.temperature }}</div>
+              <div><strong>Weight:</strong> {{ printVitals.weight }}</div>
+              <div><strong>P/R:</strong> {{ printVitals.pulse_rate }}</div>
+              <div><strong>R/R:</strong> {{ printVitals.respiratory_rate }}</div>
             </div>
           </div>
         </div>
@@ -215,6 +215,7 @@ import {
   formatPrescriptionDateTime,
   mergePrescriptionPrintSettings,
 } from '@/utils/prescriptionPrintSettings';
+import { formatPrintVitals } from '@/utils/printVitalsFormat';
 
 const props = defineProps({
   printData: { type: Object, required: true },
@@ -236,6 +237,7 @@ const patient = computed(() => normalized.value.patient);
 const visit = computed(() => normalized.value.visit);
 const prescription = computed(() => normalized.value.prescription);
 const vitals = computed(() => normalized.value.vitals);
+const printVitals = computed(() => formatPrintVitals(vitals.value));
 const complaints = computed(() => normalized.value.complaints);
 const medicines = computed(() => normalized.value.medicines);
 const printMedicineGroups = computed(() => splitPrintMedicines(medicines.value));
@@ -407,7 +409,7 @@ watch(
   right: 0.08in;
   bottom: 0.05in;
   padding-bottom: 1in;
-  font-size: 12px;
+  font-size: var(--print-font-treatment-given, 13pt);
   line-height: 1.2;
   break-inside: avoid;
   page-break-inside: avoid;
@@ -417,7 +419,7 @@ watch(
   font-weight: 700 !important;
   text-decoration: underline;
   margin-bottom: 3px;
-  font-size: calc(13px + 2pt);
+  font-size: calc(var(--print-font-treatment-given, 13pt) + 2pt);
 }
 
 .clinical-scan-print-section .section-title,
@@ -452,6 +454,23 @@ watch(
   font-size: inherit;
 }
 
+.clinical-panel__title {
+  font-weight: 700 !important;
+  text-decoration: underline;
+  margin-bottom: 6px;
+  font-size: var(--print-font-clinical-heading, 12pt);
+  line-height: 1.2;
+}
+
+.clinical-panel__list,
+.complaints-list.clinical-panel__list,
+.complaints-list.clinical-panel__list li,
+.vitals-grid.clinical-panel__list,
+.vitals-grid.clinical-panel__list > div {
+  font-size: var(--print-font-clinical-list, 10pt);
+  line-height: 1.2;
+}
+
 .complaints-list {
   list-style: none;
   padding: 0;
@@ -460,12 +479,6 @@ watch(
 
 .complaints-list li {
   margin-bottom: 4px;
-}
-
-.vitals-section,
-.vitals-grid,
-.vitals-grid > div {
-  font-size: var(--print-font-vitals, 12pt);
 }
 
 .vitals-grid > div {

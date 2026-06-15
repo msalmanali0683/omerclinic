@@ -55,6 +55,43 @@ class MedicineMasterTest extends TestCase
         ])->assertCreated();
     }
 
+    public function test_hospital_admin_can_update_dose_time(): void
+    {
+        $admin = $this->makeUser('hospital-admin');
+        $doseTime = MedicineDoseTime::firstOrFail();
+
+        $this->actingAs($admin)->putJson("/api/medicine-dose-times/{$doseTime->id}", [
+            'dose_time' => 'Updated Dose Time',
+        ])->assertOk()
+            ->assertJsonPath('data.dose_time', 'Updated Dose Time');
+
+        $this->assertDatabaseHas('medicine_dose_times', [
+            'id'        => $doseTime->id,
+            'dose_time' => 'Updated Dose Time',
+        ]);
+    }
+
+    public function test_pharmacist_can_update_dose_from_meal(): void
+    {
+        $pharmacist = $this->makeUser('pharmacist');
+        $doseFromMeal = MedicineDoseFromMeal::firstOrFail();
+
+        $this->actingAs($pharmacist)->putJson("/api/medicine-dose-from-meals/{$doseFromMeal->id}", [
+            'dose_from_meal' => 'Updated Meal Timing',
+        ])->assertOk()
+            ->assertJsonPath('data.dose_from_meal', 'Updated Meal Timing');
+    }
+
+    public function test_doctor_cannot_update_dose_time(): void
+    {
+        $doctor = $this->makeUser('doctor');
+        $doseTime = MedicineDoseTime::firstOrFail();
+
+        $this->actingAs($doctor)->putJson("/api/medicine-dose-times/{$doseTime->id}", [
+            'dose_time' => 'Doctor Attempt',
+        ])->assertForbidden();
+    }
+
     public function test_hospital_admin_can_create_medicine(): void
     {
         $admin = $this->makeUser('hospital-admin');

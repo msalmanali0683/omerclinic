@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
+import { useNetworkStore } from '@/stores/network';
 import { checkRouteAccess } from '@/utils/permissions';
 import { resolveDefaultRoute, resolvePostLoginRedirect } from '@/utils/navigation';
 
@@ -327,6 +328,7 @@ const router = createRouter({
 
 router.beforeEach(async (to) => {
     const authStore = useAuthStore();
+    const networkStore = useNetworkStore();
 
     if (!authStore.initialized) {
         await authStore.fetchUser();
@@ -356,6 +358,12 @@ router.beforeEach(async (to) => {
     }
 
     if (to.name !== 'no-access' && to.meta.requiresAuth && !checkRouteAccess(to.meta, authStore.user)) {
+        if (authStore.networkOffline && authStore.isAuthenticated) {
+            networkStore.rememberRecoveryPath(to.fullPath);
+
+            return resolveDefaultRoute(authStore.user);
+        }
+
         return { name: 'unauthorized' };
     }
 

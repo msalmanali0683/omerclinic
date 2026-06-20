@@ -56,6 +56,7 @@
 import { reactive, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
+import { getApiErrorMessage, isNetworkError } from '@/utils/apiErrors';
 import { resolvePostLoginRedirect } from '@/utils/navigation';
 import BaseInput from '@/components/ui/BaseInput.vue';
 import BaseButton from '@/components/ui/BaseButton.vue';
@@ -88,8 +89,10 @@ async function submit() {
       errors.password = data.errors.password?.[0] ?? '';
     } else if (e.response?.status === 419) {
       errors.general = 'Your session expired. Please try signing in again.';
+    } else if (isNetworkError(e)) {
+      errors.general = getApiErrorMessage(e, 'Login failed. Please check your internet connection.');
     } else {
-      errors.general = data?.message ?? 'Login failed. Please check your credentials.';
+      errors.general = getApiErrorMessage(e, 'Login failed. Please check your credentials.');
     }
   } finally {
     loading.value = false;

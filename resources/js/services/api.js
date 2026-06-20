@@ -1,6 +1,8 @@
 import axios from 'axios';
 import { applyCsrfHeaders, refreshCsrfCookie } from '@/utils/csrf';
 import { capitalizePayload } from '@/utils/textCase';
+import { isNetworkError } from '@/utils/apiErrors';
+import { useNetworkStore } from '@/stores/network';
 
 const api = axios.create({
     baseURL: '/api',
@@ -29,8 +31,19 @@ api.interceptors.request.use((config) => {
 });
 
 api.interceptors.response.use(
-    (response) => response,
+    (response) => {
+        useNetworkStore().markOnline();
+
+        return response;
+    },
     async (error) => {
+        if (isNetworkError(error)) {
+            error.isNetworkError = true;
+            useNetworkStore().markOffline();
+
+            return Promise.reject(error);
+        }
+
         const status = error.response?.status;
         const config = error.config;
 
@@ -59,6 +72,13 @@ api.interceptors.response.use(
                     applyCsrfHeaders(config);
                     return api(config);
                 } catch (retryError) {
+                    if (isNetworkError(retryError)) {
+                        error.isNetworkError = true;
+                        useNetworkStore().markOffline();
+
+                        return Promise.reject(retryError);
+                    }
+
                     if (retryError.response?.status !== 401) {
                         return Promise.reject(retryError);
                     }
@@ -78,7 +98,7 @@ api.interceptors.response.use(
         }
 
         return Promise.reject(error);
-    }
+    },
 );
 
 export default api;

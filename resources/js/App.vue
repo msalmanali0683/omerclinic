@@ -5,6 +5,7 @@
     </component>
   </RouterView>
   <Toast />
+  <NetworkErrorModal />
 </template>
 
 <script setup>
@@ -15,6 +16,7 @@ import { refreshCsrfCookie } from '@/utils/csrf';
 import AuthLayout from '@/layouts/AuthLayout.vue';
 import DashboardLayout from '@/layouts/DashboardLayout.vue';
 import Toast from '@/components/ui/Toast.vue';
+import NetworkErrorModal from '@/components/ui/NetworkErrorModal.vue';
 
 const authStore = useAuthStore();
 const themeStore = useThemeStore();

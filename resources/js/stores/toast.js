@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia';
+import { getApiErrorMessage, isNetworkError } from '@/utils/apiErrors';
 
 let toastId = 0;
 
@@ -20,8 +21,20 @@ export const useToastStore = defineStore('toast', {
             this.show(message, 'success');
         },
 
-        error(message) {
-            this.show(message, 'error', 6000);
+        error(message, fallback = 'Something went wrong. Please try again.') {
+            const resolved = typeof message === 'string' && message.trim() !== ''
+                ? message
+                : fallback;
+
+            this.show(resolved, 'error', 6000);
+        },
+
+        apiError(error, fallback = 'Something went wrong. Please try again.') {
+            if (isNetworkError(error)) {
+                return;
+            }
+
+            this.error(getApiErrorMessage(error, fallback));
         },
 
         warning(message) {

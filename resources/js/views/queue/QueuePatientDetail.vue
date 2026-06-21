@@ -171,6 +171,7 @@
           <PrescriptionMedicineRows
             v-if="authStore.can('select medicines in prescription')"
             v-model="prescriptionMedicineRows"
+            :medicine-catalog="medicineCatalog"
             :dose-time-options="doseTimeOptions"
             :dose-from-meal-options="doseFromMealOptions"
             :errors="rxErrors"
@@ -242,7 +243,7 @@ import VitalsHistory from '@/components/vitals/VitalsHistory.vue';
 import ClinicalScanHistory from '@/components/clinical-scans/ClinicalScanHistory.vue';
 import LaboratoryHistory from '@/components/laboratory/LaboratoryHistory.vue';
 import PrescriptionMedicineRows from '@/components/prescription/PrescriptionMedicineRows.vue';
-import { mapPrescriptionMedicineToRow, persistNewMedicineRows, preparePrescriptionMedicineRowsForSave, serializePrescriptionMedicineRows, stripEmptyPrescriptionMedicineRows, appendDiagnosisTemplateMedicines, collectPrescriptionMedicineIds, stripForeignPrescriptionMedicineIds } from '@/utils/prescriptionMedicines';
+import { mapPrescriptionMedicineToRow, preparePrescriptionMedicineRowsForSave, serializePrescriptionMedicineRows, stripEmptyPrescriptionMedicineRows, appendDiagnosisTemplateMedicines, collectPrescriptionMedicineIds, stripForeignPrescriptionMedicineIds } from '@/utils/prescriptionMedicines';
 import { diagnosisMedicineTemplateService } from '@/services/diagnosisMedicineTemplateService';
 import { medicineDoseTimeService } from '@/services/medicineDoseTimeService';
 import { medicineDoseFromMealService } from '@/services/medicineDoseFromMealService';
@@ -283,6 +284,7 @@ const doctorOptions = ref([]);
 const existingPrescription = ref(null);
 const prescriptionMedicineRows = ref([]);
 const doseTimeOptions = ref([]);
+const medicineCatalog = ref([]);
 const doseFromMealOptions = ref([]);
 const rx = reactive({ next_visit_days: '' });
 const nextVisitDayOptions = NEXT_VISIT_DAY_OPTIONS;
@@ -606,6 +608,7 @@ async function loadPrescriptionOptions() {
     const { data } = await prescriptionService.getPrescriptionCreateData(visit.value.id);
     doseTimeOptions.value = data.dose_time_options ?? [];
     doseFromMealOptions.value = data.dose_from_meal_options ?? [];
+    medicineCatalog.value = data.medicine_options ?? [];
     if (data.clinical_scan_history) {
       clinicalScanHistory.value = data.clinical_scan_history;
     }
@@ -849,18 +852,6 @@ async function savePrescription() {
     prescriptionMedicineRows.value,
     allowedPrescriptionMedicineIds,
   );
-
-  try {
-    prescriptionMedicineRows.value = await persistNewMedicineRows(prescriptionMedicineRows.value);
-  } catch (error) {
-    // Backend PrescriptionService also find-or-creates on save; do not block prescription.
-    if (error.response?.status !== 405 && error.response?.status !== 404) {
-      toastStore.warning(
-        error.response?.data?.message
-          ?? 'Could not save new medicine to master list before prescription; saving prescription anyway.'
-      );
-    }
-  }
 
   const medicines = serializePrescriptionMedicineRows(prescriptionMedicineRows.value, {
     allowedIds: allowedPrescriptionMedicineIds,

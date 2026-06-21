@@ -105,7 +105,6 @@
             <BaseButton
               type="button"
               class="w-full"
-              :loading="addingToTable"
               @click="addToTable"
             >
               Add
@@ -233,16 +232,13 @@
 <script setup>
 import { computed, ref, watch } from 'vue';
 import { medicineService } from '@/services/medicineService';
-import { SEARCH_DEBOUNCE_MS } from '@/composables/useAutoSearch';
 import {
   createPrescriptionMedicineRow,
+  filterMedicineCatalogOptions,
   formatMedicineSearchOptionLabel,
   isDuplicatePrescriptionMedicineRow,
-  persistNewMedicineRows,
   prescriptionMedicineIdentityKey,
   resolveMedicineMasterFromRow,
-  syncMedicineMasterFromRow,
-  shouldSyncMedicineMasterRow,
 } from '@/utils/prescriptionMedicines';
 import { MEDICINE_TYPE_OPTIONS } from '@/constants/medicineTypes';
 import { isInjectionMedicine } from '@/utils/prescriptionPrintMedicines';
@@ -250,11 +246,15 @@ import { useToastStore } from '@/stores/toast';
 import AppIcon from '@/components/ui/AppIcon.vue';
 import BaseButton from '@/components/ui/BaseButton.vue';
 
+const MEDICINE_SEARCH_DEBOUNCE_MS = 250;
+const LOCAL_MATCH_THRESHOLD = 10;
+
 const toastStore = useToastStore();
 const medicineTypeOptions = MEDICINE_TYPE_OPTIONS;
 
 const props = defineProps({
   modelValue: { type: Array, default: () => [] },
+  medicineCatalog: { type: Array, default: () => [] },
   doseTimeOptions: { type: Array, default: () => [] },
   doseFromMealOptions: { type: Array, default: () => [] },
   errors: { type: Object, default: () => ({}) },
@@ -263,7 +263,6 @@ const props = defineProps({
 const emit = defineEmits(['update:modelValue']);
 
 const entryRow = ref(createPrescriptionMedicineRow());
-const addingToTable = ref(false);
 const searchTimer = ref(null);
 
 const tableRows = computed({
@@ -319,6 +318,18 @@ function onTypeChange() {
   entryRow.value.show_dropdown = false;
 }
 
+function applyLocalMedicineOptions(row) {
+  const localMatches = filterMedicineCatalogOptions(props.medicineCatalog, {
+    search: row.medicine_search,
+    mdcnType: row.mdcn_type,
+  });
+
+  if (localMatches.length) {
+    row.medicine_options = localMatches;
+    row.show_dropdown = true;
+  }
+}
+
 function onMedicineInput() {
   if (!entryRow.value.mdcn_type?.trim()) {
     entryRow.value.medicine_options = [];
@@ -340,6 +351,7 @@ function onMedicineInput() {
     entryRow.value.medicine_identity_key = null;
   }
 
+  applyLocalMedicineOptions(entryRow.value);
   onMedicineSearch(entryRow.value);
 }
 
@@ -349,7 +361,7 @@ function onMedicineSearch(row) {
   }
 
   clearTimeout(searchTimer.value);
-  searchTimer.value = setTimeout(() => fetchMedicineOptions(row), SEARCH_DEBOUNCE_MS);
+  searchTimer.value = setTimeout(() => fetchMedicineOptions(row), MEDICINE_SEARCH_DEBOUNCE_MS);
 }
 
 async function fetchMedicineOptions(row) {
@@ -364,6 +376,14 @@ async function fetchMedicineOptions(row) {
 
   if (!term) {
     row.medicine_options = [];
+    row.show_dropdown = false;
+    return;
+  }
+
+  applyLocalMedicineOptions(row);
+
+  const localMatches = row.medicine_options ?? [];
+  if (localMatches.length >= LOCAL_MATCH_THRESHOLD || term.length < 2) {
     return;
   }
 
@@ -373,16 +393,27 @@ async function fetchMedicineOptions(row) {
       mdcn_type: type,
       limit: 30,
     });
-    row.medicine_options = data.data ?? [];
-    row.show_dropdown = true;
+    const remoteMatches = data.data ?? [];
+
+    if (remoteMatches.length) {
+      row.medicine_options = remoteMatches;
+      row.show_dropdown = true;
+    }
   } catch {
-    row.medicine_options = [];
+    if (!localMatches.length) {
+      row.medicine_options = [];
+      row.show_dropdown = false;
+    }
   }
 }
 
 function openDropdown(row) {
   if (!row.mdcn_type?.trim()) {
     return;
+  }
+
+  if (row.medicine_search?.trim()) {
+    applyLocalMedicineOptions(row);
   }
 
   if (row.medicine_options.length) {
@@ -415,7 +446,7 @@ function resetEntryRow() {
   entryRow.value = createPrescriptionMedicineRow();
 }
 
-async function addToTable() {
+function addToTable() {
   const name = entryRow.value.mdcn_name?.trim() || entryRow.value.medicine_search?.trim();
 
   if (!name) {
@@ -436,25 +467,13 @@ async function addToTable() {
     return;
   }
 
-  addingToTable.value = true;
+  const rowToAdd = resolveMedicineMasterFromRow({
+    ...entryRow.value,
+    _key: `row-${Date.now()}-${Math.random().toString(36).slice(2)}`,
+  });
 
-  try {
-    let rowToAdd = resolveMedicineMasterFromRow({
-      ...entryRow.value,
-      _key: `row-${Date.now()}-${Math.random().toString(36).slice(2)}`,
-    });
-
-    if (shouldSyncMedicineMasterRow(rowToAdd)) {
-      rowToAdd = { ...(await syncMedicineMasterFromRow(rowToAdd)), _key: rowToAdd._key };
-    }
-
-    emit('update:modelValue', [...tableRows.value, rowToAdd]);
-    resetEntryRow();
-  } catch {
-    toastStore.error('Failed to save new medicine to master list.');
-  } finally {
-    addingToTable.value = false;
-  }
+  emit('update:modelValue', [...tableRows.value, rowToAdd]);
+  resetEntryRow();
 }
 
 function updateTableRow(index, patch) {

@@ -134,7 +134,33 @@ function applyMedicineMasterToRow(row, medicine) {
   };
 }
 
+export function filterMedicineCatalogOptions(catalog, { search, mdcnType, limit = 30 } = {}) {
+  const term = String(search ?? '').trim().toLowerCase();
+  const type = String(mdcnType ?? '').trim();
+
+  if (!term || !type || !Array.isArray(catalog) || !catalog.length) {
+    return [];
+  }
+
+  return catalog
+    .filter((medicine) => {
+      if (String(medicine?.mdcn_type ?? '').trim() !== type) {
+        return false;
+      }
+
+      const name = String(medicine?.mdcn_name ?? '').toLowerCase();
+      const label = formatMedicineSearchOptionLabel(medicine).toLowerCase();
+
+      return name.startsWith(term) || label.includes(term);
+    })
+    .slice(0, limit);
+}
+
 export function shouldSyncMedicineMasterRow(row) {
+  if (row?.medicine_id) {
+    return false;
+  }
+
   return Boolean(row.mdcn_name?.trim()) && Boolean(row.mdcn_type?.trim());
 }
 
@@ -160,6 +186,7 @@ export async function syncMedicineMasterFromRow(row) {
 
 export async function persistNewMedicineRows(rows) {
   const nextRows = [...rows];
+  const pending = [];
 
   for (let index = 0; index < nextRows.length; index += 1) {
     const row = nextRows[index];
@@ -168,7 +195,15 @@ export async function persistNewMedicineRows(rows) {
       continue;
     }
 
-    nextRows[index] = await syncMedicineMasterFromRow(row);
+    pending.push(
+      syncMedicineMasterFromRow(row).then((synced) => {
+        nextRows[index] = synced;
+      }),
+    );
+  }
+
+  if (pending.length) {
+    await Promise.all(pending);
   }
 
   return nextRows;

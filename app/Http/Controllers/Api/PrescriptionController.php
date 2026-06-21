@@ -240,29 +240,35 @@ class PrescriptionController extends Controller
     {
         $this->authorize('viewAny', Medicine::class);
 
-        $query = Medicine::with(['doseTime', 'doseFromMeal'])->orderBy('mdcn_name');
+        $query = Medicine::query()->orderBy('mdcn_name');
 
         if ($request->filled('search')) {
             $search = $request->search;
-            $query->where(function ($q) use ($search) {
-                $q->where('mdcn_name', 'like', "%{$search}%")
-                    ->orWhere('mdcn_type', 'like', "%{$search}%")
-                    ->orWhere('mdcn_size', 'like', "%{$search}%");
-            });
+            $query->where('mdcn_name', 'like', $search.'%');
         }
 
-        return $query->limit($request->get('limit', 50))->get()->map(fn (Medicine $medicine) => [
-            'id'                     => $medicine->id,
-            'label'                  => $medicine->displayLabel(),
-            'value'                  => $medicine->id,
-            'mdcn_type'              => $medicine->mdcn_type,
-            'mdcn_name'              => $medicine->mdcn_name,
-            'mdcn_size'              => $medicine->mdcn_size,
-            'mdcn_time_id'           => $medicine->mdcn_time_id,
-            'mdcn_dose_from_meal_id' => $medicine->mdcn_dose_from_meal_id,
-            'dose_time'              => $medicine->doseTime?->dose_time,
-            'dose_from_meal'         => $medicine->doseFromMeal?->dose_from_meal,
-        ])->all();
+        return $query
+            ->limit($request->get('limit', 150))
+            ->get([
+                'id',
+                'mdcn_type',
+                'mdcn_name',
+                'mdcn_size',
+                'mdcn_time_id',
+                'mdcn_dose_from_meal_id',
+            ])
+            ->map(fn (Medicine $medicine) => [
+                'id'                     => $medicine->id,
+                'label'                  => $medicine->displayLabel(),
+                'value'                  => $medicine->id,
+                'mdcn_type'              => $medicine->mdcn_type,
+                'mdcn_name'              => $medicine->mdcn_name,
+                'mdcn_size'              => $medicine->mdcn_size,
+                'mdcn_time_id'           => $medicine->mdcn_time_id,
+                'mdcn_dose_from_meal_id' => $medicine->mdcn_dose_from_meal_id,
+                'dose_time'              => null,
+                'dose_from_meal'         => null,
+            ])->all();
     }
 
     protected function doseTimeOptionsPayload(): array

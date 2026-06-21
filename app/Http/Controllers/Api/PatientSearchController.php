@@ -7,6 +7,7 @@ use App\Http\Resources\PatientResource;
 use App\Http\Resources\PatientVisitResource;
 use App\Models\Patient;
 use App\Models\PatientVisit;
+use App\Services\PatientNameSuggestionService;
 use Illuminate\Http\Request;
 
 class PatientSearchController extends Controller
@@ -34,6 +35,22 @@ class PatientSearchController extends Controller
             ->get();
 
         return PatientResource::collection($patients);
+    }
+
+    public function nameSuggestions(Request $request, PatientNameSuggestionService $suggestionService)
+    {
+        $this->authorize('search', Patient::class);
+
+        $validated = $request->validate([
+            'q'     => 'required|string|min:1|max:100',
+            'field' => 'nullable|in:patient_name,patient_father_name,patient_address',
+        ]);
+
+        $field = $validated['field'] ?? 'patient_name';
+
+        return response()->json([
+            'data' => $suggestionService->suggest($validated['q'], $field),
+        ]);
     }
 
     public function searchVisits(Request $request)

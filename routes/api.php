@@ -78,6 +78,8 @@ Route::middleware('auth:sanctum')->group(function () {
     // Patient search (must be before {patient} routes)
     Route::get('patients/search', [PatientSearchController::class, 'search'])
         ->middleware('permission:search patients');
+    Route::get('patients/name-suggestions', [PatientSearchController::class, 'nameSuggestions'])
+        ->middleware('permission:search patients');
     Route::get('patient-visits/search', [PatientSearchController::class, 'searchVisits'])
         ->middleware('permission:search patients');
 

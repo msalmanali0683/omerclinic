@@ -99,22 +99,28 @@ class MedicineController extends Controller
             abort(403);
         }
 
-        $query = Medicine::with(['doseTime', 'doseFromMeal'])->orderBy('mdcn_name');
+        $query = Medicine::query()->orderBy('mdcn_name');
 
         if ($request->filled('search')) {
             $search = $request->search;
-            $query->where(function ($q) use ($search) {
-                $q->where('mdcn_name', 'like', "%{$search}%")
-                    ->orWhere('mdcn_type', 'like', "%{$search}%")
-                    ->orWhere('mdcn_size', 'like', "%{$search}%");
-            });
+            $query->where('mdcn_name', 'like', $search.'%');
         }
 
         if ($request->filled('mdcn_type') && in_array($request->mdcn_type, MedicineTypes::allowed(), true)) {
             $query->where('mdcn_type', $request->mdcn_type);
         }
 
-        $items = $query->limit($request->get('limit', 50))->get()->map(function (Medicine $medicine) {
+        $items = $query
+            ->limit($request->get('limit', 50))
+            ->get([
+                'id',
+                'mdcn_type',
+                'mdcn_name',
+                'mdcn_size',
+                'mdcn_time_id',
+                'mdcn_dose_from_meal_id',
+            ])
+            ->map(function (Medicine $medicine) {
                 return [
                     'id'                     => $medicine->id,
                     'label'                  => $medicine->displayLabel(),
@@ -124,8 +130,8 @@ class MedicineController extends Controller
                     'mdcn_size'              => $medicine->mdcn_size,
                     'mdcn_time_id'           => $medicine->mdcn_time_id,
                     'mdcn_dose_from_meal_id' => $medicine->mdcn_dose_from_meal_id,
-                    'dose_time'              => $medicine->doseTime?->dose_time,
-                    'dose_from_meal'         => $medicine->doseFromMeal?->dose_from_meal,
+                    'dose_time'              => null,
+                    'dose_from_meal'         => null,
                 ];
             });
 
@@ -139,8 +145,12 @@ class MedicineController extends Controller
             $request->user()
         );
 
+        if (! $medicine->relationLoaded('doseTime') || ! $medicine->relationLoaded('doseFromMeal')) {
+            $medicine->load(['doseTime', 'doseFromMeal']);
+        }
+
         return response()->json([
-            'data'    => new MedicineResource($medicine->load(['doseTime', 'doseFromMeal'])),
+            'data'    => new MedicineResource($medicine),
             'created' => $medicine->wasRecentlyCreated,
         ]);
     }

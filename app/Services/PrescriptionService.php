@@ -123,8 +123,18 @@ class PrescriptionService
     {
         $keptIds = [];
 
+        $timeIds = collect($rows)->pluck('mdcn_time_id')->filter()->unique()->values()->all();
+        $mealIds = collect($rows)->pluck('mdcn_dose_from_meal_id')->filter()->unique()->values()->all();
+
+        $doseTimesById = $timeIds === []
+            ? collect()
+            : MedicineDoseTime::query()->whereIn('id', $timeIds)->pluck('dose_time', 'id');
+        $doseMealsById = $mealIds === []
+            ? collect()
+            : MedicineDoseFromMeal::query()->whereIn('id', $mealIds)->pluck('dose_from_meal', 'id');
+
         foreach ($rows as $row) {
-            $snapshot = $this->resolveSnapshot($row, $user);
+            $snapshot = $this->resolveSnapshot($row, $user, $doseTimesById, $doseMealsById);
 
             if (! empty($row['id'])) {
                 $item = PrescriptionMedicine::query()
@@ -160,17 +170,25 @@ class PrescriptionService
         }
     }
 
-    protected function resolveSnapshot(array $row, User $user): array
-    {
+    protected function resolveSnapshot(
+        array $row,
+        User $user,
+        $doseTimesById = null,
+        $doseMealsById = null,
+    ): array {
         $doseTimeText = null;
         $doseFromMealText = null;
 
         if (! empty($row['mdcn_time_id'])) {
-            $doseTimeText = MedicineDoseTime::find($row['mdcn_time_id'])?->dose_time;
+            $doseTimeText = $doseTimesById !== null
+                ? ($doseTimesById[$row['mdcn_time_id']] ?? null)
+                : MedicineDoseTime::find($row['mdcn_time_id'])?->dose_time;
         }
 
         if (! empty($row['mdcn_dose_from_meal_id'])) {
-            $doseFromMealText = MedicineDoseFromMeal::find($row['mdcn_dose_from_meal_id'])?->dose_from_meal;
+            $doseFromMealText = $doseMealsById !== null
+                ? ($doseMealsById[$row['mdcn_dose_from_meal_id']] ?? null)
+                : MedicineDoseFromMeal::find($row['mdcn_dose_from_meal_id'])?->dose_from_meal;
         }
 
         $medicineId = $row['medicine_id'] ?? null;

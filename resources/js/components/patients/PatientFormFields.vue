@@ -3,10 +3,10 @@
     <div class="grid grid-cols-1 gap-3 md:grid-cols-2">
       <div class="rounded-2xl border p-4 shadow-sm" :class="getPatientFieldStyle('emerald').card">
         <FieldHeader title="Patient Name" subtitle="Full legal name" color="emerald" required />
-        <input
+        <PatientNameSuggestInput
           v-model="form.patient_name"
-          type="text"
-          :class="getPatientFieldStyle('emerald').input"
+          field="patient_name"
+          :input-class="getPatientFieldStyle('emerald').input"
           placeholder="Enter patient name"
         />
         <FieldError :message="fieldError('patient_name')" />
@@ -14,11 +14,13 @@
 
       <div class="rounded-2xl border p-4 shadow-sm" :class="getPatientFieldStyle('teal').card">
         <FieldHeader title="S/o, W/o, D/o" subtitle="Son / Wife / Daughter of" color="teal" />
-        <input
+        <PatientNameSuggestInput
           v-model="form.patient_father_name"
-          type="text"
-          :class="getPatientFieldStyle('teal').input"
+          field="patient_father_name"
+          :input-class="getPatientFieldStyle('teal').input"
           placeholder="Father / husband / guardian name"
+          dropdown-class="border-teal-200 bg-white dark:border-teal-800 dark:bg-gray-900"
+          dropdown-item-class="border-gray-100 hover:bg-teal-50 dark:border-gray-800 dark:hover:bg-teal-900/20"
         />
         <FieldError :message="fieldError('patient_father_name')" />
       </div>
@@ -79,11 +81,15 @@
 
       <div class="rounded-2xl border p-4 shadow-sm md:col-span-2" :class="getPatientFieldStyle('indigo').card">
         <FieldHeader title="Address" subtitle="Residential or mailing address" color="indigo" />
-        <textarea
+        <PatientNameSuggestInput
           v-model="form.patient_address"
-          rows="2"
-          :class="getPatientFieldStyle('indigo').input"
+          field="patient_address"
+          multiline
+          :rows="2"
+          :input-class="getPatientFieldStyle('indigo').input"
           placeholder="Street, area, city..."
+          dropdown-class="border-indigo-200 bg-white dark:border-indigo-800 dark:bg-gray-900"
+          dropdown-item-class="border-gray-100 hover:bg-indigo-50 dark:border-gray-800 dark:hover:bg-indigo-900/20"
         />
         <FieldError :message="fieldError('patient_address')" />
       </div>
@@ -96,6 +102,7 @@
 <script setup>
 import FieldError from '@/components/patients/PatientFormFieldError.vue';
 import FieldHeader from '@/components/patients/PatientFormFieldHeader.vue';
+import PatientNameSuggestInput from '@/components/patients/PatientNameSuggestInput.vue';
 import { getPatientFieldStyle } from '@/utils/patientFieldTheme';
 import { AGE_UNIT_OPTIONS, formatCnicInput, GENDER_OPTIONS } from '@/utils/formatters';
 

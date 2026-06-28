@@ -87,4 +87,92 @@ class MedicineService
 
         return $query->first();
     }
+
+    public function duplicateGroups(): array
+    {
+        $groups = [];
+
+        foreach (Medicine::query()->orderBy('id')->get() as $medicine) {
+            $key = $this->identityKey(
+                $medicine->mdcn_type,
+                $medicine->mdcn_name,
+                $medicine->mdcn_size,
+            );
+
+            $groups[$key] ??= [
+                'identity_key' => $key,
+                'mdcn_type'      => MedicineTypes::normalize($medicine->mdcn_type),
+                'mdcn_name'      => $medicine->mdcn_name,
+                'mdcn_size'      => $this->normalizeSize($medicine->mdcn_size),
+                'medicines'      => [],
+            ];
+
+            $groups[$key]['medicines'][] = [
+                'id'         => $medicine->id,
+                'mdcn_type'  => $medicine->mdcn_type,
+                'mdcn_name'  => $medicine->mdcn_name,
+                'mdcn_size'  => $medicine->mdcn_size,
+                'created_at' => $medicine->created_at?->toIso8601String(),
+            ];
+        }
+
+        return array_values(array_filter(
+            $groups,
+            fn (array $group) => count($group['medicines']) > 1,
+        ));
+    }
+
+    public function deleteDuplicateMedicines(?User $user = null): array
+    {
+        $deleted = 0;
+        $groupsCleaned = 0;
+        $keptIds = [];
+
+        foreach ($this->duplicateGroups() as $group) {
+            $medicines = collect($group['medicines'])->sortBy('id')->values();
+            $keeper = $medicines->first();
+            $keeperModel = Medicine::query()->findOrFail($keeper['id']);
+            $keptIds[] = $keeperModel->id;
+
+            foreach ($medicines->slice(1) as $duplicate) {
+                $duplicateModel = Medicine::query()->find($duplicate['id']);
+
+                if (! $duplicateModel) {
+                    continue;
+                }
+
+                $this->reassignMedicineReferences($keeperModel->id, $duplicateModel->id);
+                $duplicateModel->delete();
+                $deleted++;
+            }
+
+            $groupsCleaned++;
+        }
+
+        return [
+            'groups_cleaned'   => $groupsCleaned,
+            'deleted_count'    => $deleted,
+            'kept_medicine_ids' => $keptIds,
+        ];
+    }
+
+    protected function reassignMedicineReferences(int $keeperId, int $duplicateId): void
+    {
+        \App\Models\PrescriptionMedicine::query()
+            ->where('medicine_id', $duplicateId)
+            ->update(['medicine_id' => $keeperId]);
+
+        \App\Models\DiagnosisMedicineTemplate::query()
+            ->where('medicine_id', $duplicateId)
+            ->update(['medicine_id' => $keeperId]);
+    }
+
+    public function identityKey(string $type, string $name, mixed $size): string
+    {
+        $normalizedType = MedicineTypes::normalize(trim($type));
+        $normalizedName = mb_strtolower(trim($name));
+        $normalizedSize = $this->normalizeSize($size) ?? '';
+
+        return implode('|', [$normalizedType, $normalizedName, $normalizedSize]);
+    }
 }

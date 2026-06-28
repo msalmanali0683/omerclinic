@@ -237,6 +237,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('medicine-dose-times/options', [MedicineDoseTimeController::class, 'options']);
     Route::apiResource('medicine-dose-times', MedicineDoseTimeController::class);
     Route::get('medicines/options', [MedicineController::class, 'options']);
+    Route::get('medicines/duplicates', [MedicineController::class, 'duplicates']);
+    Route::post('medicines/delete-duplicates', [MedicineController::class, 'deleteDuplicates']);
     Route::post('medicines/find-or-create', [MedicineController::class, 'findOrCreate']);
     Route::apiResource('medicines', MedicineController::class)->whereNumber('medicine');
 

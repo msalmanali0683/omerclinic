@@ -12,6 +12,10 @@ class MedicinePolicy
 
     public function before(User $user, string $ability): ?bool
     {
+        if ($ability === 'deleteDuplicates') {
+            return $user->hasRole('super-admin');
+        }
+
         if ($user->hasAnyRole(['super-admin', 'hospital-admin'])) {
             return true;
         }
@@ -42,5 +46,10 @@ class MedicinePolicy
     public function delete(User $user, Medicine $medicine): bool
     {
         return $user->can('delete medicines');
+    }
+
+    public function deleteDuplicates(User $user): bool
+    {
+        return $user->hasRole('super-admin');
     }
 }

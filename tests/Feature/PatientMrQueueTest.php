@@ -572,6 +572,53 @@ class PatientMrQueueTest extends TestCase
         ]);
     }
 
+    public function test_queue_show_works_when_visit_has_no_assigned_doctor(): void
+    {
+        $admin = $this->makeUser('hospital-admin');
+        $receptionist = $this->makeUser('receptionist');
+        $patient = $this->createPatient();
+
+        $visit = PatientVisit::create([
+            'patient_id' => $patient->id,
+            'doctor_id'  => null,
+            'visit_date' => today(),
+            'visit_time' => '09:00:00',
+            'status'     => PatientVisit::STATUS_PENDING,
+            'queued_by'  => $receptionist->id,
+            'created_by' => $receptionist->id,
+            'updated_by' => $receptionist->id,
+        ]);
+
+        $this->actingAs($admin)->getJson("/api/patient-queue/{$visit->id}")
+            ->assertOk()
+            ->assertJsonPath('visit.doctor_id', null)
+            ->assertJsonPath('visit.doctor', null);
+    }
+
+    public function test_queue_show_returns_not_found_when_patient_is_deleted(): void
+    {
+        $admin = $this->makeUser('hospital-admin');
+        $receptionist = $this->makeUser('receptionist');
+        $patient = $this->createPatient();
+
+        $visit = PatientVisit::create([
+            'patient_id' => $patient->id,
+            'doctor_id'  => null,
+            'visit_date' => today(),
+            'visit_time' => '09:00:00',
+            'status'     => PatientVisit::STATUS_PENDING,
+            'queued_by'  => $receptionist->id,
+            'created_by' => $receptionist->id,
+            'updated_by' => $receptionist->id,
+        ]);
+
+        $patient->delete();
+
+        $this->actingAs($admin)->getJson("/api/patient-queue/{$visit->id}")
+            ->assertNotFound()
+            ->assertJsonPath('message', 'Patient not found for this visit.');
+    }
+
     protected function createVisit(User $doctor, string $status = PatientVisit::STATUS_PENDING): PatientVisit
     {
         $patient = $this->createPatient();

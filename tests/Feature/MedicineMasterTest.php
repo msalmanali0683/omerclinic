@@ -304,6 +304,102 @@ class MedicineMasterTest extends TestCase
         $this->assertContains('Augmentin Duo', $names);
     }
 
+    public function test_super_admin_can_list_duplicate_medicines(): void
+    {
+        $superAdmin = $this->makeUser('super-admin');
+
+        Medicine::query()->create([
+            'mdcn_type' => 'Tab.',
+            'mdcn_name' => 'Dup Med Null Size',
+            'mdcn_size' => null,
+        ]);
+        Medicine::query()->create([
+            'mdcn_type' => 'Tab.',
+            'mdcn_name' => 'Dup Med Null Size',
+            'mdcn_size' => null,
+        ]);
+
+        $this->actingAs($superAdmin)->getJson('/api/medicines/duplicates')
+            ->assertOk()
+            ->assertJsonPath('data.duplicate_group_count', 1)
+            ->assertJsonPath('data.duplicate_row_count', 1);
+    }
+
+    public function test_super_admin_can_delete_duplicate_medicines_in_one_click(): void
+    {
+        $superAdmin = $this->makeUser('super-admin');
+
+        $keeper = Medicine::query()->create([
+            'mdcn_type' => 'Tab.',
+            'mdcn_name' => 'Dup Med Mixed Size',
+            'mdcn_size' => null,
+        ]);
+        $duplicate = Medicine::query()->create([
+            'mdcn_type' => 'Tab.',
+            'mdcn_name' => 'Dup Med Mixed Size',
+            'mdcn_size' => '',
+        ]);
+
+        $this->actingAs($superAdmin)->postJson('/api/medicines/delete-duplicates')
+            ->assertOk()
+            ->assertJsonPath('data.deleted_count', 1)
+            ->assertJsonPath('data.groups_cleaned', 1);
+
+        $this->assertDatabaseHas('medicines', ['id' => $keeper->id, 'deleted_at' => null]);
+        $this->assertSoftDeleted('medicines', ['id' => $duplicate->id]);
+        $this->assertTrue(Medicine::query()->whereKey($keeper->id)->exists());
+        $this->assertFalse(Medicine::query()->whereKey($duplicate->id)->exists());
+    }
+
+    public function test_hospital_admin_cannot_delete_duplicate_medicines(): void
+    {
+        $admin = $this->makeUser('hospital-admin');
+
+        $this->actingAs($admin)->getJson('/api/medicines/duplicates')
+            ->assertForbidden();
+
+        $this->actingAs($admin)->postJson('/api/medicines/delete-duplicates')
+            ->assertForbidden();
+    }
+
+    public function test_duplicate_cleanup_reassigns_linked_records_to_kept_medicine(): void
+    {
+        $superAdmin = $this->makeUser('super-admin');
+
+        $keeper = Medicine::query()->create([
+            'mdcn_type' => 'Tab.',
+            'mdcn_name' => 'Linked Dup Med',
+            'mdcn_size' => null,
+        ]);
+        $duplicate = Medicine::query()->create([
+            'mdcn_type' => 'Tab.',
+            'mdcn_name' => 'Linked Dup Med',
+            'mdcn_size' => '',
+        ]);
+
+        $diagnosis = \App\Models\DiagnosisMaster::query()->create([
+            'diagnosis_name' => 'Duplicate Cleanup Dx',
+        ]);
+
+        $template = \App\Models\DiagnosisMedicineTemplate::query()->create([
+            'diagnosis_master_id' => $diagnosis->id,
+            'medicine_id'         => $duplicate->id,
+            'mdcn_type'           => 'Tab.',
+            'mdcn_name'           => 'Linked Dup Med',
+            'sort_order'          => 1,
+            'is_active'           => true,
+        ]);
+
+        $this->actingAs($superAdmin)->postJson('/api/medicines/delete-duplicates')
+            ->assertOk();
+
+        $this->assertDatabaseHas('diagnosis_medicine_templates', [
+            'id'          => $template->id,
+            'medicine_id' => $keeper->id,
+        ]);
+        $this->assertSoftDeleted('medicines', ['id' => $duplicate->id]);
+    }
+
     protected function makeUser(string $role): User
     {
         $user = User::factory()->create();

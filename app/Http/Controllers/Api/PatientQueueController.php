@@ -113,7 +113,13 @@ class PatientQueueController extends Controller
 
         $visit->load(['patient', 'doctor', 'queuedBy', 'latestVitals.recordedBy', 'complaints.complaintMaster', 'complaints.createdBy', 'diagnoses.diagnosisMaster', 'diagnoses.createdBy', 'prescription']);
 
-        $previousVisits = $visit->patient->visits()
+        $patient = $visit->patient;
+
+        if (! $patient) {
+            abort(404, 'Patient not found for this visit.');
+        }
+
+        $previousVisits = $patient->visits()
             ->where('id', '!=', $visit->id)
             ->latest()
             ->limit(10)
@@ -135,7 +141,7 @@ class PatientQueueController extends Controller
         if ($request->user()->can('viewHistory', PatientVital::class)) {
             $response['vitals_history'] = PatientVitalResource::collection(
                 PatientVital::query()
-                    ->where('patient_id', $visit->patient_id)
+                    ->where('patient_id', $patient->id)
                     ->where('patient_visit_id', '!=', $visit->id)
                     ->with(['visit', 'recordedBy', 'patient'])
                     ->latest('recorded_at')
@@ -146,18 +152,18 @@ class PatientQueueController extends Controller
 
         if ($request->user()->can('viewHistory', ClinicalScan::class)) {
             $response['clinical_scan_history'] = app(ClinicalScanHistoryService::class)
-                ->forPatient($visit->patient, $visit->id);
+                ->forPatient($patient, $visit->id);
         }
 
         if ($request->user()->can('viewHistory', \App\Models\LaboratoryResult::class)) {
             $response['laboratory_history'] = app(\App\Services\LaboratoryHistoryService::class)
-                ->forPatient($visit->patient, $visit->id);
+                ->forPatient($patient, $visit->id);
         }
 
         if ($request->user()->can('viewHistory', PatientVisitComplaint::class)) {
             $response['complaints_history'] = PatientVisitComplaintResource::collection(
                 PatientVisitComplaint::query()
-                    ->where('patient_id', $visit->patient_id)
+                    ->where('patient_id', $patient->id)
                     ->where('patient_visit_id', '!=', $visit->id)
                     ->with(['complaintMaster', 'createdBy', 'visit'])
                     ->latest()
@@ -169,7 +175,7 @@ class PatientQueueController extends Controller
         if ($request->user()->can('viewHistory', PatientVisitDiagnosis::class)) {
             $response['diagnosis_history'] = PatientVisitDiagnosisResource::collection(
                 PatientVisitDiagnosis::query()
-                    ->where('patient_id', $visit->patient_id)
+                    ->where('patient_id', $patient->id)
                     ->where('patient_visit_id', '!=', $visit->id)
                     ->with(['diagnosisMaster', 'createdBy', 'visit'])
                     ->latest()

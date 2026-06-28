@@ -90,6 +90,35 @@ class MedicineController extends Controller
         return response()->json(['message' => 'Medicine deleted successfully.']);
     }
 
+    public function duplicates(Request $request)
+    {
+        $this->authorize('deleteDuplicates', Medicine::class);
+
+        $groups = $this->medicineService->duplicateGroups();
+
+        return response()->json([
+            'data' => [
+                'groups'                 => $groups,
+                'duplicate_group_count'  => count($groups),
+                'duplicate_row_count'    => collect($groups)->sum(fn (array $group) => count($group['medicines']) - 1),
+            ],
+        ]);
+    }
+
+    public function deleteDuplicates(Request $request)
+    {
+        $this->authorize('deleteDuplicates', Medicine::class);
+
+        $result = $this->medicineService->deleteDuplicateMedicines($request->user());
+
+        return response()->json([
+            'message' => $result['deleted_count'] > 0
+                ? 'Duplicate medicines removed successfully.'
+                : 'No duplicate medicines found.',
+            'data'    => $result,
+        ]);
+    }
+
     public function options(Request $request)
     {
         $this->authorize('viewAny', Medicine::class);

@@ -237,6 +237,7 @@ import {
   filterMedicineCatalogOptions,
   formatMedicineSearchOptionLabel,
   isDuplicatePrescriptionMedicineRow,
+  mergeMedicineSearchOptions,
   prescriptionMedicineIdentityKey,
   resolveMedicineMasterFromRow,
 } from '@/utils/prescriptionMedicines';
@@ -247,7 +248,6 @@ import AppIcon from '@/components/ui/AppIcon.vue';
 import BaseButton from '@/components/ui/BaseButton.vue';
 
 const MEDICINE_SEARCH_DEBOUNCE_MS = 250;
-const LOCAL_MATCH_THRESHOLD = 10;
 
 const toastStore = useToastStore();
 const medicineTypeOptions = MEDICINE_TYPE_OPTIONS;
@@ -380,12 +380,13 @@ async function fetchMedicineOptions(row) {
     return;
   }
 
-  applyLocalMedicineOptions(row);
+  const localMatches = filterMedicineCatalogOptions(props.medicineCatalog, {
+    search: term,
+    mdcnType: type,
+  });
 
-  const localMatches = row.medicine_options ?? [];
-  if (localMatches.length >= LOCAL_MATCH_THRESHOLD || term.length < 2) {
-    return;
-  }
+  row.medicine_options = localMatches;
+  row.show_dropdown = localMatches.length > 0;
 
   try {
     const { data } = await medicineService.getMedicineOptions({
@@ -394,11 +395,10 @@ async function fetchMedicineOptions(row) {
       limit: 30,
     });
     const remoteMatches = data.data ?? [];
+    const merged = mergeMedicineSearchOptions(localMatches, remoteMatches);
 
-    if (remoteMatches.length) {
-      row.medicine_options = remoteMatches;
-      row.show_dropdown = true;
-    }
+    row.medicine_options = merged;
+    row.show_dropdown = merged.length > 0;
   } catch {
     if (!localMatches.length) {
       row.medicine_options = [];

@@ -83,9 +83,10 @@ class ClinicalScanTemplateController extends Controller
             ->orderBy('template_name')
             ->get()
             ->map(fn (ClinicalScanTemplate $template) => [
-                'id'    => $template->id,
-                'label' => $template->template_name,
-                'value' => $template->id,
+                'id'          => $template->id,
+                'label'       => $template->template_name,
+                'value'       => $template->id,
+                'description' => $template->description,
             ]);
 
         return response()->json(['data' => $items]);

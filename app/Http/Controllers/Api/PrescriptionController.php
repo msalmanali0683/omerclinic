@@ -242,13 +242,18 @@ class PrescriptionController extends Controller
 
         $query = Medicine::query()->orderBy('mdcn_name');
 
-        if ($request->filled('search')) {
-            $search = $request->search;
-            $query->where('mdcn_name', 'like', $search.'%');
-        }
+        \App\Support\MedicineSearch::applyOptionsQuery(
+            $query,
+            $request->input('search'),
+            $request->input('mdcn_type'),
+        );
+
+        $query->when(
+            $request->filled('limit'),
+            fn ($builder) => $builder->limit($request->integer('limit')),
+        );
 
         return $query
-            ->limit($request->get('limit', 150))
             ->get([
                 'id',
                 'mdcn_type',
@@ -261,7 +266,7 @@ class PrescriptionController extends Controller
                 'id'                     => $medicine->id,
                 'label'                  => $medicine->displayLabel(),
                 'value'                  => $medicine->id,
-                'mdcn_type'              => $medicine->mdcn_type,
+                'mdcn_type'              => \App\Support\MedicineTypes::normalize($medicine->mdcn_type),
                 'mdcn_name'              => $medicine->mdcn_name,
                 'mdcn_size'              => $medicine->mdcn_size,
                 'mdcn_time_id'           => $medicine->mdcn_time_id,

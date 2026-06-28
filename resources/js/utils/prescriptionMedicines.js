@@ -1,4 +1,5 @@
 import { isInjectionMedicine } from '@/utils/prescriptionPrintMedicines';
+import { normalizeMedicineType } from '@/constants/medicineTypes';
 import { medicineService } from '@/services/medicineService';
 
 export const DEFAULT_PRESCRIPTION_MEDICINE_ROW_COUNT = 0;
@@ -136,7 +137,7 @@ function applyMedicineMasterToRow(row, medicine) {
 
 export function filterMedicineCatalogOptions(catalog, { search, mdcnType, limit = 30 } = {}) {
   const term = String(search ?? '').trim().toLowerCase();
-  const type = String(mdcnType ?? '').trim();
+  const type = normalizeMedicineType(mdcnType);
 
   if (!term || !type || !Array.isArray(catalog) || !catalog.length) {
     return [];
@@ -144,16 +145,42 @@ export function filterMedicineCatalogOptions(catalog, { search, mdcnType, limit 
 
   return catalog
     .filter((medicine) => {
-      if (String(medicine?.mdcn_type ?? '').trim() !== type) {
+      if (normalizeMedicineType(medicine?.mdcn_type) !== type) {
         return false;
       }
 
-      const name = String(medicine?.mdcn_name ?? '').toLowerCase();
+      const name = String(medicine?.mdcn_name ?? '').trim().toLowerCase();
+      const size = String(medicine?.mdcn_size ?? '').trim().toLowerCase();
       const label = formatMedicineSearchOptionLabel(medicine).toLowerCase();
 
-      return name.startsWith(term) || label.includes(term);
+      return name.startsWith(term)
+        || name.includes(term)
+        || size.includes(term)
+        || label.includes(term);
     })
     .slice(0, limit);
+}
+
+export function mergeMedicineSearchOptions(local = [], remote = [], limit = 30) {
+  const merged = [];
+  const seen = new Set();
+
+  for (const item of [...local, ...remote]) {
+    const id = item?.id;
+
+    if (!id || seen.has(id)) {
+      continue;
+    }
+
+    seen.add(id);
+    merged.push(item);
+
+    if (merged.length >= limit) {
+      break;
+    }
+  }
+
+  return merged;
 }
 
 export function shouldSyncMedicineMasterRow(row) {

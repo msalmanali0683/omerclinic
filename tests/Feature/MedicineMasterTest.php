@@ -270,6 +270,40 @@ class MedicineMasterTest extends TestCase
         $this->assertStringNotContainsString('TypeFilterSyp', $labels);
     }
 
+    public function test_medicine_options_search_is_case_insensitive(): void
+    {
+        $doctor = $this->makeUser('doctor');
+        $admin = $this->makeUser('hospital-admin');
+
+        $this->actingAs($admin)->postJson('/api/medicines', $this->medicinePayload([
+            'mdcn_type' => 'Tab.',
+            'mdcn_name' => 'Panadol Extra',
+        ]))->assertCreated();
+
+        $response = $this->actingAs($doctor)->getJson('/api/medicines/options?mdcn_type=Tab.&search=panadol');
+
+        $response->assertOk();
+        $names = collect($response->json('data'))->pluck('mdcn_name')->all();
+        $this->assertContains('Panadol Extra', $names);
+    }
+
+    public function test_medicine_options_search_finds_name_contains_term(): void
+    {
+        $doctor = $this->makeUser('doctor');
+        $admin = $this->makeUser('hospital-admin');
+
+        $this->actingAs($admin)->postJson('/api/medicines', $this->medicinePayload([
+            'mdcn_type' => 'Tab.',
+            'mdcn_name' => 'Augmentin Duo',
+        ]))->assertCreated();
+
+        $response = $this->actingAs($doctor)->getJson('/api/medicines/options?mdcn_type=Tab.&search=duo');
+
+        $response->assertOk();
+        $names = collect($response->json('data'))->pluck('mdcn_name')->all();
+        $this->assertContains('Augmentin Duo', $names);
+    }
+
     protected function makeUser(string $role): User
     {
         $user = User::factory()->create();

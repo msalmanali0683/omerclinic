@@ -9,6 +9,7 @@ use App\Http\Requests\UpdateMedicineRequest;
 use App\Http\Resources\MedicineResource;
 use App\Models\Medicine;
 use App\Support\MedicineTypes;
+use App\Support\MedicineSearch;
 use App\Services\MedicineService;
 use Illuminate\Http\Request;
 
@@ -101,14 +102,11 @@ class MedicineController extends Controller
 
         $query = Medicine::query()->orderBy('mdcn_name');
 
-        if ($request->filled('search')) {
-            $search = $request->search;
-            $query->where('mdcn_name', 'like', $search.'%');
-        }
-
-        if ($request->filled('mdcn_type') && in_array($request->mdcn_type, MedicineTypes::allowed(), true)) {
-            $query->where('mdcn_type', $request->mdcn_type);
-        }
+        MedicineSearch::applyOptionsQuery(
+            $query,
+            $request->input('search'),
+            $request->input('mdcn_type'),
+        );
 
         $items = $query
             ->limit($request->get('limit', 50))

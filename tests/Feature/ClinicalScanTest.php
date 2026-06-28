@@ -47,6 +47,26 @@ class ClinicalScanTest extends TestCase
         ]);
     }
 
+    public function test_active_template_options_include_description(): void
+    {
+        $admin = $this->makeUser('hospital-admin');
+
+        $this->actingAs($admin)->postJson('/api/clinical-scan-templates', [
+            'template_name' => 'Pelvic Scan',
+            'description'   => 'Pelvic ultrasound template',
+            'is_active'     => true,
+            'fields'        => [
+                ['field_label' => 'Uterus', 'field_type' => 'textarea', 'sort_order' => 1],
+            ],
+        ])->assertCreated();
+
+        $response = $this->actingAs($admin)->getJson('/api/clinical-scan-templates/options');
+
+        $response->assertOk()
+            ->assertJsonPath('data.0.label', 'Pelvic Scan')
+            ->assertJsonPath('data.0.description', 'Pelvic Ultrasound Template');
+    }
+
     public function test_template_field_can_store_multiple_default_values(): void
     {
         $admin = $this->makeUser('hospital-admin');

@@ -13,6 +13,10 @@ class PatientPolicy
 
     public function before(User $user, string $ability): ?bool
     {
+        if ($ability === 'restore') {
+            return $user->hasRole('super-admin');
+        }
+
         if ($user->hasAnyRole(['super-admin', 'hospital-admin'])) {
             return true;
         }
@@ -73,6 +77,11 @@ class PatientPolicy
     public function delete(User $user, Patient $patient): bool
     {
         return $user->can('delete patients');
+    }
+
+    public function restore(User $user, Patient $patient): bool
+    {
+        return $user->hasRole('super-admin');
     }
 
     public function viewMedicalHistory(User $user, Patient $patient): bool

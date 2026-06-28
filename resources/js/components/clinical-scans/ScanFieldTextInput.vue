@@ -21,7 +21,7 @@
       :placeholder="placeholder"
       :disabled="disabled"
       :required="required"
-      rows="3"
+      :rows="rows"
       class="clinical-scan-field__control clinical-scan-field__textarea"
       @input="onInput"
       @select="rememberSelection"
@@ -69,6 +69,7 @@ const props = defineProps({
   disabled: { type: Boolean, default: false },
   required: { type: Boolean, default: false },
   multiline: { type: Boolean, default: false },
+  rows: { type: Number, default: 3 },
 });
 
 const emit = defineEmits(['update:modelValue']);

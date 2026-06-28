@@ -43,6 +43,21 @@
     inset 0 1px 0 rgb(255 255 255 / 0.85);
 }
 
+.clinical-scan-field--compact {
+  padding: 0.8rem 0.95rem;
+  border-radius: 0.85rem;
+  background: linear-gradient(180deg, rgb(255 255 255 / 0.98) 0%, rgb(248 250 252 / 0.95) 100%);
+  box-shadow: 0 1px 2px rgb(15 23 42 / 0.05);
+}
+
+.clinical-scan-field--wide {
+  padding: 1rem 1.15rem;
+}
+
+:global(.dark) .clinical-scan-field--compact {
+  background: linear-gradient(180deg, rgb(15 23 42 / 0.92) 0%, rgb(15 23 42 / 0.98) 100%);
+}
+
 .clinical-scan-field--teal {
   --scan-accent: #0f766e;
   --scan-accent-soft: #ccfbf1;
@@ -191,6 +206,46 @@
   margin-bottom: 0.65rem;
 }
 
+.clinical-scan-field--compact .clinical-scan-field__header {
+  margin-bottom: 0.5rem;
+}
+
+.clinical-scan-field__body--multi {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.75rem;
+}
+
+@media (min-width: 640px) {
+  .clinical-scan-field__body--multi {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.875rem 1rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .clinical-scan-field__body--multi {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.clinical-scan-field__body--multi .clinical-scan-field__slot {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: none;
+}
+
+.clinical-scan-field__body--multi .clinical-scan-field__slot--grouped {
+  padding: 0.65rem 0.75rem;
+  border-radius: 0.75rem;
+  border: 1px solid var(--scan-slot-divider);
+  background: rgb(255 255 255 / 0.55);
+}
+
+:global(.dark) .clinical-scan-field__body--multi .clinical-scan-field__slot--grouped {
+  background: rgb(15 23 42 / 0.35);
+}
+
 .clinical-scan-field__badge {
   display: inline-flex;
   align-items: center;
@@ -228,6 +283,12 @@
   border-top: 1px dashed var(--scan-slot-divider);
 }
 
+.clinical-scan-field__body--multi .clinical-scan-field__slot + .clinical-scan-field__slot {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: none;
+}
+
 .clinical-scan-field__required {
   color: #dc2626;
   margin-left: 0.15rem;
@@ -236,15 +297,16 @@
 .clinical-scan-field__control {
   width: 100%;
   box-sizing: border-box;
-  border-radius: 0.7rem;
+  border-radius: 0.65rem;
   border: 1.5px solid var(--scan-input-border);
-  padding: 0.6rem 0.8rem;
+  padding: 0.55rem 0.75rem;
   font-size: 0.875rem;
   line-height: 1.45;
   color: var(--scan-input-text);
   background: var(--scan-input-bg);
   box-shadow: inset 0 1px 2px rgb(15 23 42 / 0.04);
   transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  min-height: 2.5rem;
 }
 
 .clinical-scan-field__control::placeholder {
@@ -271,20 +333,29 @@
 
 .clinical-scan-field__textarea {
   resize: vertical;
-  min-height: 7rem;
+  min-height: 5.5rem;
+}
+
+.clinical-scan-field--compact .clinical-scan-field__textarea {
+  min-height: 4.75rem;
+}
+
+.clinical-scan-field--wide .clinical-scan-field__textarea {
+  min-height: 7.5rem;
 }
 
 .clinical-scan-field__input-shell :deep(input),
 .clinical-scan-field__input-shell :deep(select) {
   width: 100%;
   box-sizing: border-box;
-  border-radius: 0.7rem;
+  border-radius: 0.65rem;
   border: 1.5px solid var(--scan-input-border);
-  padding: 0.6rem 0.8rem;
+  padding: 0.55rem 0.75rem;
   font-size: 0.875rem;
   color: var(--scan-input-text);
   background: var(--scan-input-bg);
   box-shadow: inset 0 1px 2px rgb(15 23 42 / 0.04);
+  min-height: 2.5rem;
 }
 
 .clinical-scan-field__input-shell :deep(input:focus),

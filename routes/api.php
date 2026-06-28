@@ -99,6 +99,9 @@ Route::middleware('auth:sanctum')->group(function () {
         ->middleware('permission:edit patients');
     Route::delete('patients/{patient}', [PatientController::class, 'destroy'])
         ->middleware('permission:delete patients');
+    Route::post('patients/{patient}/restore', [PatientController::class, 'restore'])
+        ->middleware('role:super-admin')
+        ->whereNumber('patient');
 
     // Patient queue
     Route::get('patient-queue', [PatientQueueController::class, 'index'])

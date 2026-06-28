@@ -29,7 +29,13 @@ class PatientController extends Controller
     {
         $this->authorize('viewAny', Patient::class);
 
-        $query = Patient::query()->withInQueueTodayFlag()->latest();
+        if ($request->boolean('deleted')) {
+            abort_unless($request->user()->hasRole('super-admin'), 403);
+
+            $query = Patient::onlyTrashed()->withInQueueTodayFlag()->latest();
+        } else {
+            $query = Patient::query()->withInQueueTodayFlag()->latest();
+        }
 
         if ($request->filled('search')) {
             $search = $request->search;
@@ -252,6 +258,22 @@ class PatientController extends Controller
         }
 
         return response()->json(['message' => $message]);
+    }
+
+    public function restore(Request $request, int $patient)
+    {
+        $patientModel = Patient::onlyTrashed()->findOrFail($patient);
+
+        $this->authorize('restore', $patientModel);
+
+        $patientModel->restore();
+
+        return response()->json([
+            'message' => 'Patient restored successfully.',
+            'patient' => new PatientResource(
+                Patient::query()->withInQueueTodayFlag()->findOrFail($patientModel->id)
+            ),
+        ]);
     }
 
     protected function shouldAddToQueueOnCreate(StorePatientRequest $request, User $user): bool

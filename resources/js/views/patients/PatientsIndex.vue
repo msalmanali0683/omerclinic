@@ -5,8 +5,15 @@
         <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Patients</h2>
         <p class="text-gray-500 dark:text-gray-400 text-sm mt-1">Basic personal patient information</p>
       </div>
-      <BaseButton v-if="authStore.can('create patients')" @click="$router.push('/patients/create')">
+      <BaseButton v-if="authStore.can('create patients') && !showDeleted" @click="$router.push('/patients/create')">
         + Create Patient
+      </BaseButton>
+      <BaseButton
+        v-if="isSuperAdminUser"
+        variant="secondary"
+        @click="toggleDeletedView"
+      >
+        {{ showDeleted ? 'Show Active Patients' : 'Show Deleted Patients' }}
       </BaseButton>
     </div>
 
@@ -28,10 +35,34 @@
         <span class="max-w-xs truncate block" :title="row.patient_address">{{ row.patient_address || '—' }}</span>
       </template>
       <template #cell-created_at="{ row }">{{ formatDate(row.created_at) }}</template>
+      <template #cell-patient_name="{ row }">
+        <div class="flex items-center gap-2">
+          <span>{{ row.patient_name }}</span>
+          <span
+            v-if="row.is_deleted"
+            class="px-2 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300"
+          >
+            Deleted
+          </span>
+        </div>
+      </template>
       <template #cell-actions="{ row }">
         <div class="flex gap-1">
-          <BaseButton v-if="authStore.can('edit patients')" variant="ghost" size="sm" @click="$router.push(`/patients/${row.id}/edit`)">Edit</BaseButton>
-          <BaseButton v-if="authStore.can('delete patients')" variant="ghost" size="sm" @click="confirmDelete(row)">Delete</BaseButton>
+          <template v-if="row.is_deleted">
+            <BaseButton
+              v-if="isSuperAdminUser"
+              variant="secondary"
+              size="sm"
+              :loading="restoringId === row.id"
+              @click="restorePatient(row)"
+            >
+              Restore
+            </BaseButton>
+          </template>
+          <template v-else>
+            <BaseButton v-if="authStore.can('edit patients')" variant="ghost" size="sm" @click="$router.push(`/patients/${row.id}/edit`)">Edit</BaseButton>
+            <BaseButton v-if="authStore.can('delete patients')" variant="ghost" size="sm" @click="confirmDelete(row)">Delete</BaseButton>
+          </template>
         </div>
       </template>
     </BaseTable>
@@ -45,7 +76,15 @@
         :key="patient.id"
         class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4 shadow-sm"
       >
-        <p class="font-semibold text-gray-900 dark:text-white">{{ patient.patient_name }}</p>
+        <p class="font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+          <span>{{ patient.patient_name }}</span>
+          <span
+            v-if="patient.is_deleted"
+            class="px-2 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300"
+          >
+            Deleted
+          </span>
+        </p>
         <p class="text-xs text-teal-600 font-mono">{{ patient.mr_number }}</p>
         <p class="text-sm text-gray-500">{{ patient.patient_father_name || '—' }}</p>
         <div class="mt-2 space-y-1 text-sm text-gray-600 dark:text-gray-400">
@@ -56,8 +95,21 @@
           <p class="truncate">Address: {{ patient.patient_address || '—' }}</p>
         </div>
         <div class="flex gap-2 mt-3">
-          <BaseButton v-if="authStore.can('edit patients')" variant="secondary" size="sm" @click="$router.push(`/patients/${patient.id}/edit`)">Edit</BaseButton>
-          <BaseButton v-if="authStore.can('delete patients')" variant="ghost" size="sm" @click="confirmDelete(patient)">Delete</BaseButton>
+          <template v-if="patient.is_deleted">
+            <BaseButton
+              v-if="isSuperAdminUser"
+              variant="secondary"
+              size="sm"
+              :loading="restoringId === patient.id"
+              @click="restorePatient(patient)"
+            >
+              Restore
+            </BaseButton>
+          </template>
+          <template v-else>
+            <BaseButton v-if="authStore.can('edit patients')" variant="secondary" size="sm" @click="$router.push(`/patients/${patient.id}/edit`)">Edit</BaseButton>
+            <BaseButton v-if="authStore.can('delete patients')" variant="ghost" size="sm" @click="confirmDelete(patient)">Delete</BaseButton>
+          </template>
         </div>
       </div>
     </div>
@@ -83,10 +135,11 @@
 </template>
 
 <script setup>
-import { onMounted, reactive, ref } from 'vue';
+import { computed, onMounted, reactive, ref } from 'vue';
 import { useAuthStore } from '@/stores/auth';
 import { useToastStore } from '@/stores/toast';
 import { patientService } from '@/services/patientService';
+import { isSuperAdmin } from '@/utils/permissions';
 import { displayPatientAge, formatDate, formatGender } from '@/utils/formatters';
 import BaseButton from '@/components/ui/BaseButton.vue';
 import BaseInput from '@/components/ui/BaseInput.vue';
@@ -96,6 +149,9 @@ import BaseModal from '@/components/ui/BaseModal.vue';
 
 const authStore = useAuthStore();
 const toastStore = useToastStore();
+const isSuperAdminUser = computed(() => isSuperAdmin(authStore.user));
+const showDeleted = ref(false);
+const restoringId = ref(null);
 
 const columns = [
   { key: 'mr_number', label: 'MR No.' },
@@ -123,6 +179,7 @@ async function fetchPatients(page = 1) {
     const { data } = await patientService.getPatients({
       search: filters.search || undefined,
       page,
+      deleted: showDeleted.value ? 1 : undefined,
     });
     patients.value = data.data;
     pagination.current_page = data.meta?.current_page ?? 1;
@@ -141,6 +198,28 @@ function clearSearch() {
 
 function goPage(page) {
   fetchPatients(page);
+}
+
+function toggleDeletedView() {
+  showDeleted.value = !showDeleted.value;
+  fetchPatients(1);
+}
+
+async function restorePatient(patient) {
+  if (!confirm(`Restore patient "${patient.patient_name}"?`)) {
+    return;
+  }
+
+  restoringId.value = patient.id;
+  try {
+    await patientService.restorePatient(patient.id);
+    toastStore.success('Patient restored successfully.');
+    fetchPatients(pagination.current_page);
+  } catch (e) {
+    toastStore.error(e.response?.data?.message ?? 'Failed to restore patient.');
+  } finally {
+    restoringId.value = null;
+  }
 }
 
 function confirmDelete(patient) {

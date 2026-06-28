@@ -31,7 +31,12 @@
         />
 
         <div :class="clinicalScanFindingsPanelClass">
-          <h4 :class="clinicalScanFindingsPanelTitleClass">Scan Findings</h4>
+          <div class="flex flex-col gap-1 sm:flex-row sm:items-end sm:justify-between mb-4">
+            <h4 :class="clinicalScanFindingsPanelTitleClass" class="!mb-0">Scan Findings</h4>
+            <p v-if="scanValues.length" class="text-xs text-slate-500 dark:text-slate-400">
+              {{ scanValues.length }} fields
+            </p>
+          </div>
           <ClinicalScanDynamicFields v-model="scanValues" :error="errors.values" />
         </div>
 

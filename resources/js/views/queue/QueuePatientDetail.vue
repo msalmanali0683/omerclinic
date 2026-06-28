@@ -5,9 +5,18 @@
     <template v-else-if="visit">
       <div
         v-if="visit.patient?.is_deleted"
-        class="mb-4 rounded-xl border border-red-200 bg-red-50 dark:border-red-900/40 dark:bg-red-900/20 p-4 text-sm text-red-800 dark:text-red-200"
+        class="mb-4 rounded-xl border border-red-200 bg-red-50 dark:border-red-900/40 dark:bg-red-900/20 p-4 text-sm text-red-800 dark:text-red-200 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3"
       >
-        This patient record was deleted. Queue and prescription actions are disabled. Cancel this visit to remove it from the queue.
+        <span>This patient record was deleted. Queue and prescription actions are disabled until the patient is restored or this visit is cancelled.</span>
+        <BaseButton
+          v-if="isSuperAdminUser"
+          variant="secondary"
+          size="sm"
+          :loading="restoringPatient"
+          @click="restoreDeletedPatient"
+        >
+          Restore Patient
+        </BaseButton>
       </div>
 
       <div class="mb-6 flex items-start justify-between gap-4">
@@ -238,6 +247,8 @@ import { useRoute, useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
 import { useToastStore } from '@/stores/toast';
 import { patientQueueService } from '@/services/patientQueueService';
+import { patientService } from '@/services/patientService';
+import { isSuperAdmin } from '@/utils/permissions';
 import { patientVitalService } from '@/services/patientVitalService';
 import { prescriptionService } from '@/services/prescriptionService';
 import { clinicalScanService } from '@/services/clinicalScanService';
@@ -272,6 +283,8 @@ const route = useRoute();
 const router = useRouter();
 const authStore = useAuthStore();
 const toastStore = useToastStore();
+const isSuperAdminUser = computed(() => isSuperAdmin(authStore.user));
+const restoringPatient = ref(false);
 
 const visit = ref(null);
 const currentVisitVitals = ref(null);
@@ -822,6 +835,27 @@ async function assignDoctor() {
     toastStore.error(e.response?.data?.message ?? 'Failed to assign doctor.');
   } finally {
     assigning.value = false;
+  }
+}
+
+async function restoreDeletedPatient() {
+  if (!visit.value?.patient_id) {
+    return;
+  }
+
+  if (!confirm(`Restore patient "${visit.value.patient?.patient_name}"?`)) {
+    return;
+  }
+
+  restoringPatient.value = true;
+  try {
+    await patientService.restorePatient(visit.value.patient_id);
+    toastStore.success('Patient restored successfully.');
+    await load();
+  } catch (e) {
+    toastStore.error(e.response?.data?.message ?? 'Failed to restore patient.');
+  } finally {
+    restoringPatient.value = false;
   }
 }
 

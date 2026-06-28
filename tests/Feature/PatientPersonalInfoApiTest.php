@@ -116,6 +116,70 @@ class PatientPersonalInfoApiTest extends TestCase
         $this->assertSoftDeleted('patients', ['id' => $patient->id]);
     }
 
+    public function test_super_admin_can_list_deleted_patients(): void
+    {
+        $superAdmin = $this->makeUser('super-admin');
+        $patient = Patient::create([
+            'patient_name' => 'Deleted List Patient',
+            'patient_cell' => '03005556666',
+            'name'         => 'Deleted List Patient',
+            'phone'        => '03005556666',
+        ]);
+        $patient->delete();
+
+        $this->actingAs($superAdmin)->getJson('/api/patients?deleted=1')
+            ->assertOk()
+            ->assertJsonPath('data.0.id', $patient->id)
+            ->assertJsonPath('data.0.is_deleted', true);
+    }
+
+    public function test_hospital_admin_cannot_list_deleted_patients(): void
+    {
+        $admin = $this->makeUser('hospital-admin');
+
+        $this->actingAs($admin)->getJson('/api/patients?deleted=1')
+            ->assertForbidden();
+    }
+
+    public function test_super_admin_can_restore_deleted_patient(): void
+    {
+        $superAdmin = $this->makeUser('super-admin');
+        $patient = Patient::create([
+            'patient_name' => 'Restore Me',
+            'patient_cell' => '03006667777',
+            'name'         => 'Restore Me',
+            'phone'        => '03006667777',
+        ]);
+        $patient->delete();
+
+        $this->actingAs($superAdmin)->postJson("/api/patients/{$patient->id}/restore")
+            ->assertOk()
+            ->assertJsonPath('patient.patient_name', 'Restore Me')
+            ->assertJsonPath('patient.is_deleted', false);
+
+        $this->assertDatabaseHas('patients', [
+            'id'         => $patient->id,
+            'deleted_at' => null,
+        ]);
+    }
+
+    public function test_hospital_admin_cannot_restore_deleted_patient(): void
+    {
+        $admin = $this->makeUser('hospital-admin');
+        $patient = Patient::create([
+            'patient_name' => 'No Restore',
+            'patient_cell' => '03007778888',
+            'name'         => 'No Restore',
+            'phone'        => '03007778888',
+        ]);
+        $patient->delete();
+
+        $this->actingAs($admin)->postJson("/api/patients/{$patient->id}/restore")
+            ->assertForbidden();
+
+        $this->assertSoftDeleted('patients', ['id' => $patient->id]);
+    }
+
     public function test_patient_cnic_must_be_unique(): void
     {
         $user = $this->makeUser('receptionist');

@@ -9,4 +9,5 @@ export const patientService = {
     createPatient: (payload) => api.post('/patients', payload),
     updatePatient: (id, payload) => api.put(`/patients/${id}`, payload),
     deletePatient: (id) => api.delete(`/patients/${id}`),
+    restorePatient: (id) => api.post(`/patients/${id}/restore`),
 };

@@ -16,11 +16,15 @@
         </div>
 
         <div
-          v-for="field in group.fields"
-          :key="field.clinical_scan_template_field_id || field.field_key"
-          class="clinical-scan-field__slot"
-          :class="{ 'clinical-scan-field__slot--grouped': group.is_multi_value }"
+          class="clinical-scan-field__body"
+          :class="{ 'clinical-scan-field__body--multi': group.is_multi_value }"
         >
+          <div
+            v-for="field in group.fields"
+            :key="field.clinical_scan_template_field_id || field.field_key"
+            class="clinical-scan-field__slot"
+            :class="{ 'clinical-scan-field__slot--grouped': group.is_multi_value }"
+          >
           <p v-if="group.is_multi_value && slotLabel(field)" class="clinical-scan-field__sub-label">
             {{ slotLabel(field) }}
           </p>
@@ -45,6 +49,7 @@
               :placeholder="field.placeholder || `Enter ${group.label.toLowerCase()}...`"
               :disabled="disabled"
               :required="field.is_required"
+              :rows="textareaRows(group)"
               multiline
               @update:model-value="updateFieldValue(field, $event)"
             />
@@ -129,6 +134,7 @@
               @update:model-value="updateFieldValue(field, $event)"
             />
           </template>
+          </div>
         </div>
       </div>
     </div>
@@ -139,7 +145,7 @@
 
 <script setup>
 import { computed } from 'vue';
-import { groupScanFieldsForEntry, resolveTemplateDefaultValues } from '@/utils/clinicalScans';
+import { groupScanFieldsForEntry, resolveTemplateDefaultValues, isScanImpressionField, isScanNotesField } from '@/utils/clinicalScans';
 import { getScanFieldAccentClass } from '@/utils/clinicalScanFieldTheme';
 import ScanFieldTextInput from '@/components/clinical-scans/ScanFieldTextInput.vue';
 import BaseInput from '@/components/ui/BaseInput.vue';
@@ -157,13 +163,35 @@ const emit = defineEmits(['update:modelValue']);
 const groupedFields = computed(() => groupScanFieldsForEntry(props.modelValue || []));
 
 function groupLayoutClass(group) {
-  const hasWideControl = group.fields.some((field) => field.field_type === 'textarea' || field.field_type === 'text');
-
-  if (hasWideControl || group.is_multi_value) {
+  if (group.is_multi_value) {
     return 'clinical-scan-field--wide';
   }
 
-  return '';
+  const field = group.fields[0];
+
+  if (!field) {
+    return 'clinical-scan-field--compact';
+  }
+
+  if (field.field_type === 'textarea' && (isScanImpressionField(field) || isScanNotesField(field))) {
+    return 'clinical-scan-field--wide';
+  }
+
+  return 'clinical-scan-field--compact';
+}
+
+function textareaRows(group) {
+  const field = group.fields[0];
+
+  if (!field) {
+    return 3;
+  }
+
+  if (isScanImpressionField(field) || isScanNotesField(field)) {
+    return 5;
+  }
+
+  return group.is_multi_value ? 3 : 4;
 }
 
 function groupRequiresValue(group) {
@@ -229,7 +257,21 @@ function updateFieldValue(field, value) {
 .clinical-scan-fields__grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 1rem;
+  gap: 0.875rem;
+}
+
+@media (min-width: 640px) {
+  .clinical-scan-fields__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem 1.125rem;
+  }
+}
+
+@media (min-width: 1280px) {
+  .clinical-scan-fields__grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem 1.25rem;
+  }
 }
 
 .clinical-scan-field--wide {

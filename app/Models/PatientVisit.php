@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\BelongsToPatientIncludingTrashed;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -11,7 +12,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class PatientVisit extends Model
 {
-    use HasFactory, SoftDeletes;
+    use BelongsToPatientIncludingTrashed, HasFactory, SoftDeletes;
 
     public const STATUS_PENDING = 'pending_prescription';
 
@@ -44,11 +45,6 @@ class PatientVisit extends Model
     protected $casts = [
         'visit_date' => 'date',
     ];
-
-    public function patient(): BelongsTo
-    {
-        return $this->belongsTo(Patient::class);
-    }
 
     public function doctor(): BelongsTo
     {

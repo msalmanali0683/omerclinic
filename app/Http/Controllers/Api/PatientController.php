@@ -242,9 +242,16 @@ class PatientController extends Controller
     {
         $this->authorize('delete', $patient);
 
+        $cancelledVisits = $this->queueService->cancelActiveVisitsForPatient($patient, request()->user());
+
         $patient->delete();
 
-        return response()->json(['message' => 'Patient deleted successfully.']);
+        $message = 'Patient deleted successfully.';
+        if ($cancelledVisits > 0) {
+            $message .= ' '.$cancelledVisits.' active queue '.($cancelledVisits === 1 ? 'entry was' : 'entries were').' cancelled.';
+        }
+
+        return response()->json(['message' => $message]);
     }
 
     protected function shouldAddToQueueOnCreate(StorePatientRequest $request, User $user): bool

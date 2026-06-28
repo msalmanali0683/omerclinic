@@ -3,6 +3,13 @@
     <div v-if="loading" class="h-64 bg-gray-200 dark:bg-gray-700 rounded-xl animate-pulse" />
 
     <template v-else-if="visit">
+      <div
+        v-if="visit.patient?.is_deleted"
+        class="mb-4 rounded-xl border border-red-200 bg-red-50 dark:border-red-900/40 dark:bg-red-900/20 p-4 text-sm text-red-800 dark:text-red-200"
+      >
+        This patient record was deleted. Queue and prescription actions are disabled. Cancel this visit to remove it from the queue.
+      </div>
+
       <div class="mb-6 flex items-start justify-between gap-4">
         <div>
           <p class="font-mono text-teal-600">{{ visit.patient?.mr_number }}</p>
@@ -311,11 +318,15 @@ const printRedirectTo = computed(() => (
   authStore.hasRole('doctor') ? { name: 'queue.doctor' } : { name: 'queue.index' }
 ));
 
+const patientIsDeleted = computed(() => Boolean(visit.value?.patient?.is_deleted));
+
 const canAddComplaints = computed(() =>
-  authStore.can('create visit complaints') || authStore.can('add complaints during prescription')
+  !patientIsDeleted.value
+  && (authStore.can('create visit complaints') || authStore.can('add complaints during prescription'))
 );
 const canAddDiagnosis = computed(() =>
-  authStore.can('create visit diagnosis') || authStore.can('add diagnosis during prescription')
+  !patientIsDeleted.value
+  && (authStore.can('create visit diagnosis') || authStore.can('add diagnosis during prescription'))
 );
 
 const canViewClinicalScans = computed(() =>
@@ -351,7 +362,7 @@ const prescriptionMode = computed(() => (
 ));
 
 const canShowPrescriptionForm = computed(() => {
-  if (!visit.value || visit.value.status === 'cancelled') {
+  if (!visit.value || visit.value.status === 'cancelled' || patientIsDeleted.value) {
     return false;
   }
 

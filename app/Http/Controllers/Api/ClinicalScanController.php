@@ -50,7 +50,8 @@ class ClinicalScanController extends Controller
         if ($request->filled('search')) {
             $search = $request->search;
             $query->whereHas('patient', function ($q) use ($search) {
-                $q->where('mr_number', 'like', "%{$search}%")
+                $q->withTrashed()
+                    ->where('mr_number', 'like', "%{$search}%")
                     ->orWhere('patient_name', 'like', "%{$search}%")
                     ->orWhere('patient_cell', 'like', "%{$search}%")
                     ->orWhere('patient_cnic', 'like', "%{$search}%");

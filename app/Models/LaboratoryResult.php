@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\BelongsToPatientIncludingTrashed;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -10,7 +11,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class LaboratoryResult extends Model
 {
-    use HasFactory, SoftDeletes;
+    use BelongsToPatientIncludingTrashed, HasFactory, SoftDeletes;
 
     public const STATUS_DRAFT = 'draft';
 
@@ -41,11 +42,6 @@ class LaboratoryResult extends Model
         'result_date' => 'date',
         'test_price'  => 'decimal:2',
     ];
-
-    public function patient(): BelongsTo
-    {
-        return $this->belongsTo(Patient::class);
-    }
 
     public function visit(): BelongsTo
     {

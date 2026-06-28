@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\BelongsToPatientIncludingTrashed;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -9,7 +10,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class PatientVital extends Model
 {
-    use HasFactory, SoftDeletes;
+    use BelongsToPatientIncludingTrashed, HasFactory, SoftDeletes;
 
     protected $fillable = [
         'patient_id',
@@ -32,11 +33,6 @@ class PatientVital extends Model
         'respiratory_rate'  => 'integer',
         'recorded_at'       => 'datetime',
     ];
-
-    public function patient(): BelongsTo
-    {
-        return $this->belongsTo(Patient::class);
-    }
 
     public function visit(): BelongsTo
     {

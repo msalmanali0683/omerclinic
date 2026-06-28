@@ -35,7 +35,17 @@
 
     <BaseTable :columns="columns" :rows="visits" :loading="loading">
       <template #cell-mr_number="{ row }">{{ row.patient?.mr_number }}</template>
-      <template #cell-patient_name="{ row }">{{ row.patient?.patient_name }}</template>
+      <template #cell-patient_name="{ row }">
+        <div class="flex items-center gap-2">
+          <span>{{ row.patient?.patient_name || '—' }}</span>
+          <span
+            v-if="row.patient?.is_deleted"
+            class="px-2 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300"
+          >
+            Deleted
+          </span>
+        </div>
+      </template>
       <template #cell-patient_father_name="{ row }">{{ row.patient?.patient_father_name || '—' }}</template>
       <template #cell-patient_gender="{ row }">{{ formatGender(row.patient?.patient_gender) }}</template>
       <template #cell-patient_age="{ row }">{{ displayPatientAge(row.patient) }}</template>

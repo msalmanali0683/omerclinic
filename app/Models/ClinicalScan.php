@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\BelongsToPatientIncludingTrashed;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -10,7 +11,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class ClinicalScan extends Model
 {
-    use HasFactory, SoftDeletes;
+    use BelongsToPatientIncludingTrashed, HasFactory, SoftDeletes;
 
     public const STATUS_DRAFT = 'draft';
 
@@ -37,11 +38,6 @@ class ClinicalScan extends Model
     protected $casts = [
         'scan_date' => 'date',
     ];
-
-    public function patient(): BelongsTo
-    {
-        return $this->belongsTo(Patient::class);
-    }
 
     public function visit(): BelongsTo
     {

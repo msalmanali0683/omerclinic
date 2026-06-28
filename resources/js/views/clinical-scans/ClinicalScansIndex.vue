@@ -39,7 +39,15 @@
     <BaseTable :columns="columns" :rows="rows" :loading="loading">
       <template #cell-patient="{ row }">
         <div>
-          <div class="font-medium">{{ row.patient?.patient_name || '—' }}</div>
+          <div class="font-medium flex items-center gap-2">
+            <span>{{ row.patient?.patient_name || '—' }}</span>
+            <span
+              v-if="row.patient?.is_deleted"
+              class="px-2 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300"
+            >
+              Deleted
+            </span>
+          </div>
           <div class="text-xs font-mono text-teal-600">{{ row.patient?.mr_number || '—' }}</div>
         </div>
       </template>

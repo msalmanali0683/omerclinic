@@ -491,7 +491,33 @@ class PatientMrQueueTest extends TestCase
         $this->actingAs($receptionist)->postJson('/api/patient-queue/cancel-stale')
             ->assertOk()
             ->assertJsonPath('cancelled_count', 0)
-            ->assertJsonPath('message', 'No old queue entries to cancel.');
+            ->assertJsonPath('message', 'No old queue entries or deleted-patient queue entries to cancel.');
+    }
+
+    public function test_cancel_stale_queue_cancels_active_visits_for_deleted_patients(): void
+    {
+        $receptionist = $this->makeUser('receptionist');
+        $patient = $this->createPatient();
+
+        $visit = PatientVisit::create([
+            'patient_id' => $patient->id,
+            'doctor_id'  => null,
+            'visit_date' => today(),
+            'visit_time' => '10:00:00',
+            'status'     => PatientVisit::STATUS_PENDING,
+            'queued_by'  => $receptionist->id,
+        ]);
+
+        $patient->delete();
+
+        $this->actingAs($receptionist)->postJson('/api/patient-queue/cancel-stale')
+            ->assertOk()
+            ->assertJsonPath('cancelled_count', 1);
+
+        $this->assertDatabaseHas('patient_visits', [
+            'id'     => $visit->id,
+            'status' => PatientVisit::STATUS_CANCELLED,
+        ]);
     }
 
     public function test_cancel_stale_queue_command_cancels_previous_day_visits(): void
@@ -595,7 +621,7 @@ class PatientMrQueueTest extends TestCase
             ->assertJsonPath('visit.doctor', null);
     }
 
-    public function test_queue_show_returns_not_found_when_patient_is_deleted(): void
+    public function test_queue_show_includes_deleted_patient_data(): void
     {
         $admin = $this->makeUser('hospital-admin');
         $receptionist = $this->makeUser('receptionist');
@@ -615,8 +641,35 @@ class PatientMrQueueTest extends TestCase
         $patient->delete();
 
         $this->actingAs($admin)->getJson("/api/patient-queue/{$visit->id}")
-            ->assertNotFound()
-            ->assertJsonPath('message', 'Patient not found for this visit.');
+            ->assertOk()
+            ->assertJsonPath('visit.patient.patient_name', $patient->patient_name)
+            ->assertJsonPath('visit.patient.is_deleted', true);
+    }
+
+    public function test_deleting_patient_cancels_active_queue_visits(): void
+    {
+        $admin = $this->makeUser('hospital-admin');
+        $patient = $this->createPatient();
+
+        $visit = PatientVisit::create([
+            'patient_id' => $patient->id,
+            'doctor_id'  => null,
+            'visit_date' => today(),
+            'visit_time' => '09:00:00',
+            'status'     => PatientVisit::STATUS_PENDING,
+            'queued_by'  => $admin->id,
+            'created_by' => $admin->id,
+            'updated_by' => $admin->id,
+        ]);
+
+        $this->actingAs($admin)->deleteJson("/api/patients/{$patient->id}")
+            ->assertOk();
+
+        $this->assertSoftDeleted('patients', ['id' => $patient->id]);
+        $this->assertDatabaseHas('patient_visits', [
+            'id'     => $visit->id,
+            'status' => PatientVisit::STATUS_CANCELLED,
+        ]);
     }
 
     protected function createVisit(User $doctor, string $status = PatientVisit::STATUS_PENDING): PatientVisit

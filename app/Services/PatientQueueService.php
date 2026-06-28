@@ -92,13 +92,10 @@ class PatientQueueService
         return $visit->fresh(['patient', 'doctor', 'queuedBy']);
     }
 
-    /**
-     * Cancel active queue visits from previous days.
-     */
-    public function cancelStaleQueueVisits(?User $user = null): int
+    public function cancelActiveVisitsForPatient(Patient $patient, ?User $user = null): int
     {
         return PatientVisit::query()
-            ->whereDate('visit_date', '<', today())
+            ->where('patient_id', $patient->id)
             ->whereIn('status', PatientVisit::ACTIVE_STATUSES)
             ->update([
                 'status'     => PatientVisit::STATUS_CANCELLED,
@@ -106,11 +103,47 @@ class PatientQueueService
             ]);
     }
 
-    public function countStaleQueueVisits(): int
+    public function cancelActiveVisitsWithDeletedPatients(?User $user = null): int
     {
         return PatientVisit::query()
+            ->whereIn('status', PatientVisit::ACTIVE_STATUSES)
+            ->whereHas('patient', fn ($query) => $query->onlyTrashed())
+            ->update([
+                'status'     => PatientVisit::STATUS_CANCELLED,
+                'updated_by' => $user?->id,
+            ]);
+    }
+
+    /**
+     * Cancel active queue visits from previous days.
+     */
+    public function cancelStaleQueueVisits(?User $user = null): int
+    {
+        $staleCount = PatientVisit::query()
+            ->whereDate('visit_date', '<', today())
+            ->whereIn('status', PatientVisit::ACTIVE_STATUSES)
+            ->update([
+                'status'     => PatientVisit::STATUS_CANCELLED,
+                'updated_by' => $user?->id,
+            ]);
+
+        $deletedPatientCount = $this->cancelActiveVisitsWithDeletedPatients($user);
+
+        return $staleCount + $deletedPatientCount;
+    }
+
+    public function countStaleQueueVisits(): int
+    {
+        $staleCount = PatientVisit::query()
             ->whereDate('visit_date', '<', today())
             ->whereIn('status', PatientVisit::ACTIVE_STATUSES)
             ->count();
+
+        $deletedPatientCount = PatientVisit::query()
+            ->whereIn('status', PatientVisit::ACTIVE_STATUSES)
+            ->whereHas('patient', fn ($query) => $query->onlyTrashed())
+            ->count();
+
+        return $staleCount + $deletedPatientCount;
     }
 }

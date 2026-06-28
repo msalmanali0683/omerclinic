@@ -60,7 +60,8 @@ class PatientQueueController extends Controller
         if ($request->filled('search')) {
             $search = $request->search;
             $query->whereHas('patient', function ($q) use ($search) {
-                $q->where('patient_name', 'like', "%{$search}%")
+                $q->withTrashed()
+                    ->where('patient_name', 'like', "%{$search}%")
                     ->orWhere('mr_number', 'like', "%{$search}%")
                     ->orWhere('patient_cell', 'like', "%{$search}%");
             });
@@ -271,7 +272,7 @@ class PatientQueueController extends Controller
 
         if ($count === 0) {
             return response()->json([
-                'message' => 'No old queue entries to cancel.',
+                'message' => 'No old queue entries or deleted-patient queue entries to cancel.',
                 'cancelled_count' => 0,
             ]);
         }

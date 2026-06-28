@@ -23,6 +23,8 @@ class PatientResource extends JsonResource
             'patient_address'      => $this->patient_address,
             'patient_cnic'         => $this->patient_cnic,
             'in_queue_today'       => $this->isInQueueToday(),
+            'is_deleted'           => $this->trashed(),
+            'deleted_at'           => $this->deleted_at?->toIso8601String(),
             'created_at'           => $this->created_at?->toIso8601String(),
             'updated_at'           => $this->updated_at?->toIso8601String(),
         ];

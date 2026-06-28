@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\BelongsToPatientIncludingTrashed;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -12,7 +13,7 @@ use Spatie\Activitylog\Traits\LogsActivity;
 
 class Prescription extends Model
 {
-    use HasFactory, LogsActivity, SoftDeletes;
+    use BelongsToPatientIncludingTrashed, HasFactory, LogsActivity, SoftDeletes;
 
     protected $fillable = [
         'patient_id',
@@ -35,11 +36,6 @@ class Prescription extends Model
         'prescription_date'  => 'date',
         'next_visit_date'    => 'date',
     ];
-
-    public function patient(): BelongsTo
-    {
-        return $this->belongsTo(Patient::class);
-    }
 
     public function doctor(): BelongsTo
     {
